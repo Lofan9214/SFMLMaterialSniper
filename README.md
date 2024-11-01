@@ -1,1 +1,1 @@
-# SFML_MaterialSniper
+# SFMLMaterialSniper
