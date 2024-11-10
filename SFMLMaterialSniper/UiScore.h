@@ -1,20 +1,20 @@
 #pragma once
 #include "TextGo.h"
 class UiScore :
-    public TextGo
+	public TextGo
 {
 protected:
-    std::string strFormat = "SCORE : ";
-    int dScore = 0;
+	int score;
+	std::string scoreformat;
 
-    UiScore(const UiScore&) = delete;
-    UiScore& operator=(const UiScore&) = delete;
 public:
-    UiScore(const std::string& iFontId, const std::string& iName = "");
-    virtual ~UiScore() = default;
+	UiScore(const std::string& fontId, const std::string& name = "");
+	~UiScore() = default;
 
-    void reset() override;
-    void setScore(int iScore);
+	void Init() override;
+	void Reset() override;
 
+	void SetScore(int score);
+	void AddScore(int score);
 };
 

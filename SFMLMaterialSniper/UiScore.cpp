@@ -1,19 +1,32 @@
 #include "stdafx.h"
 #include "UiScore.h"
 
-UiScore::UiScore(const std::string& iFontId, const std::string& iName)
-	:TextGo(iFontId, iName)
+UiScore::UiScore(const std::string& fontId, const std::string& name)
+	:TextGo(fontId,name)
 {
+	scoreformat = "Score : ";
+	sortingLayer = SortingLayers::UI;
 }
 
-void UiScore::reset()
+void UiScore::Init()
 {
-	TextGo::reset();
-	setScore(0);
+	SetOrigin(Origins::MC);
+	SetFillColor(sf::Color::White);
 }
 
-void UiScore::setScore(int iScore)
+void UiScore::Reset()
 {
-	dScore = iScore;
-	textObj.setString(strFormat + std::to_string(dScore));
+	TextGo::Reset();
+	SetScore(0);
+}
+
+void UiScore::SetScore(int score)
+{
+	this->score = score;
+	SetTextString(scoreformat + std::to_string(this->score));
+}
+
+void UiScore::AddScore(int score)
+{
+	SetScore(this->score + score);
 }

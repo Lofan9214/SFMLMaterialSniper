@@ -18,6 +18,66 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BallGo.h" />
+    <ClInclude Include="BatGo.h" />
+    <ClInclude Include="Framework\Icon.h" />
+    <ClInclude Include="Framework\DebugBox.h" />
+    <ClInclude Include="Framework\Defines.h" />
+    <ClInclude Include="Framework\Framework.h" />
+    <ClInclude Include="Framework\GameObject.h" />
+    <ClInclude Include="Framework\HitBox.h" />
+    <ClInclude Include="Framework\InputMgr.h" />
+    <ClInclude Include="Framework\ObjectPool.h" />
+    <ClInclude Include="Framework\ResourceMgr.h" />
+    <ClInclude Include="Framework\RoundView.h" />
+    <ClInclude Include="Framework\Scene.h" />
+    <ClInclude Include="Framework\SceneDev1.h" />
+    <ClInclude Include="Framework\SceneDev2.h" />
+    <ClInclude Include="Framework\SceneMgr.h" />
+    <ClInclude Include="Framework\Singleton.h" />
+    <ClInclude Include="Framework\SoundMgr.h" />
+    <ClInclude Include="Framework\SoundObject.h" />
+    <ClInclude Include="Framework\SpriteGo.h" />
+    <ClInclude Include="Framework\stdafx.h" />
+    <ClInclude Include="Framework\TextGo.h" />
+    <ClInclude Include="Framework\Utils.h" />
+    <ClInclude Include="Framework\Variables.h" />
+    <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="UiMessage.h" />
+    <ClInclude Include="UiScore.h" />
+    <ClInclude Include="ViewScope.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BallGo.cpp" />
+    <ClCompile Include="BatGo.cpp" />
+    <ClCompile Include="Framework\Icon.cpp" />
+    <ClCompile Include="Framework\DebugBox.cpp" />
+    <ClCompile Include="Framework\Framework.cpp" />
+    <ClCompile Include="Framework\GameObject.cpp" />
+    <ClCompile Include="Framework\HitBox.cpp" />
+    <ClCompile Include="Framework\InputMgr.cpp" />
+    <ClCompile Include="Framework\Main.cpp" />
+    <ClCompile Include="Framework\RoundView.cpp" />
+    <ClCompile Include="Framework\Scene.cpp" />
+    <ClCompile Include="Framework\SceneDev1.cpp" />
+    <ClCompile Include="Framework\SceneDev2.cpp" />
+    <ClCompile Include="Framework\SceneMgr.cpp" />
+    <ClCompile Include="Framework\SoundMgr.cpp" />
+    <ClCompile Include="Framework\SoundObject.cpp" />
+    <ClCompile Include="Framework\SpriteGo.cpp" />
+    <ClCompile Include="Framework\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Framework\TextGo.cpp" />
+    <ClCompile Include="Framework\Utils.cpp" />
+    <ClCompile Include="Framework\Variables.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="UiMessage.cpp" />
+    <ClCompile Include="UiScore.cpp" />
+    <ClCompile Include="ViewScope.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -112,7 +172,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;.\Framework;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -132,7 +192,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SFML-2.6.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;.\Framework</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,55 +204,6 @@
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-network.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="BeeGo.cpp" />
-    <ClCompile Include="BranchGo.cpp" />
-    <ClCompile Include="CloudGo.cpp" />
-    <ClCompile Include="EffectLog.cpp" />
-    <ClCompile Include="Framework.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="InputMgr.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PlayerGo.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneDev1.cpp" />
-    <ClCompile Include="SceneDev2.cpp" />
-    <ClCompile Include="SceneMgr.cpp" />
-    <ClCompile Include="SpriteGo.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="TextGo.cpp" />
-    <ClCompile Include="TreeGo.cpp" />
-    <ClCompile Include="UiScore.cpp" />
-    <ClCompile Include="UiTimebar.cpp" />
-    <ClCompile Include="Utilities.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BeeGo.h" />
-    <ClInclude Include="BranchGo.h" />
-    <ClInclude Include="CloudGo.h" />
-    <ClInclude Include="Defines.h" />
-    <ClInclude Include="EffectLog.h" />
-    <ClInclude Include="Framework.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="InputMgr.h" />
-    <ClInclude Include="ObjectPool.h" />
-    <ClInclude Include="PlayerGo.h" />
-    <ClInclude Include="ResourceMgr.h" />
-    <ClInclude Include="SceneDev1.h" />
-    <ClInclude Include="SceneDev2.h" />
-    <ClInclude Include="Singleton.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneMgr.h" />
-    <ClInclude Include="SpriteGo.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TextGo.h" />
-    <ClInclude Include="TreeGo.h" />
-    <ClInclude Include="UiScore.h" />
-    <ClInclude Include="UiTimebar.h" />
-    <ClInclude Include="Utilities.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
