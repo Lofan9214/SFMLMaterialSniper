@@ -32,6 +32,8 @@ public:
 
 	static float SqrMagnitude(const sf::Vector2f& vec);
 	static float Magnitude(const sf::Vector2f& vec);
+	static float SqrMagnitude(const sf::Vector3f& vec);
+	static float Magnitude(const sf::Vector3f& vec);
 
 	static void Normalize(sf::Vector2f& vec);
 	static sf::Vector2f GetNormal(const sf::Vector2f& vec);

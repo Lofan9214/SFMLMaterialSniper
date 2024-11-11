@@ -13,8 +13,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Variables.h"
 #include "Defines.h"
+#include "Variables.h"
 #include "DebugBox.h"
 #include "HitBox.h"
 #include "Utils.h"
