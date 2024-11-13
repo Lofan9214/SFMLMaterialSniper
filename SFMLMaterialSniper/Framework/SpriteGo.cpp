@@ -48,15 +48,7 @@ void SpriteGo::SetScale(const sf::Vector2f& scale)
 	sprite.setScale(scale);
 }
 
-void SpriteGo::LateUpdate(float dt)
-{
-}
-
 void SpriteGo::Update(float dt)
-{
-}
-
-void SpriteGo::FixedUpdate(float dt)
 {
 }
 

@@ -9,6 +9,9 @@
 #include <bitset>
 #include <iostream>
 #include <limits>
+#include <codecvt>
+#include <functional>
+#include <fstream>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -19,9 +22,13 @@
 #include "HitBox.h"
 #include "Utils.h"
 #include "Singleton.h"
+#include "DataTable.h"
+#include "StringTable.h"
+#include "DataTableMgr.h"
 #include "Framework.h"
 #include "InputMgr.h"
 #include "ResourceMgr.h"
+#include "Animator.h"
 #include "GameObject.h"
 #include "SceneMgr.h"
 #include "ObjectPool.h"

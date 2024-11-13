@@ -10,7 +10,13 @@ protected:
     sf::CircleShape bullet;
     sf::Vector3f startpos;
     std::vector<sf::Text> vecText;
+    
+    sf::Text textMoa;
+    sf::Text textWind;
+
+    float wind = 0.f;
     bool fired = false;
+    bool firedfront = false;
     float firetimer = 0.f;
    
 public:

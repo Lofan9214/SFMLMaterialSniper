@@ -11,7 +11,7 @@ void UiMessage::Init()
 {
 	SetOrigin(Origins::MC);
 	SetFillColor(sf::Color::Red);
-	SetTextString("GAME OVER!");
+	SetString("GAME OVER!");
 }
 
 void UiMessage::Reset()

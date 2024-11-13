@@ -1,5 +1,10 @@
 #pragma once
 
+enum class Languages
+{
+	Korean,
+};
+
 enum class SortingLayers
 {
 	Background,

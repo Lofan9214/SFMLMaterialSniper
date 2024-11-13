@@ -23,7 +23,7 @@ void UiScore::Reset()
 void UiScore::SetScore(int score)
 {
 	this->score = score;
-	SetTextString(scoreformat + std::to_string(this->score));
+	SetString(scoreformat + std::to_string(this->score));
 }
 
 void UiScore::AddScore(int score)

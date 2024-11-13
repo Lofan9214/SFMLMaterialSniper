@@ -20,9 +20,7 @@ public:
 
 	void Reset() override;
 
-	void LateUpdate(float dt) override;
 	void Update(float dt) override;
-	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 	void Draw(sf::RenderTexture& texture) override;
 

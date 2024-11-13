@@ -6,6 +6,8 @@ protected:
 	std::string fontId;
 	sf::Text text;
 
+	std::string stringId;
+
 public:
 
 	TextGo(const std::string& fontId = "", const std::string& name = "");
@@ -14,21 +16,25 @@ public:
 	void SetOrigin(Origins preset);
 	void SetOrigin(const sf::Vector2f& newOrigin);
 
+	void SetFont(const std::string& fontid);
+	void SetFont(const sf::Font& font);
+
 	void Init() override;
 	void Release() override;
 
 	void Reset() override;
 
-	void LateUpdate(float dt) override;
 	void Update(float dt) override;
-	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 	void Draw(sf::RenderTexture& texture) override;
 	void SetRotation(float angle) override;
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetScale(const sf::Vector2f& scale) override;
+	sf::FloatRect GetLocalBounds() const override;
+	sf::FloatRect GetGlobalBounds() const override;
 
-	void SetTextString(const std::string& str);
+	void SetString(const std::string& str,bool loadFromTable = false);
+	void SetString(const std::string& id, const std::string& str);
 	void SetCharSize(unsigned int iSize);
 	void SetFillColor(sf::Color color);
 };

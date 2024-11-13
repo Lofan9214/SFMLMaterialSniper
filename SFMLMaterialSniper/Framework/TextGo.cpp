@@ -2,7 +2,7 @@
 #include "TextGo.h"
 
 TextGo::TextGo(const std::string& fontId, const std::string& name)
-	:fontId(fontId),GameObject(name)
+	:fontId(fontId), GameObject(name)
 {
 }
 
@@ -19,6 +19,18 @@ void TextGo::SetOrigin(const sf::Vector2f& neworigin)
 	text.setOrigin(neworigin);
 }
 
+void TextGo::SetFont(const std::string& fontid)
+{
+	fontId = fontid;
+	sf::Font& font = FONT_MGR.Get(fontId);
+	SetFont(font);
+}
+
+void TextGo::SetFont(const sf::Font& font)
+{
+	text.setFont(font);
+}
+
 void TextGo::Init()
 {
 }
@@ -27,10 +39,38 @@ void TextGo::Release()
 {
 }
 
-void TextGo::SetTextString(const std::string& newtext)
+void TextGo::SetString(const std::string& newtext, bool loadFromTable)
 {
-	text.setString(newtext);
-	SetOrigin(originPreset);
+	if (loadFromTable)
+	{
+		stringId = newtext;
+
+		std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+
+		text.setString(STRING_TABLE->Get(stringId));
+	}
+	else
+	{
+		text.setString(newtext);
+	}
+	if (originPreset < Origins::Custom)
+	{
+		SetOrigin(originPreset);
+	}
+}
+
+void TextGo::SetString(const std::string& id, const std::string& str)
+{
+	stringId = id;
+
+	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+
+	text.setString(STRING_TABLE->Get(stringId) + converter.from_bytes(str));
+
+	if (originPreset < Origins::Custom)
+	{
+		SetOrigin(originPreset);
+	}
 }
 
 void TextGo::SetCharSize(unsigned int iSize)
@@ -51,27 +91,30 @@ void TextGo::SetPosition(const sf::Vector2f& pos)
 
 void TextGo::SetScale(const sf::Vector2f& scale)
 {
+	this->scale = scale;
+	text.setScale(this->scale);
+}
+
+sf::FloatRect TextGo::GetLocalBounds() const
+{
+	return text.getLocalBounds();
+}
+
+sf::FloatRect TextGo::GetGlobalBounds() const
+{
+	return text.getGlobalBounds();
 }
 
 void TextGo::Reset()
 {
-	auto& fontResMgr = ResourceMgr<sf::Font>::Instance();
-	text.setFont(fontResMgr.Get(fontId));
+	text.setFont(FONT_MGR.Get(fontId));
 	if (originPreset != Origins::Custom)
 	{
 		SetOrigin(originPreset);
 	}
 }
 
-void TextGo::LateUpdate(float dt)
-{
-}
-
 void TextGo::Update(float dt)
-{
-}
-
-void TextGo::FixedUpdate(float dt)
 {
 }
 
@@ -82,8 +125,11 @@ void TextGo::Draw(sf::RenderWindow& window)
 
 void TextGo::Draw(sf::RenderTexture& texture)
 {
+	texture.draw(text);
 }
 
 void TextGo::SetRotation(float angle)
 {
+	rotation = angle;
+	text.setRotation(rotation);
 }
