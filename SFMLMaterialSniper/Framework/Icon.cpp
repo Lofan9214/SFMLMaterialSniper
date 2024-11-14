@@ -98,9 +98,9 @@ void Icon::Update(float dt)
 	SetOrigin(originPreset);
 }
 
-void Icon::Draw(sf::RenderWindow& window)
+void Icon::Draw(sf::RenderTarget& renderTarget)
 {
-	window.draw(drawnicon);
+	renderTarget.draw(drawnicon);
 }
 
 void Icon::SetTime(float time, float delay)

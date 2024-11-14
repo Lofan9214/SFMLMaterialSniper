@@ -130,8 +130,8 @@ void Scene::OnPostDraw()
 			}
 		}
 
-		std::stable_sort(worldViewObjects.begin(), worldViewObjects.end(), DrawOrderComparer());
-		std::stable_sort(uiViewObjects.begin(), uiViewObjects.end(), DrawOrderComparer());
+		std::stable_sort(worldViewObjects.rbegin(), worldViewObjects.rend(), DrawOrderComparer());
+		std::stable_sort(uiViewObjects.rbegin(), uiViewObjects.rend(), DrawOrderComparer());
 	}
 }
 

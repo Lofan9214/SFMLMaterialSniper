@@ -70,8 +70,7 @@ public:
 	virtual void Update(float dt) = 0;
 	virtual void LateUpdate(float dt) {}
 	virtual void FixedUpdate(float dt) {}
-	virtual void Draw(sf::RenderWindow& window) = 0;
-	virtual void Draw(sf::RenderTexture& window) {}
+	virtual void Draw(sf::RenderTarget& window) = 0;
 
 	void SetSortingLayer(SortingLayers sortingLayer) { this->sortingLayer = sortingLayer; }
 	SortingLayers GetSortingLayer() { return sortingLayer; }

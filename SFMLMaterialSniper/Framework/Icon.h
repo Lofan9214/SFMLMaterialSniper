@@ -29,7 +29,7 @@ public:
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
-	void Draw(sf::RenderWindow& window) override;
+	void Draw(sf::RenderTarget& renderTarget) override;
 	void SetTime(float time, float delay);
 };
 

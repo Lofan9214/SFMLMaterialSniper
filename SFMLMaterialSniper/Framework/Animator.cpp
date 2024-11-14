@@ -42,7 +42,7 @@ void Animator::RemoveEvent(const std::string& id, int frame, const std::function
 
 void Animator::Update(float dt)
 {
-	if (isPlaying)
+	if (!isPlaying)
 	{
 		return;
 	}
@@ -87,9 +87,9 @@ void Animator::Update(float dt)
 	}
 }
 
-void Animator::Play(const std::string& clipId, bool clearqueue)
+void Animator::Play(const std::string& clipPath, bool clearqueue)
 {
-	Play(&ANIMATIONCLIP_MGR.Get(clipId), clearqueue);
+	Play(&ANIMATIONCLIP_MGR.Get(clipPath), clearqueue);
 }
 
 void Animator::Play(AnimationClip* clip, bool clearqueue)
@@ -115,9 +115,9 @@ void Animator::Play(AnimationClip* clip, bool clearqueue)
 	SetFrame(currentClip->frames[currentFrame]);
 }
 
-void Animator::PlayQueue(const std::string& clipId)
+void Animator::PlayQueue(const std::string& clipPath)
 {
-	playQueue.push(clipId);
+	playQueue.push(clipPath);
 }
 
 void Animator::Stop()

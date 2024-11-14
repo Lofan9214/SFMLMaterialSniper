@@ -60,9 +60,9 @@ public:
 
 	bool IsPlaying() const { return isPlaying; }
 
-	void Play(const std::string& clipId, bool clearqueue = true);
+	void Play(const std::string& clipPath, bool clearqueue = true);
 	void Play(AnimationClip* clip, bool clearqueue = true);
-	void PlayQueue(const std::string& clipId);
+	void PlayQueue(const std::string& clipPath);
 	void Stop();
 	void Pause();
 

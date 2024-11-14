@@ -25,8 +25,7 @@ public:
 	void Reset() override;
 
 	void Update(float dt) override;
-	void Draw(sf::RenderWindow& window) override;
-	void Draw(sf::RenderTexture& texture) override;
+	void Draw(sf::RenderTarget& renderTarget) override;
 	void SetRotation(float angle) override;
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetScale(const sf::Vector2f& scale) override;

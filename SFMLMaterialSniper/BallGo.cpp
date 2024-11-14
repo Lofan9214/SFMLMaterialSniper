@@ -126,14 +126,9 @@ void BallGo::FixedUpdate(float dt)
 {
 }
 
-void BallGo::Draw(sf::RenderWindow& window)
+void BallGo::Draw(sf::RenderTarget& renderTarget)
 {
-	window.draw(body);
-}
-
-void BallGo::Draw(sf::RenderTexture& texture)
-{
-	texture.draw(body);
+	renderTarget.draw(body);
 }
 
 bool BallGo::GetHitBottom() const

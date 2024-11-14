@@ -52,12 +52,8 @@ void SpriteGo::Update(float dt)
 {
 }
 
-void SpriteGo::Draw(sf::RenderWindow& window)
+void SpriteGo::Draw(sf::RenderTarget& renderTarget)
 {
-	window.draw(sprite);
+	renderTarget.draw(sprite);
 }
 
-void SpriteGo::Draw(sf::RenderTexture& texture)
-{
-	texture.draw(sprite);
-}

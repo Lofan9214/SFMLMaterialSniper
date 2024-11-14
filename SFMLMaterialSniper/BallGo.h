@@ -40,8 +40,7 @@ public:
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 
-	void Draw(sf::RenderWindow& window) override;
-	void Draw(sf::RenderTexture& texture) override;
+	void Draw(sf::RenderTarget& window) override;
 
 	void SetBat(BatGo* bat) { this->bat = bat; }
 

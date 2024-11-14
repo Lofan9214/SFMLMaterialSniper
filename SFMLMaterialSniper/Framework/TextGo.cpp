@@ -118,14 +118,9 @@ void TextGo::Update(float dt)
 {
 }
 
-void TextGo::Draw(sf::RenderWindow& window)
+void TextGo::Draw(sf::RenderTarget& renderTarget)
 {
-	window.draw(text);
-}
-
-void TextGo::Draw(sf::RenderTexture& texture)
-{
-	texture.draw(text);
+	renderTarget.draw(text);
 }
 
 void TextGo::SetRotation(float angle)

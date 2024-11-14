@@ -44,6 +44,10 @@ void Bullet::SetOrigin(const sf::Vector2f& newOrigin)
 
 void Bullet::Init()
 {
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 10;
+
+	animator.SetSprite(&body);
 }
 
 void Bullet::Release()
@@ -52,6 +56,8 @@ void Bullet::Release()
 
 void Bullet::Reset()
 {
+	animator.Play("animations/bullet/flying.csv");
+	SetOrigin(Origins::MC);
 	fired = false;
 }
 
@@ -59,6 +65,7 @@ void Bullet::Update(float dt)
 {
 	if (fired)
 	{
+		animator.Update(dt);
 		UpdateDragAccelation();
 		vel3d += acc3d * dt;
 		pos3d += vel3d * dt;
@@ -66,9 +73,9 @@ void Bullet::Update(float dt)
 	}
 }
 
-void Bullet::Draw(sf::RenderWindow& window)
+void Bullet::Draw(sf::RenderTarget& renderTarget)
 {
-	window.draw(body);
+	renderTarget.draw(body);
 }
 
 void Bullet::UpdateDragAccelation()

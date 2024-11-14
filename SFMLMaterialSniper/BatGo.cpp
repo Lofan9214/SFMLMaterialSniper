@@ -82,12 +82,8 @@ void BatGo::FixedUpdate(float dt)
 {
 }
 
-void BatGo::Draw(sf::RenderWindow& window)
+void BatGo::Draw(sf::RenderTarget& renderTarget)
 {
-	window.draw(body);
+	renderTarget.draw(body);
 }
 
-void BatGo::Draw(sf::RenderTexture& texture)
-{
-	texture.draw(body);
-}

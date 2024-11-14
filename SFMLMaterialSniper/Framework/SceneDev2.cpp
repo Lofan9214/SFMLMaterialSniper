@@ -14,6 +14,7 @@ void SceneDev2::Init()
 
 	bg->SetSortingLayer(SortingLayers::Background);
 	bg->SetOrigin(Origins::MC);
+	bullet = AddGo(new Bullet("bullet"));
 
 	scopeview = new CircleView(150.f,5.f);
 
@@ -26,7 +27,6 @@ void SceneDev2::Enter()
 
 	sf::Vector2f screensize = FRAMEWORK.GetWindowSizef();
 
-	bullet = AddGo(new Bullet("bullet"));
 
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize(screensize);
@@ -174,5 +174,5 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 	window.setView(previousView);
 	window.draw(textWind);
 	window.draw(textMoa);
-	scopeview->Draw(window,gameObjects);
+	scopeview->Draw(window,worldViewObjects);
 }

@@ -43,7 +43,7 @@ public:
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
-	void Draw(sf::RenderWindow& window) override;
+	void Draw(sf::RenderTarget& renderTarget) override;
 
 	void UpdateDragAccelation();
 	void SetWind(const sf::Vector3f& wind) { this->wind = wind; }
