@@ -10,9 +10,8 @@ struct AnimationEvent
 	bool operator==(const AnimationEvent& other) const { return (id == other.id) && (frame == other.frame); }
 };
 
-class AnimationEventHash
+struct AnimationEventHash
 {
-public:
 	std::size_t operator()(const AnimationEvent& ev) const
 	{
 		std::hash<std::string> stringHash = std::hash<std::string>();

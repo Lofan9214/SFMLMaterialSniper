@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "SceneDev2.h"
+#include "Bullet.h"
+#include "SpriteGo.h"
+#include "CircleView.h"
 
 SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 {
@@ -7,8 +10,14 @@ SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 
 void SceneDev2::Init()
 {
-	Scene::Init();
+	SpriteGo* bg = AddGo(new SpriteGo("graphics/Stage1Background.jpg", "background"));
 
+	bg->SetSortingLayer(SortingLayers::Background);
+	bg->SetOrigin(Origins::MC);
+
+	scopeview = new CircleView(150.f,5.f);
+
+	Scene::Init();
 }
 
 void SceneDev2::Enter()
@@ -17,15 +26,17 @@ void SceneDev2::Enter()
 
 	sf::Vector2f screensize = FRAMEWORK.GetWindowSizef();
 
+	bullet = AddGo(new Bullet("bullet"));
+
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize(screensize);
 
 	uiView.setCenter(screensize * 0.5f);
 	uiView.setSize(screensize);
 
-	bullet.setRadius(5.f);
-	bullet.setFillColor(sf::Color::White);
-	bullet.setOrigin(5.f, 5.f);
+	bulletshp.setRadius(5.f);
+	bulletshp.setFillColor(sf::Color::White);
+	bulletshp.setOrigin(5.f, 5.f);
 
 	textWind.setCharacterSize(20);
 	textWind.setFillColor(sf::Color::White);
@@ -44,6 +55,7 @@ void SceneDev2::Enter()
 void SceneDev2::Exit()
 {
 	vecText.clear();
+	delete scopeview;
 	Scene::Exit();
 }
 
@@ -63,59 +75,29 @@ void SceneDev2::Update(float dt)
 
 			sf::Vertex newpos;
 			newpos.color = sf::Color::White;
-			newpos.position = bullet.getPosition();
+			newpos.position = bullet->GetPosition();
 			va.append(newpos);
+
+			sf::Vector3f bulletpos = bullet->GetPosition3();
+			sf::Vector3f bulletvel = bullet->GetVelocity3();
 
 			sf::Text newtext;
 			newtext.setCharacterSize(20);
 			newtext.setFillColor(sf::Color::White);
 			newtext.setString(std::to_string((int)Utils::Magnitude(startpos - bulletpos))
 				+ "\n" + std::to_string((int)Utils::Magnitude(bulletvel)));
-			newtext.setPosition(bullet.getPosition());
+			newtext.setPosition(newpos.position);
 			newtext.setFont(FONT_MGR.Get("malgun.ttf"));
 			vecText.push_back(newtext);
 		}
-
-		sf::Vector3f force;
-
-		force = -(0.5f) * (0.295f) * (1.2f) * (Utils::PI) * (0.25f) * (7.82f * 0.001f) * (7.82f * 0.001f) * (bulletvel)*Utils::Magnitude(bulletvel);
-
-		// F = -C*rho*A*abs(V-W)*(V-W)/2
-		// C : 항력 계수 (일반적인 상황에서 0.295)
-		// rho : 공기 저항
-		// A : 탄두의 단면적
-		// V : 탄두의 속도
-		// W : 바람의 속도
-
-		bulletacc = force / (11.3f * 0.001f);
-		bulletacc.y += 9.8f;
-		bulletvel += bulletacc * dt;
-		bulletpos += bulletvel * dt;
-		bullet.setPosition(bulletpos.x, bulletpos.y);
 	}
 	else if (firedfront)
 	{
-		sf::Vector3f force;
-		sf::Vector3f velwithwin = bulletvel - sf::Vector3f(wind, 0.f, 0.f);
 		firetimer += dt;
 
-
-		force = -(0.5f) * (0.295f) * (1.2f) * (Utils::PI) * (0.25f) * (7.82f * 0.001f) * (7.82f * 0.001f) * (velwithwin)*Utils::Magnitude(velwithwin);
-
-		// F = -C*rho*A*abs(V-W)*(V-W)/2
-		// C : 항력 계수 (일반적인 상황에서 0.295)
-		// rho : 공기 저항
-		// A : 탄두의 단면적
-		// V : 탄두의 속도
-		// W : 바람의 속도
-
-		bulletacc = force / (11.3f * 0.001f);
-		bulletacc.y += 49.f;
-		bulletvel += bulletacc * dt;
-		bulletpos += bulletvel * dt;
-		bullet.setPosition(bulletpos.x, bulletpos.y);
-		if (firetimer>0.7f && textMoa.getString() == "")
+		if (firetimer > 0.7f && textMoa.getString() == "")
 		{
+			sf::Vector2f bulletpos = bullet->GetPosition();
 			textMoa.setString(std::to_string((bulletpos.x - startpos.x) * 5.f) + ", " + std::to_string((bulletpos.y - startpos.y) * 5.f));
 		}
 	}
@@ -127,25 +109,19 @@ void SceneDev2::Update(float dt)
 		fired = true;
 		firetimer = 0.2f;
 
-		sf::Vector2f bulletpos2f = bullet.getPosition();
-		//bulletpos->x = bulletpos2f.x * 10.f;
-		bulletpos.x = bulletpos2f.x;
-		bulletpos.y = bulletpos2f.y;
-		bulletpos.z = 0.f;
-		startpos = bulletpos;
+		sf::Vector2f bulletpos2f = bullet->GetPosition();
+		startpos = { bulletpos2f.x,bulletpos2f.y,0.f };
 		sf::Vertex newpos;
 		newpos.color = sf::Color::White;
-		newpos.position = bullet.getPosition();
+		newpos.position = bulletpos2f;
 		va.append(newpos);
 
 		auto mousepos = InputMgr::GetMousePosition();
-		sf::Vector2f direction = ScreenToWorld(mousepos) - bullet.getPosition();
+		sf::Vector2f direction = ScreenToWorld(mousepos) - bulletpos2f;
 		//direction.x *= 10.f;
 		Utils::Normalize(direction);
 
-		bulletvel.x = direction.x * 790.f;
-		bulletvel.y = direction.y * 790.f;
-		bulletvel.z = 0.f;
+		bullet->Fire(startpos, { direction.x * 790.f,direction.y * 790.f,0.f });
 	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Middle))
 	{
@@ -153,33 +129,33 @@ void SceneDev2::Update(float dt)
 		va.clear();
 		firedfront = true;
 		firetimer = 0.f;
-		sf::Vector2f bulletpos2f = bullet.getPosition();
-		bulletpos.x = bulletpos2f.x;
-		bulletpos.y = bulletpos2f.y;
-		bulletpos.z = 0.f;
-		startpos = bulletpos;
-
-		bulletvel.x = 0.f;
-		bulletvel.y = 0.f;
-		bulletvel.z = 790.f;
+		sf::Vector2f bulletpos2f = bullet->GetPosition();
+		startpos = { bulletpos2f.x,bulletpos2f.y,0.f };
+		bullet->Fire(bullet->GetPosition3(), { 0.f,0.f,790.f });
 	}
 	if (InputMgr::GetMouseButtonPressing(sf::Mouse::Right))
 	{
+		bullet->Reset();
 		fired = false;
 		firedfront = false;
 		textMoa.setString("");
 		auto mousepos = InputMgr::GetMousePosition();
-		bullet.setPosition(ScreenToWorld(mousepos));
+		bullet->SetPosition(ScreenToWorld(mousepos));
 	}
+
+	bulletshp.setPosition(bullet->GetPosition());
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
 	{
 		wind -= 1.f;
+		bullet->SetWind({ wind,0.f,0.f });
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
 	{
 		wind += 1.f;
+		bullet->SetWind({ wind,0.f,0.f });
 	}
+	scopeview->SetPosition(ScreenToWorld(InputMgr::GetMousePosition()));
 }
 
 void SceneDev2::Draw(sf::RenderWindow& window)
@@ -189,7 +165,7 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 
 	window.setView(worldView);
 	window.draw(va);
-	window.draw(bullet);
+	window.draw(bulletshp);
 	for (int i = 0; i < vecText.size();++i)
 	{
 		window.draw(vecText[i]);
@@ -198,4 +174,5 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 	window.setView(previousView);
 	window.draw(textWind);
 	window.draw(textMoa);
+	scopeview->Draw(window,gameObjects);
 }

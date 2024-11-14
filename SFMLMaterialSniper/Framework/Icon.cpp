@@ -71,10 +71,6 @@ void Icon::Reset()
 	maxTime = 5.f;
 }
 
-void Icon::LateUpdate(float dt)
-{
-}
-
 void Icon::Update(float dt)
 {
 	sf::Vector2f iconsize = icon.getLocalBounds().getSize();
@@ -100,10 +96,6 @@ void Icon::Update(float dt)
 	drawnicon.setTexture(texture.getTexture(), true);
 	drawnicon.setScale({ 2.f ,2.f });
 	SetOrigin(originPreset);
-}
-
-void Icon::FixedUpdate(float dt)
-{
 }
 
 void Icon::Draw(sf::RenderWindow& window)

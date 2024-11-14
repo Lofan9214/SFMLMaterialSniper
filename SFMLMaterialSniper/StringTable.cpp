@@ -19,7 +19,7 @@ bool StringTable::Load()
 	filePath = "tables/string_table" + strLang + ".csv";
 	rapidcsv::Document doc;
 
-	//ToDo : 파일 로드 실패시 Try-Catch로 묶었으나 어떻게 처리할 지 생각 필요
+	//ToDo : 파일 로드 실패시 Try-Catch로 묶었으나 어떻게 처리할지 생각 필요
 	try
 	{
 		doc.Load(filePath, rapidcsv::LabelParams(0, -1));

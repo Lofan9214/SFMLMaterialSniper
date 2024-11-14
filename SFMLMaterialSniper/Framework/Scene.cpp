@@ -81,41 +81,28 @@ void Scene::OnPreDraw()
 
 void Scene::Draw(sf::RenderWindow& window)
 {
-	std::priority_queue<GameObject*, std::vector<GameObject*>, DrawOrderComparer> drawQueue;
-	std::priority_queue<GameObject*, std::vector<GameObject*>, DrawOrderComparer> drawUIQueue;
-
-	for (auto obj : gameObjects)
-	{
-		if (!obj->IsActive())
-			continue;
-		if (obj->GetSortingLayer() >= SortingLayers::UI)
-		{
-			drawUIQueue.push(obj);
-		}
-		else
-		{
-			drawQueue.push(obj);
-		}
-	}
-
 	const sf::View& previousView = window.getView();
 
 	window.setView(worldView);
 
-	while (!drawQueue.empty())
+	for (auto obj : worldViewObjects)
 	{
-		GameObject* obj = drawQueue.top();
+		if (!obj->IsActive())
+		{
+			continue;
+		}
 		obj->Draw(window);
-		drawQueue.pop();
 	}
 
 	window.setView(uiView);
 
-	while (!drawUIQueue.empty())
+	for (auto obj : uiViewObjects)
 	{
-		GameObject* obj = drawUIQueue.top();
+		if (!obj->IsActive())
+		{
+			continue;
+		}
 		obj->Draw(window);
-		drawUIQueue.pop();
 	}
 
 	window.setView(previousView);
@@ -125,6 +112,27 @@ void Scene::OnPostDraw()
 {
 	ApplyAddGo();
 	ApplyRemoveGO();
+	if (GameObjectChanged)
+	{
+		GameObjectChanged = false;
+		worldViewObjects.clear();
+		uiViewObjects.clear();
+
+		for (auto obj : gameObjects)
+		{
+			if (obj->GetSortingLayer() >= SortingLayers::UI)
+			{
+				uiViewObjects.push_back(obj);
+			}
+			else
+			{
+				worldViewObjects.push_back(obj);
+			}
+		}
+
+		std::stable_sort(worldViewObjects.begin(), worldViewObjects.end(), DrawOrderComparer());
+		std::stable_sort(uiViewObjects.begin(), uiViewObjects.end(), DrawOrderComparer());
+	}
 }
 
 void Scene::RemoveGo(GameObject* obj)
@@ -160,6 +168,7 @@ int Scene::FindGoAll(const std::string& name, std::list<GameObject*>& list)
 
 void Scene::ApplyAddGo()
 {
+	GameObjectChanged = true;
 	for (auto go : addGameObjects)
 	{
 		if (std::find(gameObjects.begin(), gameObjects.end(), go) == gameObjects.end())
@@ -172,6 +181,7 @@ void Scene::ApplyAddGo()
 
 void Scene::ApplyRemoveGO()
 {
+	GameObjectChanged = true;
 	for (auto go : removeGameObjects)
 	{
 		gameObjects.remove(go);

@@ -8,7 +8,11 @@ protected:
 	std::list<GameObject*> removeGameObjects;
 
 	sf::View worldView;
+	std::list<GameObject*> worldViewObjects;
 	sf::View uiView;
+	std::list<GameObject*> uiViewObjects;
+
+	bool GameObjectChanged = false;
 
 public:
 	const SceneIds id;

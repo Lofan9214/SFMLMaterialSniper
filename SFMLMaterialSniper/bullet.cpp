@@ -1,30 +1,32 @@
 #include "stdafx.h"
-#include "bullet.h"
+#include "Bullet.h"
 
-bullet::bullet(const std::string& name)
+Bullet::Bullet(const std::string& name)
 	: GameObject(name)
 {
 }
 
-void bullet::SetPosition(const sf::Vector2f& pos)
+void Bullet::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
+	pos3d.x = position.x;
+	pos3d.y = position.y;
 	body.setPosition(position);
 }
 
-void bullet::SetRotation(float angle)
+void Bullet::SetRotation(float angle)
 {
 	rotation = angle;
 	body.setRotation(rotation);
 }
 
-void bullet::SetScale(const sf::Vector2f& s)
+void Bullet::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	body.setScale(scale);
 }
 
-void bullet::SetOrigin(Origins preset)
+void Bullet::SetOrigin(Origins preset)
 {
 	originPreset = preset;
 	if (originPreset != Origins::Custom)
@@ -33,43 +35,54 @@ void bullet::SetOrigin(Origins preset)
 	}
 }
 
-void bullet::SetOrigin(const sf::Vector2f& newOrigin)
+void Bullet::SetOrigin(const sf::Vector2f& newOrigin)
 {
 	originPreset = Origins::Custom;
 	origin = newOrigin;
 	body.setOrigin(origin);
 }
 
-void bullet::Init()
+void Bullet::Init()
 {
 }
 
-void bullet::Release()
+void Bullet::Release()
 {
 }
 
-void bullet::Reset()
+void Bullet::Reset()
 {
+	fired = false;
 }
 
-void bullet::Update(float dt)
+void Bullet::Update(float dt)
 {
-	UpdateDragAccelation();
-	vel3d += acc3d * dt;
-	pos3d += vel3d * dt;
-
-
+	if (fired)
+	{
+		UpdateDragAccelation();
+		vel3d += acc3d * dt;
+		pos3d += vel3d * dt;
+		SetPosition({ pos3d.x, pos3d.y });
+	}
 }
 
-void bullet::Draw(sf::RenderWindow& window)
+void Bullet::Draw(sf::RenderWindow& window)
 {
+	window.draw(body);
 }
 
-void bullet::UpdateDragAccelation()
+void Bullet::UpdateDragAccelation()
 {
 	// F = -C*rho*A*abs(V-W)*(V-W)/2
 	float radius = 0.5f * diameter * 0.001f;
 	sf::Vector3f force = -coeff * rho * Utils::PI * radius * radius * Utils::Magnitude(vel3d - wind) * (vel3d - wind) * 0.5f;
 	acc3d = force / (weight * 0.001f); // a = F/m
 	acc3d += gravity;
+}
+
+void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& vel)
+{
+	fired = true;
+	SetPosition(startpos);
+	vel3d = vel;
 }

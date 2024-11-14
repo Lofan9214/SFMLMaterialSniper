@@ -6,7 +6,7 @@ class Icon : public GameObject
 protected:
 
 	sf::Sprite icon;
-	std::string textureId = "graphics/spr_HoloBombIcon.png";
+	std::string textureId = "";
 	sf::VertexArray mask;
 	sf::Sprite drawnicon;
 	sf::RenderTexture texture;
@@ -28,9 +28,7 @@ public:
 	void Init() override;
 	void Release() override;
 	void Reset() override;
-	void LateUpdate(float dt) override;
 	void Update(float dt) override;
-	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 	void SetTime(float time, float delay);
 };

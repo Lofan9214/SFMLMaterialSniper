@@ -15,6 +15,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "Includes/json.hpp"
+using json = nlohmann::json;
 
 #include "Defines.h"
 #include "Variables.h"
@@ -22,6 +24,7 @@
 #include "HitBox.h"
 #include "Utils.h"
 #include "Singleton.h"
+#include "SaveDataMgr.h"
 #include "DataTable.h"
 #include "StringTable.h"
 #include "DataTableMgr.h"

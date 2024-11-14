@@ -1,13 +1,17 @@
 #pragma once
 #include "Scene.h"
+
+class Bullet;
+class CircleView;
+
 class SceneDev2 : public Scene
 {
 protected:
     sf::VertexArray va;
-    sf::Vector3f bulletpos;
-    sf::Vector3f bulletvel;
-    sf::Vector3f bulletacc;
-    sf::CircleShape bullet;
+    Bullet* bullet;
+    CircleView* scopeview;
+
+    sf::CircleShape bulletshp;
     sf::Vector3f startpos;
     std::vector<sf::Text> vecText;
     
