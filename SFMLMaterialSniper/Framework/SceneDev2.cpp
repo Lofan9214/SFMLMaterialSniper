@@ -176,3 +176,7 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 	window.draw(textMoa);
 	scopeview->Draw(window,worldViewObjects);
 }
+
+void SceneDev2::WorldRendered()
+{
+}

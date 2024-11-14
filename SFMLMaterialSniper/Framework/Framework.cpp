@@ -31,20 +31,20 @@ void Framework::Do()
 
 			InputMgr::UpdateEvent(event);
 		}
-#pragma endregion 이벤트 루프
+#pragma endregion
 
 #pragma region 업데이트
 		InputMgr::Update(deltaTime);
 		SCENE_MGR.Update(deltaTime);
 		SCENE_MGR.LateUpdate(deltaTime);
 		SCENE_MGR.FixedUpdate(deltaTime);
-#pragma endregion 업데이트
+#pragma endregion
 
 #pragma region 드로우
 		window.clear();
 		SCENE_MGR.Draw(window);
 		window.display();
-#pragma endregion 드로우
+#pragma endregion
 	}
 }
 
