@@ -18,21 +18,24 @@ protected:
 
 	float weight = 11.3f; // ÅºµÎÁß·® (mg)
 	float diameter = 7.82f; // ÅºµÎÁö¸§ (mm)
+	float muzzleSpeed = 980.f;
 
 	sf::Sprite body;
 	Animator animator;
 
-	sf::Vector3f pos3d;
+	sf::Vector3f position3Previous;
+	sf::Vector3f position3;
 	sf::Vector3f vel3d;
 	sf::Vector3f acc3d;
 	sf::Vector3f wind;
-	sf::Vector3f gravity = {0.f,49.f,0.f};
+	sf::Vector3f gravity = {0.f,20.f,0.f};
 
 public:
 	Bullet(const std::string& name = "");
 	~Bullet() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
+	void SetPosition(const sf::Vector3f& pos);
 	void SetRotation(float angle) override;
 	void SetScale(const sf::Vector2f& scale) override;
 
@@ -45,13 +48,14 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& renderTarget) override;
 
-	void UpdateDragAccelation();
+	void UpdateAccelation();
 	void SetWind(const sf::Vector3f& wind) { this->wind = wind; }
-	void SetPosition(const sf::Vector3f& pos) { pos3d = pos; }
 	void SetGravity(const sf::Vector3f& gravity) { this->gravity = gravity; }
 
-	void Fire(const sf::Vector3f& startpos, const sf::Vector3f& vel);
+	void Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir = {0.f,0.f,1.f});
+	void Hit();
 
-	sf::Vector3f GetPosition3() { return pos3d; }
+	sf::Vector3f GetPosition3() { return position3; }
+	sf::Vector3f GetPosition3Previous() { return position3Previous; }
 	sf::Vector3f GetVelocity3() { return vel3d; }
 };

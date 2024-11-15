@@ -94,8 +94,6 @@ void Scene::Draw(sf::RenderWindow& window)
 		obj->Draw(window);
 	}
 
-	WorldRendered();
-
 	window.setView(uiView);
 
 	for (auto obj : uiViewObjects)

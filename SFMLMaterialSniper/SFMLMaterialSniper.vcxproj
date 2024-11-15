@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Targets\RoundBoard.h" />
+    <ClInclude Include="Targets\Drum.h" />
+    <ClInclude Include="Targets\Bottle.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
     <ClInclude Include="Framework\Animator.h" />
-    <ClInclude Include="BallGo.h" />
-    <ClInclude Include="BatGo.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Framework\DataTableMgr.h" />
     <ClInclude Include="Framework\DataTable.h" />
@@ -56,13 +58,15 @@
     <ClInclude Include="StringTable.h" />
     <ClInclude Include="UiMessage.h" />
     <ClInclude Include="UiScore.h" />
-    <ClInclude Include="Scope.h" />
+    <ClInclude Include="UiScope.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Targets\RoundBoard.cpp" />
+    <ClCompile Include="Targets\Drum.cpp" />
+    <ClCompile Include="Targets\Bottle.cpp" />
     <ClCompile Include="Framework\AnimationClip.cpp" />
     <ClCompile Include="Framework\Animator.cpp" />
-    <ClCompile Include="BallGo.cpp" />
-    <ClCompile Include="BatGo.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Framework\DataTableMgr.cpp" />
     <ClCompile Include="Framework\DataTable.cpp" />
@@ -94,7 +98,7 @@
     <ClCompile Include="StringTable.cpp" />
     <ClCompile Include="UiMessage.cpp" />
     <ClCompile Include="UiScore.cpp" />
-    <ClCompile Include="Scope.cpp" />
+    <ClCompile Include="UiScope.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -190,7 +194,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;.\Framework;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;.\Framework;.\Targets;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>

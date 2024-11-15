@@ -9,9 +9,21 @@ Bullet::Bullet(const std::string& name)
 void Bullet::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
-	pos3d.x = position.x;
-	pos3d.y = position.y;
+	position3.x = position.x;
+	position3.y = position.y;
 	body.setPosition(position);
+
+	sf::Vector2f apparent;
+	apparent.x = Utils::Clamp01(150.f / (position3.z + 300.f)) * (bFlipX ? -1.f : 1.f);
+	apparent.y = Utils::Clamp01(150.f / (position3.z + 300.f)) * (bFlipY ? -1.f : 1.f);
+	SetScale(apparent);
+	SetOrigin(originPreset);
+}
+
+void Bullet::SetPosition(const sf::Vector3f& pos)
+{
+	position3 = pos;
+	SetPosition({ position3.x, position3.y });
 }
 
 void Bullet::SetRotation(float angle)
@@ -48,6 +60,12 @@ void Bullet::Init()
 	sortingOrder = 10;
 
 	animator.SetSprite(&body);
+	animator.BindFlipX(this);
+	animator.AddEvent("bullethit", 17,
+		[this]()
+		{
+			active = false;
+		});
 }
 
 void Bullet::Release()
@@ -56,8 +74,8 @@ void Bullet::Release()
 
 void Bullet::Reset()
 {
-	animator.Play("animations/bullet/flying.csv");
 	SetOrigin(Origins::MC);
+	active = false;
 	fired = false;
 }
 
@@ -66,10 +84,15 @@ void Bullet::Update(float dt)
 	if (fired)
 	{
 		animator.Update(dt);
-		UpdateDragAccelation();
+		if (animator.GetCurrentClipId() != "bulletflying")
+		{
+			return;
+		}
+		UpdateAccelation();
 		vel3d += acc3d * dt;
-		pos3d += vel3d * dt;
-		SetPosition({ pos3d.x, pos3d.y });
+		position3Previous = position3;
+		position3 += vel3d * dt;
+		SetPosition({ position3.x, position3.y });
 	}
 }
 
@@ -78,7 +101,7 @@ void Bullet::Draw(sf::RenderTarget& renderTarget)
 	renderTarget.draw(body);
 }
 
-void Bullet::UpdateDragAccelation()
+void Bullet::UpdateAccelation()
 {
 	// F = -C*rho*A*abs(V-W)*(V-W)/2
 	float radius = 0.5f * diameter * 0.001f;
@@ -87,9 +110,18 @@ void Bullet::UpdateDragAccelation()
 	acc3d += gravity;
 }
 
-void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& vel)
+void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir)
 {
+	animator.Play("animations/bullet/flying.csv");
+	active = true;
 	fired = true;
 	SetPosition(startpos);
-	vel3d = vel;
+	vel3d = dir * muzzleSpeed;
+}
+
+void Bullet::Hit()
+{
+	position3.z = 300.f;
+	SetPosition(position3);
+	animator.Play("animations/bullet/hit.csv");
 }

@@ -19,6 +19,7 @@ void GameObject::SetFlipX(bool flipx)
 	{
 		scale.x = -scale.x;
 	}
+	SetScale(scale);
 }
 
 void GameObject::SetFlipY(bool flipy)
@@ -29,4 +30,5 @@ void GameObject::SetFlipY(bool flipy)
 	{
 		scale.y = -scale.y;
 	}
+	SetScale(scale);
 }

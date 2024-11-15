@@ -53,7 +53,5 @@ public:
 
 	sf::Vector2f ScreenToUi(sf::Vector2i screenPos);
 	sf::Vector2i UiToScreen(sf::Vector2f uiPos);
-
-	virtual void WorldRendered() {}
 };
 

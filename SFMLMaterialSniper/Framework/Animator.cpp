@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "Animator.h"
 
+void Animator::BindFlipX(GameObject* obj)
+{
+	flipX = [obj](bool flipX) {obj->SetFlipX(flipX);};
+}
+
 void Animator::AddEvent(const std::string& id, int frame, const std::function<void()>& action)
 {
 	auto it = events.find({ id,frame });
@@ -106,7 +111,7 @@ void Animator::Play(AnimationClip* clip, bool clearqueue)
 	currentClip = clip;
 	totalFrame = currentClip->frames.size();
 	endFrame = this->speed > 0.f ? totalFrame : -1;
-	currentFrame = std::abs(endFrame) - 1;
+	currentFrame = this->speed > 0.f ? 0 : totalFrame - 1;
 
 	frameDuration = 1.f / currentClip->fps;
 
@@ -137,4 +142,5 @@ void Animator::SetFrame(const AnimationFrame& frame)
 {
 	sprite->setTexture(TEXTURE_MGR.Get(frame.texId));
 	sprite->setTextureRect(frame.texCoord);
+	flipX(frame.flipX);
 }

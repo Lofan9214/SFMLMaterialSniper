@@ -2,15 +2,15 @@ ID,FPS,"LootType (0: Single, 1: Loop)"
 bulletflying,20,1	
 				
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)"
-graphics/bulletflying.png,0,0,120,120,0
-graphics/bulletflying.png,120,0,120,120,0
-graphics/bulletflying.png,240,0,120,120,0
-graphics/bulletflying.png,360,0,120,120,0
-graphics/bulletflying.png,0,120,120,120,0
-graphics/bulletflying.png,120,120,120,120,0
-graphics/bulletflying.png,240,120,120,120,0
-graphics/bulletflying.png,360,120,120,120,0
-graphics/bulletflying.png,0,240,120,120,0
-graphics/bulletflying.png,120,240,120,120,0
-graphics/bulletflying.png,240,240,120,120,0
-graphics/bulletflying.png,360,240,120,120,0
+graphics/bullet/flying.png,0,0,120,120,0
+graphics/bullet/flying.png,120,0,120,120,0
+graphics/bullet/flying.png,240,0,120,120,0
+graphics/bullet/flying.png,360,0,120,120,0
+graphics/bullet/flying.png,0,120,120,120,0
+graphics/bullet/flying.png,120,120,120,120,0
+graphics/bullet/flying.png,240,120,120,120,0
+graphics/bullet/flying.png,360,120,120,120,0
+graphics/bullet/flying.png,0,240,120,120,0
+graphics/bullet/flying.png,120,240,120,120,0
+graphics/bullet/flying.png,240,240,120,120,0
+graphics/bullet/flying.png,360,240,120,120,0

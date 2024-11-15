@@ -21,6 +21,8 @@ struct AnimationEventHash
 	}
 };
 
+class GameObject;
+
 class Animator
 {
 protected:
@@ -39,6 +41,8 @@ protected:
 
 	float speed = 1.f;
 
+	std::function<void(bool flipx)> flipX;
+
 public:
 	Animator() = default;
 	virtual ~Animator() = default;
@@ -50,6 +54,7 @@ public:
 	}
 
 	void SetSprite(sf::Sprite* spr) { sprite = spr; }
+	void BindFlipX(GameObject* obj);
 
 	void AddEvent(const std::string& id, int frame, const std::function<void()>& action);
 	void ClearEvent() { events.clear(); }
@@ -70,7 +75,7 @@ public:
 
 	const std::string& GetCurrentClipId()
 	{
-		if (currentClip = nullptr)
+		if (currentClip == nullptr)
 		{
 			return "NULL";
 		}

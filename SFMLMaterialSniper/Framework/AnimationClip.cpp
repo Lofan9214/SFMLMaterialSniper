@@ -15,7 +15,7 @@ bool AnimationClip::loadFromFile(const std::string& filePath)
 	for (int i = 3;i < doc.GetRowCount();++i)
 	{
 		auto row = doc.GetRow<std::string>(i);
-		frames.push_back({ row[0] ,{std::stoi(row[1]), std::stoi(row[2]), std::stoi(row[3]), std::stoi(row[4])} });
+		frames.push_back({ row[0] ,{std::stoi(row[1]), std::stoi(row[2]), std::stoi(row[3]), std::stoi(row[4])} , (bool)std::stoi(row[5])});
 	}
 
 	return true;

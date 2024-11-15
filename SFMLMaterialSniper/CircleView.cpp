@@ -39,6 +39,10 @@ void CircleView::Draw(sf::RenderWindow& window,const std::list<GameObject*>& lst
 	renderTexture.setView(renderView);
 	for (auto obj : lstobject)
 	{
+		if (!obj->IsActive())
+		{
+			continue;
+		}
 		obj->Draw(renderTexture);
 	}
 	renderTexture.display();

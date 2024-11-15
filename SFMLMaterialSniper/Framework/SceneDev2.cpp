@@ -3,6 +3,9 @@
 #include "Bullet.h"
 #include "SpriteGo.h"
 #include "CircleView.h"
+#include "Drum.h"
+#include "RoundBoard.h"
+#include "Bottle.h"
 
 SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 {
@@ -16,6 +19,10 @@ void SceneDev2::Init()
 	bg->SetOrigin(Origins::MC);
 	bullet = AddGo(new Bullet("bullet"));
 
+	drum = AddGo(new Drum("drum"));
+	roundBoard = AddGo(new RoundBoard("round"));
+	bottle = AddGo(new Bottle("bottle"));
+
 	scopeview = new CircleView(150.f,5.f);
 
 	Scene::Init();
@@ -27,16 +34,15 @@ void SceneDev2::Enter()
 
 	sf::Vector2f screensize = FRAMEWORK.GetWindowSizef();
 
+	drum->SetPosition({300.f,0.f,700.f});
+	roundBoard->SetPosition({-300.f,0.f,700.f});
+	bottle->SetPosition({0.f,0.f,700.f});
 
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize(screensize);
 
 	uiView.setCenter(screensize * 0.5f);
 	uiView.setSize(screensize);
-
-	bulletshp.setRadius(5.f);
-	bulletshp.setFillColor(sf::Color::White);
-	bulletshp.setOrigin(5.f, 5.f);
 
 	textWind.setCharacterSize(20);
 	textWind.setFillColor(sf::Color::White);
@@ -121,7 +127,7 @@ void SceneDev2::Update(float dt)
 		//direction.x *= 10.f;
 		Utils::Normalize(direction);
 
-		bullet->Fire(startpos, { direction.x * 790.f,direction.y * 790.f,0.f });
+		bullet->Fire(startpos, { direction.x,direction.y,0.f });
 	}
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Middle))
 	{
@@ -129,9 +135,11 @@ void SceneDev2::Update(float dt)
 		va.clear();
 		firedfront = true;
 		firetimer = 0.f;
-		sf::Vector2f bulletpos2f = bullet->GetPosition();
-		startpos = { bulletpos2f.x,bulletpos2f.y,0.f };
-		bullet->Fire(bullet->GetPosition3(), { 0.f,0.f,790.f });
+
+		auto mousepos = ScreenToWorld(InputMgr::GetMousePosition());
+		bullet->SetPosition({ mousepos.x,mousepos.y,0.f });
+		startpos = { mousepos.x,mousepos.y,0.f };
+		bullet->Fire(bullet->GetPosition3());
 	}
 	if (InputMgr::GetMouseButtonPressing(sf::Mouse::Right))
 	{
@@ -139,11 +147,9 @@ void SceneDev2::Update(float dt)
 		fired = false;
 		firedfront = false;
 		textMoa.setString("");
-		auto mousepos = InputMgr::GetMousePosition();
-		bullet->SetPosition(ScreenToWorld(mousepos));
+		auto mousepos = ScreenToWorld(InputMgr::GetMousePosition());
+		bullet->SetPosition({ mousepos.x,mousepos.y,0.f});
 	}
-
-	bulletshp.setPosition(bullet->GetPosition());
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
 	{
@@ -165,7 +171,6 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 
 	window.setView(worldView);
 	window.draw(va);
-	window.draw(bulletshp);
 	for (int i = 0; i < vecText.size();++i)
 	{
 		window.draw(vecText[i]);
@@ -175,8 +180,4 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 	window.draw(textWind);
 	window.draw(textMoa);
 	scopeview->Draw(window,worldViewObjects);
-}
-
-void SceneDev2::WorldRendered()
-{
 }

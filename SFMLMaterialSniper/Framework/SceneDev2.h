@@ -3,6 +3,9 @@
 
 class Bullet;
 class CircleView;
+class Drum;
+class RoundBoard;
+class Bottle;
 
 class SceneDev2 : public Scene
 {
@@ -10,8 +13,10 @@ protected:
     sf::VertexArray va;
     Bullet* bullet;
     CircleView* scopeview;
+    Drum* drum;
+    Bottle* bottle;
+    RoundBoard* roundBoard;
 
-    sf::CircleShape bulletshp;
     sf::Vector3f startpos;
     std::vector<sf::Text> vecText;
     
@@ -32,7 +37,5 @@ public:
 
     void Update(float dt) override;
     void Draw(sf::RenderWindow& window) override;
-
-    void WorldRendered() override;
 };
 
