@@ -23,6 +23,7 @@ void Bullet::SetPosition(const sf::Vector2f& pos)
 void Bullet::SetPosition(const sf::Vector3f& pos)
 {
 	position3 = pos;
+	sortingOrder = position3.z * -1.f;
 	SetPosition({ position3.x, position3.y });
 }
 
@@ -91,8 +92,7 @@ void Bullet::Update(float dt)
 		UpdateAccelation();
 		vel3d += acc3d * dt;
 		position3Previous = position3;
-		position3 += vel3d * dt;
-		SetPosition({ position3.x, position3.y });
+		SetPosition(position3 + vel3d * dt);
 	}
 }
 

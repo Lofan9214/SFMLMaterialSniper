@@ -20,6 +20,7 @@ void Drum::SetPosition(const sf::Vector3f& pos)
 	SetPosition({ position3.x ,position3.y });
 	sf::Vector2f apparent = { 1.f,1.f };
 	apparent *= defaultdistance / position3.z;
+	sortingOrder = position3.z * -1.f;
 	SetScale(apparent);
 }
 

@@ -81,6 +81,9 @@ void Scene::OnPreDraw()
 
 void Scene::Draw(sf::RenderWindow& window)
 {
+	std::stable_sort(worldViewObjects.rbegin(), worldViewObjects.rend(), DrawOrderComparer());
+	std::stable_sort(uiViewObjects.rbegin(), uiViewObjects.rend(), DrawOrderComparer());
+
 	const sf::View& previousView = window.getView();
 
 	window.setView(worldView);
@@ -129,9 +132,6 @@ void Scene::OnPostDraw()
 				worldViewObjects.push_back(obj);
 			}
 		}
-
-		std::stable_sort(worldViewObjects.rbegin(), worldViewObjects.rend(), DrawOrderComparer());
-		std::stable_sort(uiViewObjects.rbegin(), uiViewObjects.rend(), DrawOrderComparer());
 	}
 }
 
