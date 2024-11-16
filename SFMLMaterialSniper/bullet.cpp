@@ -39,6 +39,11 @@ void Bullet::SetScale(const sf::Vector2f& s)
 	body.setScale(scale);
 }
 
+void Bullet::SetAnimationScale(const sf::Vector2f& scale)
+{
+	body.setScale(Utils::ElementProduct(this->scale, scale));
+}
+
 void Bullet::SetOrigin(Origins preset)
 {
 	originPreset = preset;

@@ -165,6 +165,11 @@ float Utils::Dot(const sf::Vector2f& a, const sf::Vector2f& b)
 	return a.x * b.x + a.y * b.y;
 }
 
+sf::Vector2f Utils::ElementProduct(const sf::Vector2f& a, const sf::Vector2f& b)
+{
+	return { a.x * b.x,a.y * b.y };
+}
+
 sf::Vector2f Utils::SetOrigin(sf::Transformable& obj, Origins preset, const sf::FloatRect& rect)
 {
 	sf::Vector2f newOrigin(rect.width, rect.height);

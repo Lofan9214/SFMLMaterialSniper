@@ -59,7 +59,7 @@ void Player::Update(float dt)
 
 	UpdateScopeVibration(dt);
 
-	sf::Vector2f vibrationDisplacement = { scopeVibration.x * vibrationScale.x, scopeVibration.y * vibrationScale.y };
+	sf::Vector2f vibrationDisplacement = Utils::ElementProduct(scopeVibration, vibrationScale);
 
 	sf::Vector2f scopePos = vibrationDisplacement + currentScene->ScreenToWorld(InputMgr::GetMousePosition());
 

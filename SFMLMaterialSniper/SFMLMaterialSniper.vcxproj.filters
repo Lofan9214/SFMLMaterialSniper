@@ -129,6 +129,9 @@
     <ClInclude Include="UiHud.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Targets\GlassShard.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Framework.cpp">
@@ -228,6 +231,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="UiHud.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Targets\GlassShard.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

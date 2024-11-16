@@ -11,9 +11,10 @@ struct AnimationFrame
 	std::string texId;
 	sf::IntRect texCoord;
 	bool flipX;
+	sf::Vector2f scale;
+	float opacity;
 
 	AnimationFrame() = default;
-	AnimationFrame(const std::string& texId, const sf::IntRect& texCoord,bool flipX) : texId(texId), texCoord(texCoord), flipX(flipX){}
 };
 
 struct AnimationClip

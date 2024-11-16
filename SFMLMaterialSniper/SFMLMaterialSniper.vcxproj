@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Targets\GlassShard.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Targets\RoundBoard.h" />
     <ClInclude Include="Targets\Drum.h" />
@@ -59,6 +60,7 @@
     <ClInclude Include="UiHud.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Targets\GlassShard.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Targets\RoundBoard.cpp" />
     <ClCompile Include="Targets\Drum.cpp" />

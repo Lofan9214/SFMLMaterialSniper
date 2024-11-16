@@ -1,5 +1,5 @@
 ID,FPS,"LootType (0: Single, 1: Loop)"
 drumidle,1,1
 
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)"
-graphics/targets/drum.png,0,0,50,70,0
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,OPACITY
+graphics/targets/drum.png,0,0,50,70,0,1,1,1

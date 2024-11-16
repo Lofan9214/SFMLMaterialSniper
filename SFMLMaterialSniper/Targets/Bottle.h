@@ -1,6 +1,7 @@
 #pragma once
 
 class Bullet;
+class GlassShard;
 
 class Bottle : public GameObject
 {
@@ -13,6 +14,8 @@ protected:
 
 	sf::Vector3f position3;
 	float defaultdistance = 100.f;
+
+	std::function<GlassShard* ()> TakeGlassShard;
 
 public:
 	Bottle(const std::string& name = "");

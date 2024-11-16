@@ -3,8 +3,9 @@
 
 void Animator::BindFunction(GameObject* obj)
 {
-	FlipX = [obj](bool flipX) {obj->SetFlipX(flipX);};
-	SetOrigin = [obj]() {obj->SetOrigin();};
+	FlipX = [obj](bool flipX) {obj->SetFlipX(flipX); };
+	SetOrigin = [obj]() {obj->SetOrigin(); };
+	SetScale = [obj](sf::Vector2f scale) { obj->SetAnimationScale(scale); };
 }
 
 void Animator::AddEvent(const std::string& id, int frame, const std::function<void()>& action)
@@ -145,4 +146,6 @@ void Animator::SetFrame(const AnimationFrame& frame)
 	sprite->setTextureRect(frame.texCoord);
 	FlipX(frame.flipX);
 	SetOrigin();
+	SetScale(frame.scale);
+	sprite->setColor({ 255,255,255,(sf::Uint8)(std::roundf(255 * frame.opacity)) });
 }

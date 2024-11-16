@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "Bottle.h"
-#include "Scene.h"
+#include "SceneGame.h"
 #include "Bullet.h"
+#include "GlassShard.h"
 
 Bottle::Bottle(const std::string& name)
 	: GameObject(name)
@@ -64,7 +65,13 @@ void Bottle::Release()
 
 void Bottle::Reset()
 {
-	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
+	{
+		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+		TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
+	}
+
 	body.setTexture(TEXTURE_MGR.Get(texId));
 	SetOrigin(Origins::BC);
 }
@@ -97,6 +104,12 @@ void Bottle::FixedUpdate(float dt)
 		{
 			std::cout << "hitdrum" << std::endl;
 			bullet->Hit();
+			for (int i = 0; i < 20; ++i)
+			{
+				GlassShard* shard = TakeGlassShard();
+				shard->SetPosition({ position.x, position.y - body.getGlobalBounds().height * 0.5f });
+				shard->Start(position3);
+			}
 		}
 	}
 

@@ -7,6 +7,7 @@
 #include "Bottle.h"
 #include "UiHud.h"
 #include "Player.h"
+#include "GlassShard.h"
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -54,7 +55,15 @@ void SceneGame::Enter()
 
 void SceneGame::Exit()
 {
+	for (auto glassShard : glassShards)
+	{
+		RemoveGo(glassShard);
+		glassShardPool.Return(glassShard);
+	}
+	glassShards.clear();
+
 	delete scopeview;
+	Scene::Exit();
 }
 
 void SceneGame::Update(float dt)
@@ -87,4 +96,19 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 	window.setView(previousView);
 	scopeview->Draw(window, worldViewObjects);
+}
+
+GlassShard* SceneGame::TakeGlassShard()
+{
+	GlassShard* glassShard = glassShardPool.Take();
+	glassShards.push_back(glassShard);
+	AddGo(glassShard);
+	return glassShard;
+}
+
+void SceneGame::ReturnGlassShard(GlassShard* glassShard)
+{
+	RemoveGo(glassShard);
+	glassShardPool.Return(glassShard);
+	glassShards.remove(glassShard);
 }

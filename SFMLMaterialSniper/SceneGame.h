@@ -8,6 +8,7 @@ class RoundBoard;
 class Bottle;
 class UiHud;
 class Player;
+class GlassShard;
 
 class SceneGame :
 	public Scene
@@ -21,6 +22,9 @@ protected:
 	Player* player;
 
     sf::Vector3f startpos;
+
+	std::list<GlassShard*> glassShards;
+	ObjectPool<GlassShard> glassShardPool;
 
     UiHud* uiHud;
 
@@ -36,5 +40,8 @@ public:
 
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	GlassShard* TakeGlassShard();
+	void ReturnGlassShard(GlassShard* glassShard);
 };
 

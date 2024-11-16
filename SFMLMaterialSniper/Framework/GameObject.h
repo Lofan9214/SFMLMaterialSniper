@@ -50,6 +50,7 @@ public:
 
 	sf::Vector2f GetScale() const { return scale; }
 	virtual void SetScale(const sf::Vector2f& iscale) { scale = iscale; }
+	virtual void SetAnimationScale(const sf::Vector2f& iscale) {}
 
 	virtual bool GetFlipX() const { return bFlipX; }
 	virtual void SetFlipX(bool flipx);

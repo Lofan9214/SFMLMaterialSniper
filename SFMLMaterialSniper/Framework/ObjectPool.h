@@ -13,7 +13,7 @@ public:
 		for (int i = 0;i < initSize;++i)
 		{
 			auto obj = new T();
-			obj->init();
+			obj->Init();
 			unused.push_back(obj);
 		}
 	}
@@ -35,8 +35,8 @@ public:
 		if (unused.empty())
 		{
 			auto obj = new T();
-			obj->init();
-			obj->reset();
+			obj->Init();
+			obj->Reset();
 			used.push_back(obj);
 			return obj;
 		}

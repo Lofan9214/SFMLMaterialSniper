@@ -46,6 +46,7 @@ public:
 	static float Angle(const sf::Vector2f& vec);
 
 	static float Dot(const sf::Vector2f& a, const sf::Vector2f& b);
+	static sf::Vector2f ElementProduct(const sf::Vector2f& a, const sf::Vector2f& b);
 
 	static bool CheckCollision(const HitBox& boxA, const HitBox& boxB);
 	static bool CheckCollision(const sf::RectangleShape& shapeA, const sf::RectangleShape& shapeB);
