@@ -13,6 +13,9 @@ protected:
 	float frameDuration = 1.f / frame;
 	float frameTimer = 0.f;
 
+	std::function<void(GlassShard*)> returnThis;
+	sf::FloatRect bounds;
+
 public:
 	GlassShard(const std::string& name = "");
 	~GlassShard() = default;

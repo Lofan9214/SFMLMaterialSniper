@@ -84,6 +84,12 @@ void SceneGame::Update(float dt)
 		wind += 1.f;
 		bullet->SetWind({ wind,0.f,0.f });
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::F5))
+	{
+		drum->Reset();
+		roundBoard->Reset();
+		bottle->Reset();
+	}
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)

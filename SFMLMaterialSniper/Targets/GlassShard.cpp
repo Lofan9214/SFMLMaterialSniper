@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GlassShard.h"
+#include "SceneGame.h"
 
 GlassShard::GlassShard(const std::string& name)
 {
@@ -63,6 +64,13 @@ void GlassShard::Reset()
 	frameTimer = 0.f;
 	index = 0;
 	active = false;
+
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
+	{
+		returnThis = [scene](GlassShard* glass) {scene->ReturnGlassShard(glass); };
+		bounds = scene->WorldRegion();
+	}
 }
 
 void GlassShard::Update(float dt)
@@ -77,6 +85,11 @@ void GlassShard::Update(float dt)
 	SetPosition(position + speed);
 	speed.x *= 0.9f;
 	speed.y += 0.8f;
+
+	if (position.y > bounds.top + bounds.height + 300.f)
+	{
+		returnThis(this);
+	}
 }
 
 void GlassShard::Draw(sf::RenderTarget& window)
@@ -87,20 +100,20 @@ void GlassShard::Draw(sf::RenderTarget& window)
 void GlassShard::Start(const sf::Vector3f& startpos)
 {
 	active = true;
-	
+
 	SetPosition({ startpos.x, startpos.y });
 	sortingOrder = startpos.z;
 
 	index = Utils::RandomRange(0, 8);
 	SetType(index);
-	
+
 	scale.x = Utils::RandomRange(0.2f, 0.4f);
 	scale.y = Utils::RandomRange(0.2f, 0.4f);
 	SetScale(scale);
-	
+
 	rotation = Utils::RandomRange(0.f, 360.f);
 	SetRotation(rotation);
-	
+
 	speed.x = Utils::RandomRange(-6.f, 6.f);
 	speed.y = Utils::RandomRange(-4.f, 0.8f);
 }

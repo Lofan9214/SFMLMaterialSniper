@@ -59,7 +59,7 @@ void Drum::Init()
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
-	animator.AddEvent("drumhit", 55,
+	animator.AddEvent("drumhit", 63,
 		[this]()
 		{
 			active = false;
@@ -73,6 +73,8 @@ void Drum::Release()
 void Drum::Reset()
 {
 	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+	
+	active = true;
 
 	animator.Play("animations/targets/drumidle.csv");
 

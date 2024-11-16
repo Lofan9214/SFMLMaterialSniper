@@ -208,3 +208,16 @@ sf::Vector2i Scene::UiToScreen(sf::Vector2f uiPos)
 {
 	return FRAMEWORK.GetWindow().mapCoordsToPixel(uiPos, uiView);
 }
+
+sf::FloatRect Scene::WorldRegion()
+{
+	sf::FloatRect viewrect;
+	sf::Vector2f size = worldView.getSize();
+	sf::Vector2f center = worldView.getCenter();
+	viewrect.left = center.x - size.x * 0.5f;
+	viewrect.top = center.y - size.y * 0.5f;
+	viewrect.width = size.x;
+	viewrect.height = size.y;
+
+	return viewrect;
+}

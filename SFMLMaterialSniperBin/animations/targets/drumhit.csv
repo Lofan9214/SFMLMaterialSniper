@@ -1,5 +1,5 @@
 ID,FPS,"LootType (0: Single, 1: Loop)"
-drumhit,30,0
+drumhit,24,0
 
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,OPACITY
 graphics/targets/drumhit.png,0,0,160,120,0,1,1,1
@@ -58,3 +58,11 @@ graphics/targets/drumhit.png,640,720,160,120,0,1,1,1
 graphics/targets/drumhit.png,800,720,160,120,0,1,1,1
 graphics/targets/drumhit.png,960,720,160,120,0,1,1,1
 graphics/targets/drumhit.png,1120,720,160,120,0,1,1,1
+graphics/targets/drumhit.png,1120,720,160,120,0,1,1,0.9
+graphics/targets/drumhit.png,1120,720,160,120,0,1,1,0.8
+graphics/targets/drumhit.png,1120,720,160,120,0,1,1,0.7
+graphics/targets/drumhit.png,1120,720,160,120,0,1,1,0.6
+graphics/targets/drumhit.png,1120,720,160,120,0,1,1,0.5
+graphics/targets/drumhit.png,1120,720,160,120,0,1,1,0.4
+graphics/targets/drumhit.png,1120,720,160,120,0,1,1,0.3
+graphics/targets/drumhit.png,1120,720,160,120,0,1,1,0.2

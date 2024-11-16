@@ -57,6 +57,12 @@ void Bottle::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
+	{
+		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+		TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
+	}
 }
 
 void Bottle::Release()
@@ -65,12 +71,7 @@ void Bottle::Release()
 
 void Bottle::Reset()
 {
-	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-	if (scene != nullptr)
-	{
-		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
-		TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
-	}
+	active = true;
 
 	body.setTexture(TEXTURE_MGR.Get(texId));
 	SetOrigin(Origins::BC);
@@ -99,16 +100,15 @@ void Bottle::FixedUpdate(float dt)
 	if (bullet->GetPosition3().z > position3.z
 		&& bullet->GetPosition3Previous().z < position3.z)
 	{
-
 		if (bodyRect.contains(bullet->GetPosition()))
 		{
 			std::cout << "hitdrum" << std::endl;
 			bullet->Hit();
+			active = false;
 			for (int i = 0; i < 20; ++i)
 			{
 				GlassShard* shard = TakeGlassShard();
-				shard->SetPosition({ position.x, position.y - body.getGlobalBounds().height * 0.5f });
-				shard->Start(position3);
+				shard->Start({ position3.x,position3.y - body.getGlobalBounds().height * 0.5f ,position3.z });
 			}
 		}
 	}
