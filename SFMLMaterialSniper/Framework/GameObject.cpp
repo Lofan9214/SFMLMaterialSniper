@@ -5,6 +5,11 @@ GameObject::GameObject(const std::string& name)
 {
 }
 
+void GameObject::SetOrigin()
+{
+	SetOrigin(originPreset);
+}
+
 void GameObject::SetOrigin(Origins preset)
 {
 	originPreset = preset;

@@ -41,7 +41,8 @@ protected:
 
 	float speed = 1.f;
 
-	std::function<void(bool flipx)> flipX;
+	std::function<void(bool flipx)> FlipX;
+	std::function<void()> SetOrigin;
 
 public:
 	Animator() = default;
@@ -54,7 +55,7 @@ public:
 	}
 
 	void SetSprite(sf::Sprite* spr) { sprite = spr; }
-	void BindFlipX(GameObject* obj);
+	void BindFunction(GameObject* obj);
 
 	void AddEvent(const std::string& id, int frame, const std::function<void()>& action);
 	void ClearEvent() { events.clear(); }

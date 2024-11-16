@@ -22,7 +22,7 @@ void CircleView::SetZoom(float zoom)
 {
 	this->zoom = zoom;
 
-	float zoomfactor = 2.f * rendermask.getRadius() / renderView.getSize().x / this->zoom;
+	float zoomfactor = 1.f / this->zoom;
 	renderView.zoom(zoomfactor);
 }
 
@@ -33,7 +33,7 @@ void CircleView::SetPosition(const sf::Vector2f& pos)
 	renderView.setCenter(pos);
 }
 
-void CircleView::Draw(sf::RenderWindow& window,const std::list<GameObject*>& lstobject)
+void CircleView::Draw(sf::RenderWindow& window, const std::list<GameObject*>& lstobject)
 {
 	renderTexture.clear();
 	renderTexture.setView(renderView);
@@ -47,5 +47,6 @@ void CircleView::Draw(sf::RenderWindow& window,const std::list<GameObject*>& lst
 	}
 	renderTexture.display();
 	rendermask.setTexture(&renderTexture.getTexture());
+
 	window.draw(rendermask);
 }

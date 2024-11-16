@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "Animator.h"
 
-void Animator::BindFlipX(GameObject* obj)
+void Animator::BindFunction(GameObject* obj)
 {
-	flipX = [obj](bool flipX) {obj->SetFlipX(flipX);};
+	FlipX = [obj](bool flipX) {obj->SetFlipX(flipX);};
+	SetOrigin = [obj]() {obj->SetOrigin();};
 }
 
 void Animator::AddEvent(const std::string& id, int frame, const std::function<void()>& action)
@@ -142,5 +143,6 @@ void Animator::SetFrame(const AnimationFrame& frame)
 {
 	sprite->setTexture(TEXTURE_MGR.Get(frame.texId));
 	sprite->setTextureRect(frame.texCoord);
-	flipX(frame.flipX);
+	FlipX(frame.flipX);
+	SetOrigin();
 }

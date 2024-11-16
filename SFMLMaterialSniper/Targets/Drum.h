@@ -6,8 +6,8 @@ class Drum : public GameObject
 {
 protected:
 
-	std::string texId = "graphics/targets/drum.png";
 	sf::Sprite body;
+	Animator animator;
 
 	Bullet* bullet;
 

@@ -9,7 +9,7 @@ class SceneMgr : public Singleton<SceneMgr>
 protected:
 	std::vector<Scene*> scenes;
 
-	SceneIds startScene = SceneIds::Dev2;
+	SceneIds startScene = SceneIds::Game;
 	SceneIds currentScene;
 
 	SceneIds nextScene = SceneIds::None;
@@ -37,7 +37,6 @@ public:
 
 	void Draw(sf::RenderWindow& window);
 };
-
 
 #define SCENE_MGR (SceneMgr::Instance())
 

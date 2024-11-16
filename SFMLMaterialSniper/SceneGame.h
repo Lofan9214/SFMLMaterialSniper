@@ -1,31 +1,33 @@
 #pragma once
 #include "Scene.h"
 
-class BallGo;
-class BatGo;
-class UiScore;
-class UiMessage;
-class SpriteGo;
+class Bullet;
+class CircleView;
+class Drum;
+class RoundBoard;
+class Bottle;
 
 class SceneGame :
 	public Scene
 {
 protected:
-	BallGo* ball;
-	BallGo* ball2;
-	BatGo* bat;
-	UiScore* uiScore;
-	UiMessage* uiMessage;
-	SpriteGo* bg;
-	sf::CircleShape minimap;
+    sf::VertexArray va;
+    Bullet* bullet;
+    CircleView* scopeview;
+    Drum* drum;
+    Bottle* bottle;
+    RoundBoard* roundBoard;
 
-	int dr = 0;
-	int dg = 0;
-	int db = 0;
+    sf::Vector3f startpos;
+    std::vector<sf::Text> vecText;
 
-	sf::Uint8 r = 255, g = 0, b = 0;
+    sf::Text textMoa;
+    sf::Text textWind;
 
-	bool isBallFired = false;
+    float wind = 0.f;
+    bool fired = false;
+    bool firedfront = false;
+    float firetimer = 0.f;
 
 public:
 	SceneGame();

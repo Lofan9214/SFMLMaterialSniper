@@ -5,14 +5,13 @@ class Bullet;
 class RoundBoard : public GameObject
 {
 protected:
-
 	std::string texId = "graphics/targets/roundboard.png";
 	sf::Sprite body;
 
 	Bullet* bullet;
 
 	sf::Vector3f position3;
-	float defaultdistance = 700.f;
+	float defaultdistance = 300.f;
 
 public:
 	RoundBoard(const std::string& name = "");

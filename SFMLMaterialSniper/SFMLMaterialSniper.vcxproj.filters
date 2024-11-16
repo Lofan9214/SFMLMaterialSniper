@@ -84,15 +84,6 @@
     <ClInclude Include="Framework\Variables.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UiMessage.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UiScore.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="UiScope.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -195,15 +186,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Variables.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UiMessage.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UiScore.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="UiScope.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">

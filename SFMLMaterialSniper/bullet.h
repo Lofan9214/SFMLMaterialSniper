@@ -28,7 +28,9 @@ protected:
 	sf::Vector3f vel3d;
 	sf::Vector3f acc3d;
 	sf::Vector3f wind;
-	sf::Vector3f gravity = {0.f,20.f,0.f};
+	sf::Vector3f gravity = {0.f,9.8f,0.f};
+	float gravityMultiplier = 2.f;
+	float windMultiplier = 8.f;
 
 public:
 	Bullet(const std::string& name = "");

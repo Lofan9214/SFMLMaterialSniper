@@ -37,6 +37,7 @@ public:
 	virtual void SetPosition(const sf::Vector2f& pos) { position = pos; }
 
 	sf::Vector2f GetOrigin() const { return origin; }
+	virtual void SetOrigin();
 	virtual void SetOrigin(Origins preset);
 	virtual void SetOrigin(const sf::Vector2f& neworigin)
 	{

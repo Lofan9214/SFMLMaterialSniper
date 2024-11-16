@@ -33,6 +33,7 @@ using json = nlohmann::json;
 #include "ResourceMgr.h"
 #include "Animator.h"
 #include "GameObject.h"
+#include "SpriteGo.h"
 #include "SceneMgr.h"
 #include "Scene.h"
 #include "ObjectPool.h"

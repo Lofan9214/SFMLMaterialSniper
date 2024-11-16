@@ -56,6 +56,14 @@ void Drum::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
+
+	animator.SetSprite(&body);
+	animator.BindFunction(this);
+	animator.AddEvent("drumhit", 55,
+		[this]()
+		{
+			active = false;
+		});
 }
 
 void Drum::Release()
@@ -65,12 +73,15 @@ void Drum::Release()
 void Drum::Reset()
 {
 	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
-	body.setTexture(TEXTURE_MGR.Get(texId));
+
+	animator.Play("animations/targets/drumidle.csv");
+
 	SetOrigin(Origins::BC);
 }
 
 void Drum::Update(float dt)
 {
+	animator.Update(dt);
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::XButton1))
 	{
 		SetPosition({ position3.x,position3.y,position3.z - 100.f });
@@ -90,13 +101,19 @@ void Drum::FixedUpdate(float dt)
 	}
 
 	sf::FloatRect bodyRect = GetGlobalBounds();
-	if (bullet->GetPosition3().z > position3.z
-		&& bullet->GetPosition3Previous().z < position3.z)
+	sf::Vector3f bulletpos = bullet->GetPosition3();
+	sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
+
+	if (bulletpos.z > position3.z
+		&& bulletpospre.z < position3.z)
 	{
-		
-		if (bodyRect.contains(bullet->GetPosition()))
+		float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
+		sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
+
+		if (bodyRect.contains(bulletlerppos))
 		{
 			std::cout << "hitdrum" << std::endl;
+			animator.Play("animations/targets/drumhit.csv");
 			bullet->Hit();
 		}
 	}

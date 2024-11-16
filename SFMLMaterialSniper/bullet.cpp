@@ -61,7 +61,7 @@ void Bullet::Init()
 	sortingOrder = 10;
 
 	animator.SetSprite(&body);
-	animator.BindFlipX(this);
+	animator.BindFunction(this);
 	animator.AddEvent("bullethit", 17,
 		[this]()
 		{
@@ -105,14 +105,14 @@ void Bullet::UpdateAccelation()
 {
 	// F = -C*rho*A*abs(V-W)*(V-W)/2
 	float radius = 0.5f * diameter * 0.001f;
-	sf::Vector3f force = -coeff * rho * Utils::PI * radius * radius * Utils::Magnitude(vel3d - wind) * (vel3d - wind) * 0.5f;
+	sf::Vector3f force = -coeff * rho * Utils::PI * radius * radius * Utils::Magnitude(vel3d - wind * windMultiplier) * (vel3d - wind * windMultiplier) * 0.5f;
 	acc3d = force / (weight * 0.001f); // a = F/m
-	acc3d += gravity;
+	acc3d += gravity * gravityMultiplier;
 }
 
 void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir)
 {
-	animator.Play("animations/bullet/flying.csv");
+	animator.Play("animations/bullet/bulletflying.csv");
 	active = true;
 	fired = true;
 	SetPosition(startpos);
@@ -121,7 +121,7 @@ void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir)
 
 void Bullet::Hit()
 {
-	position3.z = 300.f;
-	SetPosition(position3);
-	animator.Play("animations/bullet/hit.csv");
+	SetPosition(position3Previous);
+	SetScale(scale * 1.5f);
+	animator.Play("animations/bullet/bullethit.csv");
 }
