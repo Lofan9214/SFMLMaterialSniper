@@ -9,9 +9,18 @@
 
 class Bullet : public GameObject
 {
+public:
+	enum class Status
+	{
+		Ready,
+		Fired,
+		Hit,
+	};
+
+
 protected:
 
-	bool fired = false;
+	Status status = Status::Ready;
 
 	const float coeff = 0.295f; // 항력 계수 (0.295가 일반적인 수치)
 	const float rho = 1.2f; // 공기 저항 (정상 기압 및 온도에서 1.2kg/m^3)
@@ -25,10 +34,12 @@ protected:
 
 	sf::Vector3f position3Previous;
 	sf::Vector3f position3;
-	sf::Vector3f vel3d;
+	sf::Vector3f positionStarted;
+	sf::Vector3f velocity3d;
 	sf::Vector3f acc3d;
 	sf::Vector3f wind;
-	sf::Vector3f gravity = {0.f,9.8f,0.f};
+	sf::Vector3f gravity = { 0.f,9.8f,0.f };
+
 	float gravityMultiplier = 2.f;
 	float windMultiplier = 8.f;
 
@@ -48,16 +59,17 @@ public:
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
+	void UpdateFired(float dt);
 	void Draw(sf::RenderTarget& renderTarget) override;
 
 	void UpdateAccelation();
 	void SetWind(const sf::Vector3f& wind) { this->wind = wind; }
 	void SetGravity(const sf::Vector3f& gravity) { this->gravity = gravity; }
 
-	void Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir = {0.f,0.f,1.f});
+	void Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir = { 0.f,0.f,1.f });
 	void Hit();
 
 	sf::Vector3f GetPosition3() { return position3; }
 	sf::Vector3f GetPosition3Previous() { return position3Previous; }
-	sf::Vector3f GetVelocity3() { return vel3d; }
+	sf::Vector3f GetVelocity3() { return velocity3d; }
 };

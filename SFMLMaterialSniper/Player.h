@@ -1,6 +1,9 @@
 #pragma once
 #include "SaveData.h"
 
+class Bullet;
+class CircleView;
+
 class Player : public GameObject
 {
 protected:
@@ -8,7 +11,16 @@ protected:
 	std::string texId;
 	sf::Sprite body;
 	SkillData skill;
-	float vibration;
+
+	Bullet* bullet;
+	CircleView* circleView;
+
+	sf::Vector2f scopeVibration;
+	sf::Vector2f vibrationScale;
+	float vibrationSpeed = 1.f;
+
+	int ammo;
+	int breath;
 
 public:
 	Player(const std::string& name = "");
@@ -27,5 +39,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
 
-	void UpdateScopeVibration();
+	void SetCircleView(CircleView* circleView) { this->circleView = circleView; }
+	void SetVibrationSpeed(float speed) { vibrationSpeed = speed; }
+	void UpdateScopeVibration(float dt);
 };

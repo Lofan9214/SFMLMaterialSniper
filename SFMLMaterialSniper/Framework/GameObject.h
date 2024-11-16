@@ -78,6 +78,8 @@ public:
 
 	void SetSortingOrder(int sortingOrder) { this->sortingOrder = sortingOrder; }
 	int GetSortingOrder() { return this->sortingOrder; }
+
+	virtual void OnLocalize(Languages lang) {}
 };
 
 struct DrawOrderComparer

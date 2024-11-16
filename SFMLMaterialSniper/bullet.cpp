@@ -77,23 +77,29 @@ void Bullet::Reset()
 {
 	SetOrigin(Origins::MC);
 	active = false;
-	fired = false;
+	status = Status::Ready;
 }
 
 void Bullet::Update(float dt)
 {
-	if (fired)
+	animator.Update(dt);
+
+	if (status == Status::Fired)
 	{
-		animator.Update(dt);
-		if (animator.GetCurrentClipId() != "bulletflying")
-		{
-			return;
-		}
-		UpdateAccelation();
-		vel3d += acc3d * dt;
-		position3Previous = position3;
-		SetPosition(position3 + vel3d * dt);
+		UpdateFired(dt);
 	}
+}
+
+void Bullet::UpdateFired(float dt)
+{
+	if (animator.GetCurrentClipId() != "bulletflying")
+	{
+		return;
+	}
+	UpdateAccelation();
+	velocity3d += acc3d * dt;
+	position3Previous = position3;
+	SetPosition(position3 + velocity3d * dt);
 }
 
 void Bullet::Draw(sf::RenderTarget& renderTarget)
@@ -105,18 +111,22 @@ void Bullet::UpdateAccelation()
 {
 	// F = -C*rho*A*abs(V-W)*(V-W)/2
 	float radius = 0.5f * diameter * 0.001f;
-	sf::Vector3f force = -coeff * rho * Utils::PI * radius * radius * Utils::Magnitude(vel3d - wind * windMultiplier) * (vel3d - wind * windMultiplier) * 0.5f;
+	sf::Vector3f force = -coeff * rho * Utils::PI * radius * radius * Utils::Magnitude(velocity3d - wind * windMultiplier) * (velocity3d - wind * windMultiplier) * 0.5f;
 	acc3d = force / (weight * 0.001f); // a = F/m
 	acc3d += gravity * gravityMultiplier;
 }
 
 void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir)
 {
-	animator.Play("animations/bullet/bulletflying.csv");
 	active = true;
-	fired = true;
+	status = Status::Fired;
+
+	animator.Play("animations/bullet/bulletflying.csv");
+
+	positionStarted = startpos;
 	SetPosition(startpos);
-	vel3d = dir * muzzleSpeed;
+
+	velocity3d = dir * muzzleSpeed;
 }
 
 void Bullet::Hit()
