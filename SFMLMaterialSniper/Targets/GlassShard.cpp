@@ -61,8 +61,9 @@ void GlassShard::Reset()
 {
 	body.setTexture(TEXTURE_MGR.Get(texId));
 	SetOrigin(Origins::MC);
-	frameTimer = 0.f;
 	index = 0;
+	speed.x = 0.f;
+	speed.y = 0.f;
 	active = false;
 
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
@@ -75,16 +76,9 @@ void GlassShard::Reset()
 
 void GlassShard::Update(float dt)
 {
-	frameTimer += dt;
-	if (frameTimer < frameDuration)
-	{
-		return;
-	}
-	frameTimer = 0.f;
-
-	SetPosition(position + speed);
-	speed.x *= 0.9f;
-	speed.y += 0.8f;
+	speed.x *= std::powf(0.75f, dt);
+	speed.y += 450.f * dt;
+	SetPosition(position + speed * dt);
 
 	if (position.y > bounds.top + bounds.height + 300.f)
 	{
@@ -114,6 +108,6 @@ void GlassShard::Start(const sf::Vector3f& startpos)
 	rotation = Utils::RandomRange(0.f, 360.f);
 	SetRotation(rotation);
 
-	speed.x = Utils::RandomRange(-6.f, 6.f);
-	speed.y = Utils::RandomRange(-4.f, 0.8f);
+	speed.x = Utils::RandomRange(-100.f, 100.f);
+	speed.y = Utils::RandomRange(-100.f, 20.f);
 }

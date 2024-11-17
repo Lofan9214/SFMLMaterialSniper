@@ -7,14 +7,11 @@ protected:
 	std::string texId = "graphics/targets/glassshard.png";
 	sf::Sprite body;
 	sf::Vector2f  speed;
+	sf::FloatRect bounds;
 	
 	int index;
-	int frame = 24;
-	float frameDuration = 1.f / frame;
-	float frameTimer = 0.f;
 
 	std::function<void(GlassShard*)> returnThis;
-	sf::FloatRect bounds;
 
 public:
 	GlassShard(const std::string& name = "");
