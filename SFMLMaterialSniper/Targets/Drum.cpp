@@ -75,6 +75,7 @@ void Drum::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
+	bullet = nullptr;
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
@@ -92,7 +93,10 @@ void Drum::Release()
 
 void Drum::Reset()
 {
-	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+	if (bullet == nullptr)
+	{
+		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+	}
 
 	active = true;
 

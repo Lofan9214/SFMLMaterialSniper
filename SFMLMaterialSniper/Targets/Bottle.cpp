@@ -75,15 +75,11 @@ void Bottle::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
+	bullet = nullptr;
+
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
 
-	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-	if (scene != nullptr)
-	{
-		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
-		TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
-	}
 }
 
 void Bottle::Release()
@@ -98,6 +94,18 @@ void Bottle::Reset()
 
 	animator.Play("animations/targets/bottlespawn.csv");
 	animator.PlayQueue("animations/targets/bottleidle.csv");
+
+
+	if (bullet==nullptr)
+	{
+		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+
+		if (scene != nullptr)
+		{
+			bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+			TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
+		}
+	}
 
 	SetOrigin(Origins::BC);
 }

@@ -88,6 +88,8 @@ void RoundBoard::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
+	bullet = nullptr;
+
 	internalHitBox.setRadius(240);
 	internalHitBox.setFillColor(sf::Color::Transparent);
 	internalHitBox.setOutlineColor(sf::Color::Red);
@@ -116,7 +118,11 @@ void RoundBoard::Reset()
 	active = true;
 	hit = false;
 
-	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+	if (bullet == nullptr)
+	{
+		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+	}
+
 	bulletMark.setTexture(TEXTURE_MGR.Get("graphics/targets/bulletmark.png"));
 
 	animator.Play("animations/targets/roundboardspawn.csv");

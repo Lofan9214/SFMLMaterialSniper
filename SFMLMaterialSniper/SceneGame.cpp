@@ -22,10 +22,6 @@ void SceneGame::Init()
 	bg->SetOrigin(Origins::MC);
 	bullet = AddGo(new Bullet("bullet"));
 
-	drum = AddGo(new Drum("drum"));
-	roundBoard = AddGo(new RoundBoard("round"));
-	bottle = AddGo(new Bottle("bottle"));
-
 	uiHud = AddGo(new UiHud("uiHud"));
 
 	scopeview = new CircleView(150.f, 5.f);
@@ -41,11 +37,9 @@ void SceneGame::Enter()
 
 	SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
 
-	sf::Vector2f screensize = FRAMEWORK.GetWindowSizef();
+	currentStatus = Status::Awake;
 
-	drum->SetPosition({ 300.f,0.f,700.f });
-	roundBoard->SetPosition({ -300.f,0.f,700.f });
-	bottle->SetPosition({ 0.f,0.f,700.f });
+	sf::Vector2f screensize = FRAMEWORK.GetWindowSizef();
 
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize(screensize);
@@ -53,16 +47,14 @@ void SceneGame::Enter()
 	uiView.setCenter(screensize * 0.5f);
 	uiView.setSize(screensize);
 
+	uiHud->SetWind(wind);
+	uiHud->SetAmmo(player->GetAmmo());
+	uiHud->SetBreath(player->GetBreath());
 }
 
 void SceneGame::Exit()
 {
-	for (auto glassShard : glassShards)
-	{
-		RemoveGo(glassShard);
-		glassShardPool.Return(glassShard);
-	}
-	glassShards.clear();
+	ClearTookObject();
 
 	delete scopeview;
 	Scene::Exit();
@@ -72,26 +64,17 @@ void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
 
-	uiHud->SetWind(wind);
-	uiHud->SetAmmo(player->GetAmmo());
-	uiHud->SetBreath(player->GetBreath());
-	
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
+	switch (currentStatus)
 	{
-		wind -= 1.f;
-		bullet->SetWind({ wind,0.f,0.f });
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
-	{
-		wind += 1.f;
-		bullet->SetWind({ wind,0.f,0.f });
-	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::F5))
-	{
-		drum->Reset();
-		roundBoard->Reset();
-		bottle->Reset();
+	case SceneGame::Status::Awake:
+		UpdateAwake(dt);
+		break;
+	case SceneGame::Status::InGame:
+		UpdateInGame(dt);
+		break;
+	case SceneGame::Status::Interlude:
+		UpdateInterlude(dt);
+		break;
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::F9))
@@ -103,13 +86,74 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
-	
+
 	const sf::View& previousView = window.getView();
 
 	window.setView(worldView);
 
 	window.setView(previousView);
 	scopeview->Draw(window, worldViewObjects);
+}
+
+void SceneGame::SetStatus(Status status)
+{
+	Status prev = currentStatus;
+	currentStatus = status;
+
+	switch (currentStatus)
+	{
+	case SceneGame::Status::Awake:
+		break;
+	case SceneGame::Status::InGame:
+		SpawnDrum({ 300.f,0.f,700.f });
+		SpawnRoundBoard({ -300.f,0.f,700.f });
+		SpawnBottle({ 0.f,0.f,700.f });
+		break;
+	case SceneGame::Status::Interlude:
+		interludeTimer = 0.f;
+		break;
+	}
+}
+
+void SceneGame::UpdateAwake(float dt)
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	{
+		SetStatus(Status::InGame);
+	}
+}
+
+void SceneGame::UpdateInGame(float dt)
+{
+	uiHud->SetWind(wind);
+	uiHud->SetAmmo(player->GetAmmo());
+	uiHud->SetBreath(player->GetBreath());
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
+	{
+		wind -= 1.f;
+		bullet->SetWind({ wind,0.f,0.f });
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
+	{
+		wind += 1.f;
+		bullet->SetWind({ wind,0.f,0.f });
+	}
+	
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	{
+		ClearTookObject();
+		SetStatus(Status::Awake);
+	}
+}
+
+void SceneGame::UpdateInterlude(float dt)
+{
+	interludeTimer += dt;
+	if (interludeTimer > 3.f)
+	{
+
+	}
 }
 
 GlassShard* SceneGame::TakeGlassShard()
@@ -125,4 +169,59 @@ void SceneGame::ReturnGlassShard(GlassShard* glassShard)
 	RemoveGo(glassShard);
 	glassShardPool.Return(glassShard);
 	glassShards.remove(glassShard);
+}
+
+void SceneGame::ClearTookObject()
+{
+	for (auto glassShard : glassShards)
+	{
+		RemoveGo(glassShard);
+		glassShardPool.Return(glassShard);
+	}
+	glassShards.clear();
+
+	for (auto drum : drums)
+	{
+		RemoveGo(drum);
+		drumPool.Return(drum);
+	}
+	drums.clear();
+
+	for (auto bottle : bottles)
+	{
+		RemoveGo(bottle);
+		bottlePool.Return(bottle);
+	}
+	bottles.clear();
+
+	for (auto roundboard : roundboards)
+	{
+		RemoveGo(roundboard);
+		roundboardPool.Return(roundboard);
+	}
+	roundboards.clear();
+}
+
+void SceneGame::SpawnDrum(const sf::Vector3f& pos)
+{
+	Drum* drum = drumPool.Take();
+	drums.push_back(drum);
+	AddGo(drum);
+	drum->SetPosition(pos);
+}
+
+void SceneGame::SpawnBottle(const sf::Vector3f& pos)
+{
+	Bottle* bottle = bottlePool.Take();
+	bottles.push_back(bottle);
+	AddGo(bottle);
+	bottle->SetPosition(pos);
+}
+
+void SceneGame::SpawnRoundBoard(const sf::Vector3f& pos)
+{
+	RoundBoard* roundboard = roundboardPool.Take();
+	roundboards.push_back(roundboard);
+	AddGo(roundboard);
+	roundboard->SetPosition(pos);
 }
