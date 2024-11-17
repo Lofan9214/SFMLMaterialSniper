@@ -134,9 +134,18 @@ void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir)
 	velocity3d = dir * muzzleSpeed;
 }
 
-void Bullet::Hit()
+void Bullet::Hit(Result result)
 {
-	SetPosition(position3Previous);
 	SetScale(scale * 1.5f);
-	animator.Play("animations/bullet/bullethit.csv");
+	SetPosition(position3Previous);
+	if (result == Result::Hit1)
+	{
+		SOUND_MGR.PlaySfx("sounds/bullet/bullethit1.mp3");
+		animator.Play("animations/bullet/bullethit.csv");
+	}
+	else if (result == Result::Ricochet)
+	{
+		SOUND_MGR.PlaySfx("sounds/bullet/bulletricochet.mp3");
+		animator.Play("animations/bullet/bullethit.csv");
+	}
 }

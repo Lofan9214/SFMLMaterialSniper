@@ -71,7 +71,7 @@ void Player::Update(float dt)
 		if (ammo > 0)
 		{
 			--ammo;
-			SOUND_MGR.PlaySfx("sounds/23_gun_fire_normal1.mp3");
+			SOUND_MGR.PlaySfx("sounds/bullet/bulletfire1.mp3");
 			bullet->Reset();
 			bullet->SetPosition({ scopePos.x, scopePos.y, 0.f });
 			bullet->Fire(bullet->GetPosition3());

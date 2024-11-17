@@ -39,6 +39,8 @@ void SceneGame::Enter()
 {
 	Scene::Enter();
 
+	SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
+
 	sf::Vector2f screensize = FRAMEWORK.GetWindowSizef();
 
 	drum->SetPosition({ 300.f,0.f,700.f });

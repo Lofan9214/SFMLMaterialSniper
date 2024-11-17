@@ -7,6 +7,13 @@ class RoundBoard : public GameObject
 protected:
 	sf::Sprite body;
 	Animator animator;
+	
+	sf::Sprite bulletMark;
+	sf::Vector2f positionHit;
+	bool hit;
+
+	sf::CircleShape internalHitBox;
+	sf::Vector2f offsetHitBox = {10.f,8.f};
 
 	Bullet* bullet;
 

@@ -75,10 +75,10 @@ void Drum::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
-	animator.AddEvent("drumspawn", 12, []() {SOUND_MGR.PlaySfx("sounds/targets/drumspawn.mp3"); });
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
+	animator.AddEvent("drumspawn", 12, []() {SOUND_MGR.PlaySfx("sounds/targets/drumspawn.mp3"); });
 	animator.AddEvent("drumhit", 55,
 		[this]()
 		{

@@ -17,6 +17,12 @@ public:
 		Hit,
 	};
 
+	enum class Result
+	{
+		Hit1,
+		Hit2,
+		Ricochet,
+	};
 
 protected:
 
@@ -68,7 +74,7 @@ public:
 	void SetGravity(const sf::Vector3f& gravity) { this->gravity = gravity; }
 
 	void Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir = { 0.f,0.f,1.f });
-	void Hit();
+	void Hit(Result result = Result::Hit1);
 
 	sf::Vector3f GetPosition3() { return position3; }
 	sf::Vector3f GetPosition3Previous() { return position3Previous; }

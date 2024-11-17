@@ -12,6 +12,8 @@ void RoundBoard::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
+	internalHitBox.setPosition(position);
+	bulletMark.setPosition(position);
 }
 
 void RoundBoard::SetPosition(const sf::Vector3f& pos)
@@ -28,23 +30,31 @@ void RoundBoard::SetRotation(float angle)
 {
 	rotation = angle;
 	body.setRotation(rotation);
+	internalHitBox.setRotation(rotation);
+	bulletMark.setRotation(rotation);
 }
 
 void RoundBoard::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	body.setScale(scale);
+	internalHitBox.setScale(scale);
+	bulletMark.setScale(scale);
 }
 
 void RoundBoard::SetAnimationScale(const sf::Vector2f& scale)
 {
 	body.setScale(Utils::ElementProduct(this->scale, scale));
+	internalHitBox.setScale(Utils::ElementProduct(this->scale, scale));
+	bulletMark.setScale(Utils::ElementProduct(this->scale, scale));
 }
 
 void RoundBoard::SetDisplacement(const sf::Vector2f& disp)
 {
 	displacement = disp;
 	body.setOrigin(origin + displacement);
+	internalHitBox.setOrigin(origin + displacement - offsetHitBox);
+	bulletMark.setOrigin(origin + displacement - positionHit);
 }
 
 void RoundBoard::SetColor(const sf::Color& color)
@@ -59,6 +69,8 @@ void RoundBoard::SetOrigin(Origins preset)
 	if (originPreset != Origins::Custom)
 	{
 		origin = Utils::SetOrigin(body, originPreset);
+		internalHitBox.setOrigin(origin - offsetHitBox);
+		bulletMark.setOrigin(origin - positionHit);
 	}
 }
 
@@ -67,12 +79,32 @@ void RoundBoard::SetOrigin(const sf::Vector2f& newOrigin)
 	originPreset = Origins::Custom;
 	origin = newOrigin;
 	body.setOrigin(origin);
+	internalHitBox.setOrigin(origin - offsetHitBox);
+	bulletMark.setOrigin(origin - positionHit);
 }
 
 void RoundBoard::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
+
+	internalHitBox.setRadius(60);
+	internalHitBox.setFillColor(sf::Color::Transparent);
+	internalHitBox.setOutlineColor(sf::Color::Red);
+	internalHitBox.setOutlineThickness(3);
+
+	positionHit.x = 0.f;
+	positionHit.y = 0.f;
+	hit = false;
+
+	animator.SetSprite(&body);
+	animator.BindFunction(this);
+	animator.AddEvent("roundboardspawn", 18, []() {SOUND_MGR.PlaySfx("sounds/targets/roundboardspawn.mp3"); });
+	animator.AddEvent("roundboardhit", 45,
+		[this]()
+		{
+			active = false;
+		});
 }
 
 void RoundBoard::Release()
@@ -81,10 +113,10 @@ void RoundBoard::Release()
 
 void RoundBoard::Reset()
 {
-	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+	active = true;
 
-	animator.SetSprite(&body);
-	animator.BindFunction(this);
+	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+	bulletMark.setTexture(TEXTURE_MGR.Get("graphics/targets/bulletmark.png"));
 
 	animator.Play("animations/targets/roundboardspawn.csv");
 	animator.PlayQueue("animations/targets/roundboardidle.csv");
@@ -123,6 +155,11 @@ void RoundBoard::FixedUpdate(float dt)
 		if (bodyRect.contains(bullet->GetPosition())
 			&& collisionImage.getPixel(point.x, point.y).a != 0)
 		{
+			//hit = true;
+			animator.Play("animations/targets/roundboardhit.csv");
+			SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
+			positionHit = point - bulletMark.getLocalBounds().getSize() * 0.5f;
+			bulletMark.setOrigin(origin - positionHit);
 			std::cout << "hitboard" << std::endl;
 			bullet->Hit();
 		}
@@ -133,4 +170,12 @@ void RoundBoard::FixedUpdate(float dt)
 void RoundBoard::Draw(sf::RenderTarget& window)
 {
 	window.draw(body);
+	if (hit)
+	{
+		window.draw(bulletMark);
+	}
+	if (Variables::isDrawHitBox)
+	{
+		window.draw(internalHitBox);
+	}
 }
