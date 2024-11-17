@@ -71,8 +71,8 @@ void SceneGame::Update(float dt)
 	Scene::Update(dt);
 
 	uiHud->SetWind(wind);
-	uiHud->SetAmmo(wind);
-	uiHud->SetBreath(wind);
+	uiHud->SetAmmo(player->GetAmmo());
+	uiHud->SetBreath(player->GetBreath());
 	
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
 	{
@@ -84,11 +84,17 @@ void SceneGame::Update(float dt)
 		wind += 1.f;
 		bullet->SetWind({ wind,0.f,0.f });
 	}
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::F5))
 	{
 		drum->Reset();
 		roundBoard->Reset();
 		bottle->Reset();
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::F9))
+	{
+		Variables::isDrawHitBox = !Variables::isDrawHitBox;
 	}
 }
 

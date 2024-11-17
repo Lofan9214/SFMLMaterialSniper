@@ -36,6 +36,24 @@ void Drum::SetScale(const sf::Vector2f& s)
 	body.setScale(scale);
 }
 
+void Drum::SetAnimationScale(const sf::Vector2f& scale)
+{
+	body.setScale(Utils::ElementProduct(this->scale, scale));
+}
+
+void Drum::SetDisplacement(const sf::Vector2f& disp)
+{
+	displacement = disp;
+	body.setOrigin(origin + displacement);
+
+}
+
+void Drum::SetColor(const sf::Color& color)
+{
+	this->color = color;
+	body.setColor(this->color);
+}
+
 void Drum::SetOrigin(Origins preset)
 {
 	originPreset = preset;
@@ -57,9 +75,11 @@ void Drum::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
+	animator.AddEvent("drumspawn", 12, []() {SOUND_MGR.PlaySfx("sounds/targets/drumspawn.mp3"); });
+
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
-	animator.AddEvent("drumhit", 63,
+	animator.AddEvent("drumhit", 55,
 		[this]()
 		{
 			active = false;
@@ -73,10 +93,11 @@ void Drum::Release()
 void Drum::Reset()
 {
 	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
-	
+
 	active = true;
 
-	animator.Play("animations/targets/drumidle.csv");
+	animator.Play("animations/targets/drumspawn.csv");
+	animator.PlayQueue("animations/targets/drumidle.csv");
 
 	SetOrigin(Origins::BC);
 }
@@ -91,13 +112,13 @@ void Drum::Update(float dt)
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::XButton2))
 	{
 		SetPosition({ position3.x,position3.y,position3.z + 100.f });
-
 	}
 }
 
 void Drum::FixedUpdate(float dt)
 {
-	if (bullet == nullptr)
+	if (bullet == nullptr
+		|| animator.GetCurrentClipId() != "drumidle")
 	{
 		return;
 	}
@@ -114,6 +135,7 @@ void Drum::FixedUpdate(float dt)
 
 		if (bodyRect.contains(bulletlerppos))
 		{
+			SOUND_MGR.PlaySfx("sounds/targets/drumhit.mp3");
 			std::cout << "hitdrum" << std::endl;
 			animator.Play("animations/targets/drumhit.csv");
 			bullet->Hit();

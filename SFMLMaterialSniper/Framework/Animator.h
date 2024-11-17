@@ -43,7 +43,10 @@ protected:
 
 	std::function<void(bool flipx)> FlipX;
 	std::function<void()> SetOrigin;
-	std::function<void(sf::Vector2f scale)> SetScale;
+	std::function<void(const sf::Color&)> SetColor;
+	std::function<void(const sf::Vector2f&)> SetScale;
+	std::function<void(const sf::Vector2f&)> SetDisplacement;
+	std::function<void(float)> SetRotation;
 
 public:
 	Animator() = default;

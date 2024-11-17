@@ -1,0 +1,17 @@
+ID,FPS,"LootType (0: Single, 1: Loop)"
+drumspawn,24,0
+
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,OPACITY,DISPLACEMENTX,DISPLACEMENTY,ROTATION
+graphics/targets/drum.png,0,0,50,70,0,1,1,0.03,0,75,0
+graphics/targets/drum.png,0,0,50,70,0,1,1,0.12,0,70,0
+graphics/targets/drum.png,0,0,50,70,0,1,1,0.25,0,60,0
+graphics/targets/drum.png,0,0,50,70,0,1,1,0.45,0,40,0
+graphics/targets/drum.png,0,0,50,70,0,1,1,0.70,0,20,0
+graphics/targets/drum.png,0,0,50,70,0,1,1,1,0,0,0
+graphics/targets/drum.png,0,0,50,70,0,1,1,1,0,5,-5
+graphics/targets/drum.png,0,0,50,70,0,1,1,1,0,3,-4
+graphics/targets/drum.png,0,0,50,70,0,1,1,1,0,0,-2
+graphics/targets/drum.png,0,0,50,70,0,1,1,1,0,0,0
+graphics/targets/drum.png,0,0,50,70,0,1,1,1,0,0,2
+graphics/targets/drum.png,0,0,50,70,0,1,1,1,0,0,4
+graphics/targets/drum.png,0,0,50,70,0,1,1,1,0,0,1

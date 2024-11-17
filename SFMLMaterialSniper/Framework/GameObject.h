@@ -8,6 +8,7 @@ protected:
 	float rotation;
 
 	sf::Vector2f position;
+	sf::Vector2f displacement;
 	sf::Vector2f scale;
 	Origins originPreset;
 	sf::Vector2f origin;
@@ -19,6 +20,8 @@ protected:
 	SortingLayers sortingLayer = SortingLayers::Default;
 	int sortingOrder = 0;
 	int targetView = 0;
+
+	sf::Color color = { 255,255,255,255 };
 
 	GameObject(const GameObject&) = delete;
 	GameObject& operator=(const GameObject&) = delete;
@@ -35,6 +38,8 @@ public:
 
 	sf::Vector2f GetPosition() const { return position; }
 	virtual void SetPosition(const sf::Vector2f& pos) { position = pos; }
+	sf::Vector2f GetDisplacement() const { return displacement; }
+	virtual void SetDisplacement(const sf::Vector2f& disp) { displacement = disp; }
 
 	sf::Vector2f GetOrigin() const { return origin; }
 	virtual void SetOrigin();
@@ -59,6 +64,9 @@ public:
 
 	float GetRotation() const { return rotation; }
 	virtual void SetRotation(float angle) { rotation = angle; }
+
+	sf::Color GetColor() const { return color; }
+	virtual void SetColor(const sf::Color& color) { this->color = color; }
 
 	virtual const HitBox& GetHitBox() const { return hitBox; }
 

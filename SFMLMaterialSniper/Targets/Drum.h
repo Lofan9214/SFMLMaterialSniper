@@ -22,6 +22,9 @@ public:
 	void SetPosition(const sf::Vector3f& pos);
 	void SetRotation(float angle) override;
 	void SetScale(const sf::Vector2f& scale) override;
+	void SetAnimationScale(const sf::Vector2f& scale) override;
+	void SetDisplacement(const sf::Vector2f& disp) override;
+	void SetColor(const sf::Color& color) override;
 
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;

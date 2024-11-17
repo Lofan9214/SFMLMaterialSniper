@@ -33,7 +33,7 @@ public:
 
 	void SetWind(int wind);
 	void SetAmmo(int ammo);
-	void SetBreath(int breath);
+	void SetBreath(float breath);
 
 	void OnLocalize(Languages lang) override;
 };

@@ -11,7 +11,7 @@ void SpriteGo::SetOrigin(Origins preset)
 	originPreset = preset;
 	if (originPreset != Origins::Custom)
 	{
-		origin = Utils::SetOrigin(sprite, originPreset);
+		origin = Utils::SetOrigin(body, originPreset);
 	}
 }
 
@@ -19,7 +19,19 @@ void SpriteGo::SetOrigin(const sf::Vector2f& newOrigin)
 {
 	originPreset = Origins::Custom;
 	origin = newOrigin;
-	sprite.setOrigin(origin);
+	body.setOrigin(origin);
+}
+
+void SpriteGo::SetDisplacement(const sf::Vector2f& disp)
+{
+	displacement = disp;
+	body.setPosition(position + displacement);
+}
+
+void SpriteGo::SetColor(const sf::Color& color)
+{
+	this->color = color;
+	body.setColor(this->color);
 }
 
 void SpriteGo::Init()
@@ -32,20 +44,20 @@ void SpriteGo::Release()
 
 void SpriteGo::Reset()
 {
-	sprite.setTexture(TEXTURE_MGR.Get(textureId));
+	body.setTexture(TEXTURE_MGR.Get(textureId));
 	SetOrigin(originPreset);
 }
 
 void SpriteGo::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
-	sprite.setPosition(pos);
+	body.setPosition(pos);
 }
 
 void SpriteGo::SetScale(const sf::Vector2f& scale)
 {
 	GameObject::SetScale(scale);
-	sprite.setScale(scale);
+	body.setScale(scale);
 }
 
 void SpriteGo::Update(float dt)
@@ -54,6 +66,7 @@ void SpriteGo::Update(float dt)
 
 void SpriteGo::Draw(sf::RenderTarget& renderTarget)
 {
-	renderTarget.draw(sprite);
+	body.setPosition(position + displacement);
+	renderTarget.draw(body);
 }
 

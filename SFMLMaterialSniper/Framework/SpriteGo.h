@@ -3,7 +3,7 @@
 class SpriteGo : public GameObject
 {
 protected:
-	sf::Sprite sprite;
+	sf::Sprite body;
 	std::string textureId;
 
 public:
@@ -14,6 +14,8 @@ public:
 
 	void SetOrigin(Origins preset);
 	void SetOrigin(const sf::Vector2f& newOrigin);
+	void SetDisplacement(const sf::Vector2f& disp) override;
+	void SetColor(const sf::Color& color) override;
 
 	void Init() override;
 	void Release() override;

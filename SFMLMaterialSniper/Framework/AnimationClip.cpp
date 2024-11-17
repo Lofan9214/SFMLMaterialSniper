@@ -21,6 +21,8 @@ bool AnimationClip::loadFromFile(const std::string& filePath)
 		frame.flipX = (bool)std::stoi(row[5]);
 		frame.scale = { std::stof(row[6]) ,std::stof(row[7]) };
 		frame.opacity = std::stof(row[8]);
+		frame.displacement = { std::stof(row[9]) ,std::stof(row[10]) };
+		frame.rotation = std::stof(row[11]);
 		frames.push_back(frame);
 	}
 

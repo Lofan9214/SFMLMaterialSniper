@@ -106,7 +106,7 @@ void UiHud::SetAmmo(int ammo)
 	textAmmo.SetString("Ammo : " + std::to_string(ammo));
 }
 
-void UiHud::SetBreath(int breath)
+void UiHud::SetBreath(float breath)
 {
 	textBreath.SetString("Breath : " + std::to_string(breath));
 }

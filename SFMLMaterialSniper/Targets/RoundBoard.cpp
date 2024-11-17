@@ -36,6 +36,23 @@ void RoundBoard::SetScale(const sf::Vector2f& s)
 	body.setScale(scale);
 }
 
+void RoundBoard::SetAnimationScale(const sf::Vector2f& scale)
+{
+	body.setScale(Utils::ElementProduct(this->scale, scale));
+}
+
+void RoundBoard::SetDisplacement(const sf::Vector2f& disp)
+{
+	displacement = disp;
+	body.setOrigin(origin + displacement);
+}
+
+void RoundBoard::SetColor(const sf::Color& color)
+{
+	this->color = color;
+	body.setColor(this->color);
+}
+
 void RoundBoard::SetOrigin(Origins preset)
 {
 	originPreset = preset;
@@ -65,12 +82,20 @@ void RoundBoard::Release()
 void RoundBoard::Reset()
 {
 	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
-	body.setTexture(TEXTURE_MGR.Get(texId));
+
+	animator.SetSprite(&body);
+	animator.BindFunction(this);
+
+	animator.Play("animations/targets/roundboardspawn.csv");
+	animator.PlayQueue("animations/targets/roundboardidle.csv");
+
 	SetOrigin(Origins::BC);
 }
 
 void RoundBoard::Update(float dt)
 {
+	animator.Update(dt);
+
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::XButton1))
 	{
 		SetPosition({ position3.x,position3.y,position3.z - 100.f });
@@ -78,7 +103,6 @@ void RoundBoard::Update(float dt)
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::XButton2))
 	{
 		SetPosition({ position3.x,position3.y,position3.z + 100.f });
-
 	}
 }
 

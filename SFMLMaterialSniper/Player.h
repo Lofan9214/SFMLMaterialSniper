@@ -18,9 +18,12 @@ protected:
 	sf::Vector2f scopeVibration;
 	sf::Vector2f vibrationScale;
 	float vibrationSpeed = 1.f;
+	float vibrationTimer = 0.f;
 
 	int ammo;
-	int breath;
+	int clip = 5;
+	float breath;
+	float maxBreath = 2.7;
 
 public:
 	Player(const std::string& name = "");
@@ -42,4 +45,7 @@ public:
 	void SetCircleView(CircleView* circleView) { this->circleView = circleView; }
 	void SetVibrationSpeed(float speed) { vibrationSpeed = speed; }
 	void UpdateScopeVibration(float dt);
+
+	int GetAmmo() const { return ammo; }
+	float GetBreath() const { return breath/maxBreath; }
 };

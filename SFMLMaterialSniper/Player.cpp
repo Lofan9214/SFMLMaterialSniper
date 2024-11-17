@@ -51,6 +51,9 @@ void Player::Release()
 
 void Player::Reset()
 {
+	ammo = clip;
+	breath = maxBreath;
+	vibrationTimer = 0.f;
 }
 
 void Player::Update(float dt)
@@ -65,9 +68,33 @@ void Player::Update(float dt)
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
-		bullet->Reset();
-		bullet->SetPosition({ scopePos.x, scopePos.y, 0.f });
-		bullet->Fire(bullet->GetPosition3());
+		if (ammo > 0)
+		{
+			--ammo;
+			SOUND_MGR.PlaySfx("sounds/23_gun_fire_normal1.mp3");
+			bullet->Reset();
+			bullet->SetPosition({ scopePos.x, scopePos.y, 0.f });
+			bullet->Fire(bullet->GetPosition3());
+		}
+		else
+		{
+			//Todo 재장전 알림 만들어야 함
+		}
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Z)
+		|| InputMgr::GetKeyDown(sf::Keyboard::R))
+	{
+		ammo = clip;
+	}
+
+	if (InputMgr::GetKeyPressing(sf::Keyboard::Space))
+	{
+		breath -= dt;
+		vibrationSpeed = 0.5f;
+	}
+	else
+	{
+		breath = Utils::Clamp(breath + dt * 0.5f, 0.f, maxBreath);
 	}
 
 	if (circleView != nullptr)
@@ -83,7 +110,9 @@ void Player::Draw(sf::RenderTarget& renderTarget)
 
 void Player::UpdateScopeVibration(float dt)
 {
-	float time = FRAMEWORK.GetTime() * vibrationSpeed;
+	vibrationTimer += dt * vibrationSpeed;
 
-	scopeVibration = { cosf(time) / (1 + sinf(time) * sinf(time)),sinf(time) * cosf(time) / (1 + sinf(time) * sinf(time)) };
+	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
+
+	scopeVibration = { xt,sinf(vibrationTimer) * xt };
 }

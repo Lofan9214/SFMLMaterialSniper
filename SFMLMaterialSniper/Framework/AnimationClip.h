@@ -13,6 +13,8 @@ struct AnimationFrame
 	bool flipX;
 	sf::Vector2f scale;
 	float opacity;
+	sf::Vector2f displacement;
+	float rotation;
 
 	AnimationFrame() = default;
 };
