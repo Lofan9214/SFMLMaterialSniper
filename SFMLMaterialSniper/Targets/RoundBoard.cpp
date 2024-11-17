@@ -88,7 +88,7 @@ void RoundBoard::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
-	internalHitBox.setRadius(60);
+	internalHitBox.setRadius(240);
 	internalHitBox.setFillColor(sf::Color::Transparent);
 	internalHitBox.setOutlineColor(sf::Color::Red);
 	internalHitBox.setOutlineThickness(3);
@@ -114,6 +114,7 @@ void RoundBoard::Release()
 void RoundBoard::Reset()
 {
 	active = true;
+	hit = false;
 
 	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
 	bulletMark.setTexture(TEXTURE_MGR.Get("graphics/targets/bulletmark.png"));
@@ -155,13 +156,27 @@ void RoundBoard::FixedUpdate(float dt)
 		if (bodyRect.contains(bullet->GetPosition())
 			&& collisionImage.getPixel(point.x, point.y).a != 0)
 		{
-			//hit = true;
-			animator.Play("animations/targets/roundboardhit.csv");
-			SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
-			positionHit = point - bulletMark.getLocalBounds().getSize() * 0.5f;
-			bulletMark.setOrigin(origin - positionHit);
-			std::cout << "hitboard" << std::endl;
-			bullet->Hit();
+			sf::Vector2f hitboxCenter(240.f, 240.f);
+			hitboxCenter += offsetHitBox;
+			float distance = Utils::Distance(point, hitboxCenter);
+			/*if (distance < 15)
+			{
+
+			}
+			else*/ if (distance < internalHitBox.getRadius())
+			{
+				hit = true;
+				animator.Play("animations/targets/roundboardhit.csv");
+				SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
+				positionHit = point - bulletMark.getLocalBounds().getSize() * 0.5f;
+				bulletMark.setOrigin(origin - positionHit);
+				std::cout << "hitboard" << std::endl;
+				bullet->Hit();
+			}
+			else
+			{
+				bullet->Hit(Bullet::Result::Ricochet);
+			}
 		}
 	}
 

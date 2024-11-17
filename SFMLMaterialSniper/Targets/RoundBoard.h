@@ -13,12 +13,12 @@ protected:
 	bool hit;
 
 	sf::CircleShape internalHitBox;
-	sf::Vector2f offsetHitBox = {10.f,8.f};
+	sf::Vector2f offsetHitBox = {40.f,32.f};
 
 	Bullet* bullet;
 
 	sf::Vector3f position3;
-	float defaultdistance = 300.f;
+	float defaultdistance = 75.f;
 
 public:
 	RoundBoard(const std::string& name = "");
