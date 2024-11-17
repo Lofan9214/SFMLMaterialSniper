@@ -55,5 +55,7 @@ public:
 	sf::Vector2i UiToScreen(sf::Vector2f uiPos);
 
 	sf::FloatRect WorldRegion();
+
+	void SetWorldView(unsigned int width, unsigned int height);
 };
 
