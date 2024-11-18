@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JsonDefines.h" />
+    <ClInclude Include="SceneHome.h" />
     <ClInclude Include="StageTable.h" />
     <ClInclude Include="Targets\GlassShard.h" />
     <ClInclude Include="Player.h" />
@@ -62,6 +63,7 @@
     <ClInclude Include="UiHud.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SceneHome.cpp" />
     <ClCompile Include="StageTable.cpp" />
     <ClCompile Include="Targets\GlassShard.cpp" />
     <ClCompile Include="Player.cpp" />

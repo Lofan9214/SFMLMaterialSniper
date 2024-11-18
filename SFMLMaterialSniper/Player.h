@@ -8,7 +8,7 @@ class Player : public GameObject
 {
 protected:
 
-	std::string texId;
+	Animator animator;
 	sf::Sprite body;
 	SkillData skill;
 
@@ -22,6 +22,7 @@ protected:
 
 	sf::Vector2f scopeRecoil;
 	sf::Vector2f scopeRecoilVel;
+	bool recoiltic;
 
 	int ammo;
 	int clip = 5;

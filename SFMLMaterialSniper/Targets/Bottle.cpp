@@ -13,6 +13,7 @@ void Bottle::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
+	stand.setPosition(position);
 }
 
 void Bottle::SetPosition(const sf::Vector3f& pos)
@@ -35,11 +36,13 @@ void Bottle::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	body.setScale(scale);
+	stand.setScale(scale);
 }
 
 void Bottle::SetAnimationScale(const sf::Vector2f& scale)
 {
 	body.setScale(Utils::ElementProduct(this->scale, scale));
+	stand.setScale(Utils::ElementProduct(this->scale, scale));
 }
 
 void Bottle::SetDisplacement(const sf::Vector2f& disp)
@@ -80,6 +83,9 @@ void Bottle::Init()
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
 
+	stand.setFillColor(sf::Color::Black);
+	stand.setSize({70.f,100.f});
+	stand.setOrigin({ 35.f,20.f });
 }
 
 void Bottle::Release()
@@ -150,10 +156,16 @@ void Bottle::FixedUpdate(float dt)
 				shard->Start({ position3.x + displacement.x,position3.y - body.getGlobalBounds().height * 0.5f + displacement.y ,position3.z });
 			}
 		}
+		else if (stand.getGlobalBounds().contains(bullet->GetPosition()))
+		{
+			bullet->SetRotation(Utils::RandomRange(0.f, 360.f));
+			bullet->Hit(Bullet::Result::Ricochet);
+		}
 	}
 }
 
-void Bottle::Draw(sf::RenderTarget& window)
+void Bottle::Draw(sf::RenderTarget& renderTarget)
 {
-	window.draw(body);
+	renderTarget.draw(stand);
+	renderTarget.draw(body);
 }

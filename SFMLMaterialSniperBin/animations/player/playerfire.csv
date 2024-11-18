@@ -1,0 +1,20 @@
+ID,FPS,"LootType (0: Single, 1: Loop)"
+playerfire,20,0
+
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,OPACITY,DISPLACEMENTX,DISPLACEMENTY,ROTATION
+graphics/player/ALL_00000.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00001.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00002.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00003.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00004.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00005.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00006.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00007.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00008.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00009.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00010.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00011.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00012.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00013.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00014.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_00015.png,0,0,1024,512,0,1,1,1,0,0,0
