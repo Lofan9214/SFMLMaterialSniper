@@ -22,7 +22,9 @@ void SceneDev2::Init()
 	roundBoard = AddGo(new RoundBoard("round"));
 	bottle = AddGo(new Bottle("bottle"));
 
-	scopeview = new CircleView(150.f,5.f);
+	scopeview = AddGo(new CircleView("scope"));
+	scopeview->SetZoom(5.f);
+	scopeview->SetCircleRadius(150.f);
 
 	Scene::Init();
 }
@@ -60,7 +62,6 @@ void SceneDev2::Enter()
 void SceneDev2::Exit()
 {
 	vecText.clear();
-	delete scopeview;
 	Scene::Exit();
 }
 
@@ -178,5 +179,4 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 	window.setView(previousView);
 	window.draw(textWind);
 	window.draw(textMoa);
-	scopeview->Draw(window,worldViewObjects);
 }

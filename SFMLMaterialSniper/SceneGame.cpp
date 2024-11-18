@@ -24,7 +24,9 @@ void SceneGame::Init()
 
 	uiHud = AddGo(new UiHud("uiHud"));
 
-	scopeview = new CircleView(150.f, 5.f);
+	scopeview = AddGo(new CircleView("scope"));
+	scopeview->SetZoom(5.f);
+	scopeview->SetCircleRadius(150.f);
 	player = AddGo(new Player("player"));
 	player->SetCircleView(scopeview);
 
@@ -34,6 +36,7 @@ void SceneGame::Init()
 void SceneGame::Enter()
 {
 	Scene::Enter();
+	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 
 	SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
 
@@ -50,13 +53,17 @@ void SceneGame::Enter()
 	uiHud->SetWind(wind);
 	uiHud->SetAmmo(player->GetAmmo());
 	uiHud->SetBreath(player->GetBreath());
+
+	stage = 1;
+	difficulty = 1;
+	wave = 0;
+	day = true;
 }
 
 void SceneGame::Exit()
 {
 	ClearTookObject();
 
-	delete scopeview;
 	Scene::Exit();
 }
 
@@ -86,13 +93,6 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
-
-	const sf::View& previousView = window.getView();
-
-	window.setView(worldView);
-
-	window.setView(previousView);
-	scopeview->Draw(window, worldViewObjects);
 }
 
 void SceneGame::SetStatus(Status status)
@@ -105,9 +105,10 @@ void SceneGame::SetStatus(Status status)
 	case SceneGame::Status::Awake:
 		break;
 	case SceneGame::Status::InGame:
-		SpawnDrum({ 300.f,0.f,700.f });
-		SpawnRoundBoard({ -300.f,0.f,700.f });
-		SpawnBottle({ 0.f,0.f,700.f });
+		SpawnWave();
+		//SpawnDrum({ 300.f,0.f,700.f });
+		//SpawnRoundBoard({ -300.f,0.f,700.f });
+		//SpawnBottle({ 0.f,0.f,700.f });
 		break;
 	case SceneGame::Status::Interlude:
 		interludeTimer = 0.f;
@@ -139,7 +140,7 @@ void SceneGame::UpdateInGame(float dt)
 		wind += 1.f;
 		bullet->SetWind({ wind,0.f,0.f });
 	}
-	
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		ClearTookObject();
@@ -200,6 +201,34 @@ void SceneGame::ClearTookObject()
 		roundboardPool.Return(roundboard);
 	}
 	roundboards.clear();
+}
+
+void SceneGame::SpawnWave()
+{
+	std::string stagestr;
+	stagestr = std::to_string(stage) + std::to_string(difficulty) + (day ? "D" : "N");
+	const auto& data = STAGE_TABLE->Get(stagestr);
+
+	auto find = data.waves.find(wave);
+	if (find == data.waves.end())
+	{
+		return;
+	}
+	for (auto& datum : find->second)
+	{
+		if (datum.type == "DRUM")
+		{
+			SpawnDrum(datum.position);
+		}
+		else if (datum.type == "BOTTLE")
+		{
+			SpawnBottle(datum.position);
+		}
+		else if (datum.type == "ROUNDBOARD")
+		{
+			SpawnRoundBoard(datum.position);
+		}
+	}
 }
 
 void SceneGame::SpawnDrum(const sf::Vector3f& pos)

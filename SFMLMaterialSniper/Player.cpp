@@ -66,7 +66,7 @@ void Player::Update(float dt)
 	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
 	scopeVibration = { xt,sinf(vibrationTimer) * xt };
 
-	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 7.0f);
+	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 4.0f);
 	scopeRecoil += scopeRecoilVel * dt;
 
 	sf::Vector2f vibration = Utils::ElementProduct(scopeVibration, vibrationScale);

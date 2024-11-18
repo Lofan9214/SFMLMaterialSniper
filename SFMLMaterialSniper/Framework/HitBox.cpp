@@ -11,7 +11,7 @@ HitBox::HitBox()
 void HitBox::UpdateTr(const sf::Transformable& tr, const sf::FloatRect& localBounds)
 {
 	rect.setOutlineColor(sf::Color::Green);
-	rect.setSize({ localBounds.width, localBounds.height });
+	rect.setSize(localBounds.getSize());
 	rect.setOrigin(tr.getOrigin());
 	rect.setPosition(tr.getPosition());
 	rect.setScale(tr.getScale());

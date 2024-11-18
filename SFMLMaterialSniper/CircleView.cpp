@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "CircleView.h"
+#include "Scene.h"
 
-CircleView::CircleView(float radius, float zoom)
+CircleView::CircleView(const std::string& name)
+	:GameObject(name)
 {
-	this->zoom = zoom;
-	SetCircleRadius(radius);
 }
 
 void CircleView::SetCircleRadius(float radius)
@@ -29,14 +29,37 @@ void CircleView::SetZoom(float zoom)
 void CircleView::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
-	rendermask.setPosition(position);
-	renderView.setCenter(pos);
+	renderView.setCenter(position);
 }
 
-void CircleView::Draw(sf::RenderWindow& window, const std::list<GameObject*>& lstobject)
+void CircleView::Init()
+{
+	sortingLayer = SortingLayers::UI;
+	sortingOrder = -300;
+}
+
+void CircleView::Release()
+{
+}
+
+void CircleView::Reset()
+{
+}
+
+void CircleView::Update(float dt)
+{
+}
+
+void CircleView::LateUpdate(float dt)
+{
+	rendermask.setPosition((sf::Vector2f)SCENE_MGR.GetCurrentScene()->WorldToScreen(position));
+}
+
+void CircleView::Draw(sf::RenderTarget& window)
 {
 	renderTexture.clear();
 	renderTexture.setView(renderView);
+	std::list<GameObject*> lstobject = SCENE_MGR.GetCurrentScene()->GetWorldGameObjects();
 	for (auto obj : lstobject)
 	{
 		if (!obj->IsActive())

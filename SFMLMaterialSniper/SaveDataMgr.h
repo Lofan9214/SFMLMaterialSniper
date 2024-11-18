@@ -14,8 +14,7 @@ private:
 
 public:
 	void Save(const SaveDataVC& saveData);
-	SaveDataVC Load();
-
+	SaveDataVC LoadSaveData();
 };
 
 #define SAVEDATA_MGR (SaveDataMgr::Instance())

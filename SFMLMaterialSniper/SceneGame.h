@@ -49,7 +49,10 @@ protected:
 	
 	float interludeTimer = 0.f;
 
-	int verse = 0;
+	int stage;
+	int difficulty;
+	bool day;
+	int wave;
 
 public:
 	SceneGame();
@@ -71,6 +74,9 @@ public:
 	void ReturnGlassShard(GlassShard* glassShard);
 
 	void ClearTookObject();
+
+	void SpawnWave();
+
 
 	void SpawnDrum(const sf::Vector3f& pos);
 	void SpawnBottle(const sf::Vector3f& pos);

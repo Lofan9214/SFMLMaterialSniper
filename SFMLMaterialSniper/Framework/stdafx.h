@@ -19,6 +19,7 @@
 using json = nlohmann::json;
 
 #include "Defines.h"
+#include "JsonDefines.h"
 #include "Variables.h"
 #include "DebugBox.h"
 #include "HitBox.h"
@@ -27,6 +28,7 @@ using json = nlohmann::json;
 #include "SaveDataMgr.h"
 #include "DataTable.h"
 #include "StringTable.h"
+#include "StageTable.h"
 #include "DataTableMgr.h"
 #include "Framework.h"
 #include "InputMgr.h"

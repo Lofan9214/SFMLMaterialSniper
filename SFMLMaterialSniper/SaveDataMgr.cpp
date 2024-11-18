@@ -10,7 +10,7 @@ void SaveDataMgr::Save(const SaveDataVC& saveData)
 	saveStream.close();
 }
 
-SaveDataVC SaveDataMgr::Load()
+SaveDataVC SaveDataMgr::LoadSaveData()
 {
 	std::ifstream loadStream(savePath);
 	json loadJson = json::parse(loadStream);

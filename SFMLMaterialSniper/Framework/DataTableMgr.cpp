@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "DataTable.h"
-#include "StringTable.h"
 #include "DataTableMgr.h"
 
 DataTableMgr::~DataTableMgr()
@@ -12,6 +10,7 @@ void DataTableMgr::Init()
 {
 	Release();
 	tables.insert({ DataTable::Types::String, new StringTable() });
+	tables.insert({ DataTable::Types::Stage, new StageTable() });
 
 	for (auto t : tables)
 	{

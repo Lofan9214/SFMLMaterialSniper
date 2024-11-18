@@ -1,25 +1,30 @@
 #pragma once
-class CircleView
+class CircleView : public GameObject
 {
 protected:
 	sf::RenderTexture renderTexture;
 	sf::View renderView;
 	sf::CircleShape rendermask;
-	
+
 	float zoom;
 	float maskRadius;
 
 	sf::Vector2f position;
 public:
 
-	CircleView(float radius,float zoom);
+	CircleView(const std::string& name = "");
 	virtual ~CircleView() = default;
 
-	virtual void SetCircleRadius(float radius);
-	virtual void SetZoom(float zoom);
-	
-	virtual void SetPosition(const sf::Vector2f& pos);
+	void SetCircleRadius(float radius);
+	void SetZoom(float zoom);
 
-	virtual void Draw(sf::RenderWindow& window, const std::list<GameObject*>& lstobject);
+	void SetPosition(const sf::Vector2f& pos) override;
+
+	void Init() override;
+	void Release() override;
+	void Reset() override;
+	void Update(float dt) override;
+	void LateUpdate(float dt) override;
+	void Draw(sf::RenderTarget& window) override;
 };
 
