@@ -153,5 +153,8 @@ void Animator::SetFrame(const AnimationFrame& frame)
 	sf::Uint8 opacity = Utils::Clamp(256.f * frame.opacity, 0, 255);
 	SetColor({ 255,255,255,opacity });
 	SetDisplacement(frame.displacement);
-	SetRotation(frame.rotation);
+	if (frame.rotation != -1)
+	{
+		SetRotation(frame.rotation);
+	}
 }

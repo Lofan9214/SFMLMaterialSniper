@@ -165,11 +165,15 @@ void RoundBoard::FixedUpdate(float dt)
 			sf::Vector2f hitboxCenter(240.f, 240.f);
 			hitboxCenter += offsetHitBox;
 			float distance = Utils::Distance(point, hitboxCenter);
-			/*if (distance < 15)
+			if (distance < 15)
 			{
+				animator.Play("animations/targets/roundboardcrit.csv");
+				SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
+				bullet->Hit();
+				std::cout << "critboard" << std::endl;
 
 			}
-			else*/ if (distance < internalHitBox.getRadius())
+			else if (distance < internalHitBox.getRadius())
 			{
 				hit = true;
 				animator.Play("animations/targets/roundboardhit.csv");
@@ -181,6 +185,7 @@ void RoundBoard::FixedUpdate(float dt)
 			}
 			else
 			{
+				bullet->SetRotation(Utils::RandomRange(0.f,360.f));
 				bullet->Hit(Bullet::Result::Ricochet);
 			}
 		}

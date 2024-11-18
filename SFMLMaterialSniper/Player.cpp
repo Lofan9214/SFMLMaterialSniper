@@ -60,11 +60,18 @@ void Player::Update(float dt)
 {
 	Scene* currentScene = SCENE_MGR.GetCurrentScene();
 
-	UpdateScopeVibration(dt);
+	sf::Vector2f mousePos = currentScene->ScreenToWorld(InputMgr::GetMousePosition());
 
-	sf::Vector2f vibrationDisplacement = Utils::ElementProduct(scopeVibration, vibrationScale);
+	vibrationTimer += dt * vibrationSpeed;
+	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
+	scopeVibration = { xt,sinf(vibrationTimer) * xt };
 
-	sf::Vector2f scopePos = vibrationDisplacement + currentScene->ScreenToWorld(InputMgr::GetMousePosition());
+	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 7.0f);
+	scopeRecoil += scopeRecoilVel * dt;
+
+	sf::Vector2f vibration = Utils::ElementProduct(scopeVibration, vibrationScale);
+
+	sf::Vector2f scopePos = mousePos + vibration + scopeRecoil;
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
@@ -75,6 +82,13 @@ void Player::Update(float dt)
 			bullet->Reset();
 			bullet->SetPosition({ scopePos.x, scopePos.y, 0.f });
 			bullet->Fire(bullet->GetPosition3());
+
+			scopeRecoil.x = 0.f;
+			scopeRecoil.y = 0.f;
+
+			float rand = Utils::RandomRange(Utils::PI * 1.25f, Utils::PI * 1.75f);
+			scopeRecoilVel.x = cosf(rand) * (1500.f - skill.control * 150.f);
+			scopeRecoilVel.y = sinf(rand) * (1500.f - skill.control * 150.f);
 		}
 		else
 		{
@@ -106,13 +120,4 @@ void Player::Update(float dt)
 void Player::Draw(sf::RenderTarget& renderTarget)
 {
 	renderTarget.draw(body);
-}
-
-void Player::UpdateScopeVibration(float dt)
-{
-	vibrationTimer += dt * vibrationSpeed;
-
-	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
-
-	scopeVibration = { xt,sinf(vibrationTimer) * xt };
 }

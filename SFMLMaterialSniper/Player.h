@@ -20,6 +20,9 @@ protected:
 	float vibrationSpeed = 1.f;
 	float vibrationTimer = 0.f;
 
+	sf::Vector2f scopeRecoil;
+	sf::Vector2f scopeRecoilVel;
+
 	int ammo;
 	int clip = 5;
 	float breath;
@@ -44,7 +47,6 @@ public:
 
 	void SetCircleView(CircleView* circleView) { this->circleView = circleView; }
 	void SetVibrationSpeed(float speed) { vibrationSpeed = speed; }
-	void UpdateScopeVibration(float dt);
 
 	int GetAmmo() const { return ammo; }
 	float GetBreath() const { return breath/maxBreath; }

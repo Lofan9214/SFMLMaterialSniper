@@ -72,6 +72,11 @@ void Bullet::Init()
 		{
 			active = false;
 		});
+	animator.AddEvent("bulletricochet", 3,
+		[this]()
+		{
+			active = false;
+		});
 }
 
 void Bullet::Release()
@@ -129,6 +134,7 @@ void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir)
 	animator.Play("animations/bullet/bulletflying.csv");
 
 	positionStarted = startpos;
+	SetRotation(0.f);
 	SetPosition(startpos);
 
 	velocity3d = dir * muzzleSpeed;
@@ -136,16 +142,17 @@ void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir)
 
 void Bullet::Hit(Result result)
 {
-	SetScale(scale * 1.5f);
 	SetPosition(position3Previous);
 	if (result == Result::Hit1)
 	{
+		SetScale(scale * 1.5f);
 		SOUND_MGR.PlaySfx("sounds/bullet/bullethit1.mp3");
 		animator.Play("animations/bullet/bullethit.csv");
 	}
 	else if (result == Result::Ricochet)
 	{
+		SetScale(scale * 3.f);
 		SOUND_MGR.PlaySfx("sounds/bullet/bulletricochet.mp3");
-		animator.Play("animations/bullet/bullethit.csv");
+		animator.Play("animations/bullet/bulletricochet.csv");
 	}
 }
