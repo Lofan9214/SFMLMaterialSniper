@@ -19,6 +19,7 @@ protected:
 
 	sf::Vector3f position3;
 	float defaultdistance = 75.f;
+	std::function<void()> TargetHit;
 
 public:
 	RoundBoard(const std::string& name = "");

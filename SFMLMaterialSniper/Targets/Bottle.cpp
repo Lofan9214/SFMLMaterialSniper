@@ -104,6 +104,7 @@ void Bottle::Reset()
 		{
 			bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
 			TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
+			TargetHit = [scene]() {scene->TargetHit();};
 		}
 	}
 
@@ -141,6 +142,7 @@ void Bottle::FixedUpdate(float dt)
 			std::cout << "hitbottle" << std::endl;
 			bullet->Hit();
 			active = false;
+			TargetHit();
 			for (int i = 0; i < 20; ++i)
 			{
 				SOUND_MGR.PlaySfx("sounds/targets/bottlehit.mp3");

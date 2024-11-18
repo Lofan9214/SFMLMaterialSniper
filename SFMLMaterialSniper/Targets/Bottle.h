@@ -9,6 +9,7 @@ protected:
 
 	sf::Sprite body;
 	Animator animator;
+	sf::RectangleShape stand;
 
 	Bullet* bullet;
 
@@ -16,6 +17,7 @@ protected:
 	float defaultdistance = 100.f;
 
 	std::function<GlassShard* ()> TakeGlassShard;
+	std::function<void()> TargetHit;
 
 public:
 	Bottle(const std::string& name = "");

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Drum.h"
-#include "Scene.h"
+#include "SceneGame.h"
 #include "Bullet.h"
 
 Drum::Drum(const std::string& name)
@@ -95,7 +95,13 @@ void Drum::Reset()
 {
 	if (bullet == nullptr)
 	{
-		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+
+		if (scene != nullptr)
+		{
+			bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
+			TargetHit = [scene]() {scene->TargetHit();};
+		}
 	}
 
 	active = true;
@@ -143,6 +149,7 @@ void Drum::FixedUpdate(float dt)
 			std::cout << "hitdrum" << std::endl;
 			animator.Play("animations/targets/drumhit.csv");
 			bullet->Hit();
+			TargetHit();
 		}
 	}
 

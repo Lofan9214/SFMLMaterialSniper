@@ -9,6 +9,7 @@ class Bottle;
 class UiHud;
 class Player;
 class GlassShard;
+class DataStage;
 
 class SceneGame :
 	public Scene
@@ -19,6 +20,7 @@ public:
 		Awake,
 		InGame,
 		Interlude,
+		Result,
 	};
 
 
@@ -49,6 +51,7 @@ protected:
 	
 	float interludeTimer = 0.f;
 
+	int remains;
 	int stage;
 	int difficulty;
 	bool day;
@@ -77,6 +80,7 @@ public:
 
 	void SpawnWave();
 
+	void TargetHit() { --remains; }
 
 	void SpawnDrum(const sf::Vector3f& pos);
 	void SpawnBottle(const sf::Vector3f& pos);

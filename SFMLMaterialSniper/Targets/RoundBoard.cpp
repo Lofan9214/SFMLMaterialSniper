@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "RoundBoard.h"
-#include "Scene.h"
+#include "SceneGame.h"
 #include "Bullet.h"
 
 RoundBoard::RoundBoard(const std::string& name)
@@ -120,7 +120,12 @@ void RoundBoard::Reset()
 
 	if (bullet == nullptr)
 	{
-		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+		if (scene != nullptr)
+		{
+			bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
+			TargetHit = [scene]() {scene->TargetHit();};
+		}
 	}
 
 	bulletMark.setTexture(TEXTURE_MGR.Get("graphics/targets/bulletmark.png"));
@@ -171,7 +176,7 @@ void RoundBoard::FixedUpdate(float dt)
 				SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
 				bullet->Hit();
 				std::cout << "critboard" << std::endl;
-
+				TargetHit();
 			}
 			else if (distance < internalHitBox.getRadius())
 			{
@@ -182,10 +187,11 @@ void RoundBoard::FixedUpdate(float dt)
 				bulletMark.setOrigin(origin - positionHit);
 				std::cout << "hitboard" << std::endl;
 				bullet->Hit();
+				TargetHit();
 			}
 			else
 			{
-				bullet->SetRotation(Utils::RandomRange(0.f,360.f));
+				bullet->SetRotation(Utils::RandomRange(0.f, 360.f));
 				bullet->Hit(Bullet::Result::Ricochet);
 			}
 		}

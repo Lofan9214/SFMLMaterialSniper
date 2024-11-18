@@ -16,7 +16,7 @@ SceneGame::SceneGame()
 
 void SceneGame::Init()
 {
-	SpriteGo* bg = AddGo(new SpriteGo("graphics/Stage1Background.jpg", "background"));
+	SpriteGo* bg = AddGo(new SpriteGo("graphics/Stage1Background.png", "background"));
 
 	bg->SetSortingLayer(SortingLayers::Background);
 	bg->SetOrigin(Origins::MC);
@@ -57,6 +57,7 @@ void SceneGame::Enter()
 	stage = 1;
 	difficulty = 1;
 	wave = 0;
+	remains = 0;
 	day = true;
 }
 
@@ -103,15 +104,18 @@ void SceneGame::SetStatus(Status status)
 	switch (currentStatus)
 	{
 	case SceneGame::Status::Awake:
+		stage = 1;
+		difficulty = 1;
+		wave = 0;
+		remains = 0;
 		break;
 	case SceneGame::Status::InGame:
 		SpawnWave();
-		//SpawnDrum({ 300.f,0.f,700.f });
-		//SpawnRoundBoard({ -300.f,0.f,700.f });
-		//SpawnBottle({ 0.f,0.f,700.f });
 		break;
 	case SceneGame::Status::Interlude:
 		interludeTimer = 0.f;
+		break;
+	case SceneGame::Status::Result:
 		break;
 	}
 }
@@ -146,6 +150,20 @@ void SceneGame::UpdateInGame(float dt)
 		ClearTookObject();
 		SetStatus(Status::Awake);
 	}
+	if (remains == 0)
+	{
+		std::string stagestr = std::to_string(stage) + std::to_string(difficulty) + (day ? "D" : "N");
+		const auto& dataStage = STAGE_TABLE->Get(stagestr);
+
+		if (++wave == dataStage.waves.size())
+		{
+			SetStatus(Status::Result);
+		}
+		else
+		{
+			SetStatus(Status::Interlude);
+		}
+	}
 }
 
 void SceneGame::UpdateInterlude(float dt)
@@ -153,7 +171,7 @@ void SceneGame::UpdateInterlude(float dt)
 	interludeTimer += dt;
 	if (interludeTimer > 3.f)
 	{
-
+		SetStatus(Status::InGame);
 	}
 }
 
@@ -205,17 +223,17 @@ void SceneGame::ClearTookObject()
 
 void SceneGame::SpawnWave()
 {
-	std::string stagestr;
-	stagestr = std::to_string(stage) + std::to_string(difficulty) + (day ? "D" : "N");
-	const auto& data = STAGE_TABLE->Get(stagestr);
+	std::string stagestr = std::to_string(stage) + std::to_string(difficulty) + (day ? "D" : "N");
+	const auto& dataStage = STAGE_TABLE->Get(stagestr);
 
-	auto find = data.waves.find(wave);
-	if (find == data.waves.end())
+	auto find = dataStage.waves.find(wave);
+	if (find == dataStage.waves.end())
 	{
 		return;
 	}
 	for (auto& datum : find->second)
 	{
+		++remains;
 		if (datum.type == "DRUM")
 		{
 			SpawnDrum(datum.position);

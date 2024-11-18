@@ -147,13 +147,28 @@ void Animator::SetFrame(const AnimationFrame& frame)
 {
 	sprite->setTexture(TEXTURE_MGR.Get(frame.texId));
 	sprite->setTextureRect(frame.texCoord);
-	FlipX(frame.flipX);
-	SetOrigin();
-	SetScale(frame.scale);
-	sf::Uint8 opacity = Utils::Clamp(256.f * frame.opacity, 0, 255);
-	SetColor({ 255,255,255,opacity });
-	SetDisplacement(frame.displacement);
-	if (frame.rotation != -1)
+	if (FlipX)
+	{
+		FlipX(frame.flipX);
+	}
+	if (SetOrigin)
+	{
+		SetOrigin();
+	}
+	if (SetScale)
+	{
+		SetScale(frame.scale);
+	}
+	if (SetColor)
+	{
+		sf::Uint8 opacity = Utils::Clamp(256.f * frame.opacity, 0, 255);
+		SetColor({ 255,255,255,opacity });
+	}
+	if (SetDisplacement)
+	{
+		SetDisplacement(frame.displacement);
+	}
+	if (frame.rotation != -1 && SetRotation)
 	{
 		SetRotation(frame.rotation);
 	}

@@ -13,6 +13,7 @@ protected:
 
 	sf::Vector3f position3;
 	float defaultdistance = 800.f;
+	std::function<void()> TargetHit;
 
 public:
 	Drum(const std::string& name = "");
