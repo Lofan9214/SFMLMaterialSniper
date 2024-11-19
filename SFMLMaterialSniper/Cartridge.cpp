@@ -63,7 +63,7 @@ void Cartridge::Reset()
 
 void Cartridge::Update(float dt)
 {
-	ejectionTimer -= dt * 150.f;
+	ejectionTimer -= dt * ejectionAngle;
 	velocity.x *= powf(0.65f, dt);
 	velocity.y += gravity * dt;
 	SetPosition(position + velocity * dt);
@@ -79,7 +79,8 @@ void Cartridge::Eject(const sf::Vector2f& pos)
 {
 	SetPosition(pos);
 	ejectionTimer = 0.f;
-	velocity.x = -400.f;
-	velocity.y = -600.f;
+	velocity.x = Utils::RandomRange(-500.f, -400.f);
+	velocity.y = Utils::RandomRange(-550.f, -400.f);
 	SetRotation(ejectionTimer);
+	ejectionAngle = Utils::RandomRange(170.f, 200.f);
 }

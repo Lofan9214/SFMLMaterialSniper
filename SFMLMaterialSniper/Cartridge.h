@@ -9,6 +9,7 @@ protected:
 	sf::Vector2f velocity;
 	float gravity;
 	float ejectionTimer;
+	float ejectionAngle;
 
 public:
 	Cartridge(const std::string& name = "");
