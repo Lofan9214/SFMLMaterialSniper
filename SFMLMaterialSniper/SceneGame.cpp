@@ -24,11 +24,8 @@ void SceneGame::Init()
 
 	uiHud = AddGo(new UiHud("uiHud"));
 
-	scopeview = AddGo(new CircleView("scope"));
-	scopeview->SetZoom(5.f);
-	scopeview->SetCircleRadius(150.f);
+	scopeview = AddGo(new CircleView("circleView"));
 	player = AddGo(new Player("player"));
-	player->SetCircleView(scopeview);
 
 	Scene::Init();
 }
@@ -71,7 +68,9 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-
+	uiHud->SetWind(wind);
+	uiHud->SetAmmo(player->GetAmmo());
+	uiHud->SetBreath(player->GetBreath());
 	switch (currentStatus)
 	{
 	case SceneGame::Status::Awake:
@@ -100,6 +99,7 @@ void SceneGame::SetStatus(Status status)
 {
 	Status prev = currentStatus;
 	currentStatus = status;
+	
 
 	switch (currentStatus)
 	{
@@ -116,6 +116,7 @@ void SceneGame::SetStatus(Status status)
 		interludeTimer = 0.f;
 		break;
 	case SceneGame::Status::Result:
+		SOUND_MGR.PlayBgm("sounds/bgm/stageclear.mp3");
 		break;
 	}
 }
@@ -130,10 +131,6 @@ void SceneGame::UpdateAwake(float dt)
 
 void SceneGame::UpdateInGame(float dt)
 {
-	uiHud->SetWind(wind);
-	uiHud->SetAmmo(player->GetAmmo());
-	uiHud->SetBreath(player->GetBreath());
-
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
 	{
 		wind -= 1.f;

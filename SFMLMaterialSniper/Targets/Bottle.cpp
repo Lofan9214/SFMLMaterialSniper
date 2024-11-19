@@ -78,13 +78,12 @@ void Bottle::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
-	bullet = nullptr;
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
 
 	stand.setFillColor(sf::Color::Black);
-	stand.setSize({70.f,100.f});
+	stand.setSize({ 70.f,100.f });
 	stand.setOrigin({ 35.f,20.f });
 }
 
@@ -101,17 +100,17 @@ void Bottle::Reset()
 	animator.Play("animations/targets/bottlespawn.csv");
 	animator.PlayQueue("animations/targets/bottleidle.csv");
 
+	bullet = nullptr;
+	TakeGlassShard = nullptr;
+	TargetHit = nullptr;
 
-	if (bullet==nullptr)
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+
+	if (scene != nullptr)
 	{
-		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-
-		if (scene != nullptr)
-		{
-			bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
-			TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
-			TargetHit = [scene]() {scene->TargetHit();};
-		}
+		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+		TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
+		TargetHit = [scene]() {scene->TargetHit();};
 	}
 
 	SetOrigin(Origins::BC);

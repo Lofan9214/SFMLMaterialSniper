@@ -118,14 +118,13 @@ void RoundBoard::Reset()
 	active = true;
 	hit = false;
 
-	if (bullet == nullptr)
+	bullet = nullptr;
+	TargetHit = nullptr;
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
 	{
-		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-		if (scene != nullptr)
-		{
-			bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
-			TargetHit = [scene]() {scene->TargetHit();};
-		}
+		bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
+		TargetHit = [scene]() {scene->TargetHit();};
 	}
 
 	bulletMark.setTexture(TEXTURE_MGR.Get("graphics/targets/bulletmark.png"));

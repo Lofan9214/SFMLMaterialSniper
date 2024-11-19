@@ -66,6 +66,7 @@ void GlassShard::Reset()
 	speed.y = 0.f;
 	active = false;
 
+	returnThis = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{

@@ -1,17 +1,24 @@
 #include "stdafx.h"
+#include <io.h>
 #include "SaveDataMgr.h"
 
-void SaveDataMgr::Save(const SaveDataVC& saveData)
+void SaveDataMgr::Save()
 {
-	json saveJson = saveData;
+	json saveJson = data;
 	std::ofstream saveStream(savePath);
 
 	saveStream << saveJson.dump(4) << std::endl;
 	saveStream.close();
 }
 
-SaveDataVC SaveDataMgr::LoadSaveData()
+SaveDataVC SaveDataMgr::Load()
 {
+	if (_access(savePath.c_str(), 0) == -1)
+	{
+		data = SaveDataVC();
+		return data;
+	}
+
 	std::ifstream loadStream(savePath);
 	json loadJson = json::parse(loadStream);
 	loadStream.close();
@@ -43,8 +50,8 @@ SaveDataVC SaveDataMgr::LoadSaveData()
 	}
 
 	SaveDataVC* ptr = dynamic_cast<SaveDataVC*>(saveData);
-	SaveDataVC ret(*ptr);
+	data = SaveDataVC(*ptr);
 	delete saveData;
 
-	return ret;
+	return data;
 }

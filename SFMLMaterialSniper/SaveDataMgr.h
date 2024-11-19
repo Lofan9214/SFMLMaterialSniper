@@ -12,9 +12,14 @@ private:
 
 	std::string savePath = "save.json";
 
+	SaveDataVC data;
+
 public:
-	void Save(const SaveDataVC& saveData);
-	SaveDataVC LoadSaveData();
+	void Save();
+	SaveDataVC Load();
+
+	SaveDataVC& Get() { return data; }
+	SaveDataVC Get() const { return data; }
 };
 
 #define SAVEDATA_MGR (SaveDataMgr::Instance())

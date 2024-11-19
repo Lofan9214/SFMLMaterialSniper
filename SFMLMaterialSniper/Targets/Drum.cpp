@@ -93,15 +93,13 @@ void Drum::Release()
 
 void Drum::Reset()
 {
-	if (bullet == nullptr)
+	bullet = nullptr;
+	TargetHit = nullptr;
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
 	{
-		SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-
-		if (scene != nullptr)
-		{
-			bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
-			TargetHit = [scene]() {scene->TargetHit();};
-		}
+		bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
+		TargetHit = [scene]() {scene->TargetHit();};
 	}
 
 	active = true;
@@ -148,8 +146,14 @@ void Drum::FixedUpdate(float dt)
 			SOUND_MGR.PlaySfx("sounds/targets/drumhit.mp3");
 			std::cout << "hitdrum" << std::endl;
 			animator.Play("animations/targets/drumhit.csv");
-			bullet->Hit();
-			TargetHit();
+			if (bullet != nullptr)
+			{
+				bullet->Hit();
+			}
+			if (TargetHit)
+			{
+				TargetHit();
+			}
 		}
 	}
 

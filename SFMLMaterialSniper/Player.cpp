@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "Scene.h"
+#include "SceneGame.h"
 #include "Bullet.h"
 #include "CircleView.h"
 
@@ -60,25 +60,46 @@ void Player::Init()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
 			float rand = Utils::RandomRange(Utils::PI * 1.75f, Utils::PI * 1.85f);
-			scopeRecoilVel.x += cosf(rand) * (1600.f - skill.control * 160.f);
-			scopeRecoilVel.y += sinf(rand) * (1600.f - skill.control * 160.f);
+			scopeRecoilVel.x += cosf(rand) * (1200.f - skillData.control * 120.f);
+			scopeRecoilVel.y += sinf(rand) * (1200.f - skillData.control * 120.f);
 		});
 }
 
 void Player::Release()
 {
+	auto& savedata = SAVEDATA_MGR.Get();
+	savedata.skillData = skillData;
+	SAVEDATA_MGR.Save();
 }
 
 void Player::Reset()
 {
-	ammo = clip;
-	breath = maxBreath;
 	vibrationTimer = 0.f;
 	recoiltic = true;
-	auto screensize = FRAMEWORK.GetWindowSizef();
 
+	auto screensize = FRAMEWORK.GetWindowSizef();
 	SetPosition({ screensize.x * -0.5f, screensize.y * 0.5f });
 	SetOrigin(Origins::BL);
+
+	circleView = nullptr;
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
+	{
+		circleView = dynamic_cast<CircleView*>(SCENE_MGR.GetCurrentScene()->FindGo("circleView"));
+	}
+
+	skillData = SAVEDATA_MGR.Load().skillData;
+	maxBreath += skillData.control;
+	magazine += skillData.magazine;
+
+	if (circleView != nullptr)
+	{
+		circleView->SetZoom(5.f);
+		circleView->SetCircleRadius(150.f + skillData.scopeSize * 15.f);
+	}
+
+	breath = maxBreath;
+	ammo = magazine;
 }
 
 void Player::Update(float dt)
@@ -118,8 +139,8 @@ void Player::Update(float dt)
 			recoiltic = false;
 
 			float rand = Utils::RandomRange(Utils::PI * 1.35f, Utils::PI * 1.40f);
-			scopeRecoilVel.x = cosf(rand) * (3000.f - skill.control * 300.f);
-			scopeRecoilVel.y = sinf(rand) * (3000.f - skill.control * 300.f);
+			scopeRecoilVel.x = cosf(rand) * (3000.f - skillData.control * 300.f);
+			scopeRecoilVel.y = sinf(rand) * (3000.f - skillData.control * 300.f);
 		}
 		else
 		{
@@ -129,7 +150,7 @@ void Player::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z)
 		|| InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
-		ammo = clip;
+		ammo = magazine;
 	}
 
 	if (InputMgr::GetKeyPressing(sf::Keyboard::Space))

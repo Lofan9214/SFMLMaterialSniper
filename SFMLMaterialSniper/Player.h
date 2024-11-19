@@ -10,7 +10,7 @@ protected:
 
 	Animator animator;
 	sf::Sprite body;
-	SkillData skill;
+	SkillData skillData;
 
 	Bullet* bullet;
 	CircleView* circleView;
@@ -25,7 +25,7 @@ protected:
 	bool recoiltic;
 
 	int ammo;
-	int clip = 5;
+	int magazine = 5;
 	float breath;
 	float maxBreath = 2.7;
 
@@ -46,9 +46,8 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
 
-	void SetCircleView(CircleView* circleView) { this->circleView = circleView; }
 	void SetVibrationSpeed(float speed) { vibrationSpeed = speed; }
 
 	int GetAmmo() const { return ammo; }
-	float GetBreath() const { return breath/maxBreath; }
+	float GetBreath() const { return breath / maxBreath; }
 };

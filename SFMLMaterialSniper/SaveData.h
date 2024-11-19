@@ -10,7 +10,7 @@ struct SkillData
 	int control = 0;
 	int reload = 0;
 	int magazine = 0;
-	int skillPoint = 0;
+	int skillPoint = 20;
 
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SkillData, scopeSize, stablility, control, reload, magazine, skillPoint)
 };
@@ -25,10 +25,10 @@ struct SaveDataV1 : public SaveData
 {
 	SaveDataV1() { version = 1; }
 
-	SkillData playerSkill;
+	SkillData skillData;
 
 	SaveData* VersionUp() override;
 
-	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SaveDataV1, playerSkill)
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SaveDataV1,version, skillData)
 };
 

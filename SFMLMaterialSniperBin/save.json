@@ -1,0 +1,11 @@
+{
+    "skillData": {
+        "control": 0,
+        "magazine": 0,
+        "reload": 0,
+        "scopeSize": 0,
+        "skillPoint": 20,
+        "stablility": 0
+    },
+    "version": 1
+}
