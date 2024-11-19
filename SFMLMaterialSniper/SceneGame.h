@@ -11,6 +11,7 @@ class Player;
 class GlassShard;
 class DataStage;
 class Gun;
+class Cartridge;
 
 class SceneGame :
 	public Scene
@@ -31,6 +32,12 @@ protected:
     CircleView* scopeview;
 	Player* player;
 	Gun* gun;
+
+	std::list<Bullet*> bullets;
+	ObjectPool<Bullet> bulletPool;
+
+	std::list<Cartridge*> cartridges;
+	ObjectPool<Cartridge> cartridgePool;
 
 	std::list<GlassShard*> glassShards;
 	ObjectPool<GlassShard> glassShardPool;
@@ -78,6 +85,12 @@ public:
 
 	GlassShard* TakeGlassShard();
 	void ReturnGlassShard(GlassShard* glassShard);
+
+	Bullet* TakeBullet();
+	void ReturnBullet(Bullet* bullet);
+
+	Cartridge* TakeCartridge();
+	void ReturnCartridge(Cartridge* cartridge);
 
 	void ClearTookObject();
 

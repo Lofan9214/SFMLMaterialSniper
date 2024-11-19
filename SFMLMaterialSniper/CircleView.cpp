@@ -18,13 +18,9 @@ void CircleView::SetCircleRadius(float radius)
 	renderView.zoom(1.f / zoom);
 
 	bodytube.setScale({ diameter / 150.f ,diameter / 150.f });
-	Utils::SetOrigin(bodytube, Origins::MC);
-
 	crosshairh.setSize({ diameter * 0.8f,3.f });
-	Utils::SetOrigin(crosshairh, Origins::MC);
-
 	crosshairv.setSize({ 3.f,diameter * 0.8f });
-	Utils::SetOrigin(crosshairv, Origins::MC);
+	SetOrigin(Origins::MC);
 }
 
 void CircleView::SetZoom(float zoom)
@@ -36,6 +32,14 @@ void CircleView::SetZoom(float zoom)
 
 	crosshairh.setFillColor(sf::Color::Black);
 	crosshairv.setFillColor(sf::Color::Black);
+}
+
+void CircleView::SetOrigin(Origins preset)
+{
+	originPreset = preset;
+	Utils::SetOrigin(crosshairv, originPreset);
+	Utils::SetOrigin(crosshairh, originPreset);
+	Utils::SetOrigin(bodytube, originPreset);
 }
 
 void CircleView::SetPosition(const sf::Vector2f& pos)
@@ -56,9 +60,7 @@ void CircleView::Release()
 
 void CircleView::Reset()
 {
-	bodytube.setTexture(TEXTURE_MGR.Get("graphics/scopes/bodytube.png"));
-
-
+	bodytube.setTexture(TEXTURE_MGR.Get(bodytubeTexId));
 }
 
 void CircleView::Update(float dt)

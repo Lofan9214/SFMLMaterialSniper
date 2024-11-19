@@ -125,17 +125,17 @@ void Gun::Reset()
 	vibrationTimer = 0.f;
 
 	circleView = nullptr;
-	bullet = nullptr;
 	player = nullptr;
 	ScreenRecoil = nullptr;
+	TakeBullet = nullptr;
 
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
 		circleView = dynamic_cast<CircleView*>(scene->FindGo("circleView"));
-		bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
 		player = dynamic_cast<Player*>(scene->FindGo("player"));
 		ScreenRecoil = [scene]() {scene->ResetScreenRecoilTimer();};
+		TakeBullet = [scene]() {return scene->TakeBullet(); };
 	}
 
 	drawbody = false;
@@ -221,7 +221,7 @@ void Gun::Fire()
 	firePos.x = scopePos.x;
 	firePos.y = scopePos.y;
 	firePos.z = 0;
-	bullet->Reset();
+	Bullet* bullet = TakeBullet();
 	bullet->Fire(firePos);
 
 	float rand = Utils::RandomRange(Utils::PI * 1.35f, Utils::PI * 1.40f);

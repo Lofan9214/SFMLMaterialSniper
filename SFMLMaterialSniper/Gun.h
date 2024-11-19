@@ -12,7 +12,6 @@ protected:
 	sf::Sprite body;
 	sf::Sprite muzzlefire;
 
-	Bullet* bullet;
 	CircleView* circleView;
 	Player* player;
 	
@@ -34,6 +33,7 @@ protected:
 	bool breathover;
 
 	std::function<void()> ScreenRecoil;
+	std::function<Bullet* ()> TakeBullet;
 
 public:
 	Gun(const std::string& name = "");

@@ -7,6 +7,7 @@ protected:
 	sf::CircleShape rendermask;
 
 	sf::Sprite bodytube;
+	std::string bodytubeTexId = "graphics/scopes/bodytube.png";
 	sf::RectangleShape crosshairv;
 	sf::RectangleShape crosshairh;
 
@@ -21,6 +22,7 @@ public:
 
 	void SetCircleRadius(float radius);
 	void SetZoom(float zoom);
+	void SetOrigin(Origins preset) override;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 

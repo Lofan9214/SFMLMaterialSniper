@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "CircleView.h"
+#include "Cartridge.h"
 #include "Gun.h"
 
 Player::Player(const std::string& name)
@@ -56,6 +57,11 @@ void Player::Init()
 	animator.AddEvent("playerfire", 8, [this]()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
+			if (TakeCartridge)
+			{
+				Cartridge* cartridge = TakeCartridge();
+				cartridge->Eject(body.getTransform().transformPoint(ejectionPos));
+			}
 			if (gun != nullptr)
 			{
 				gun->NextRoad();
@@ -88,10 +94,12 @@ void Player::Reset()
 	SetOrigin(Origins::BL);
 
 	gun = nullptr;
+	TakeCartridge = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
 		gun = dynamic_cast<Gun*>(scene->FindGo("gun"));
+		TakeCartridge = [scene]() {return scene->TakeCartridge(); };
 	}
 
 	skillData = SAVEDATA_MGR.Load().skillData;

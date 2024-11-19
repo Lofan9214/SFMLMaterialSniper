@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "GlassShard.h"
 #include "Gun.h";
+#include "Cartridge.h"
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -59,7 +60,7 @@ void SceneGame::Enter()
 	remains = 0;
 	day = true;
 
-	screenRecoilTimer = 2.f;
+	screenRecoilTimer = 1000.f;
 }
 
 void SceneGame::Exit()
@@ -181,8 +182,8 @@ void SceneGame::UpdateInterlude(float dt)
 void SceneGame::UpdateScreenRecoil(float dt)
 {
 	screenRecoilTimer += dt;
-	screenRecoil = 240.f * sinf((screenRecoilTimer - 0.22f) * Utils::PI * 2.f) * std::exp(-(screenRecoilTimer - 0.3f) * Utils::PI * 2.f) * -1.f;
-	if (screenRecoilTimer > 0.22f && screenRecoilTimer < 4.f)
+	screenRecoil = 250.f * sinf((screenRecoilTimer - 0.22f) * Utils::PI * 2.f) * std::exp(screenRecoilTimer*-2.f);
+	if (screenRecoilTimer > 0.22f && screenRecoilTimer < 4.22f)
 	{
 		worldView.setCenter({ screenRecoil, 0.f });
 	}
@@ -201,6 +202,36 @@ void SceneGame::ReturnGlassShard(GlassShard* glassShard)
 	RemoveGo(glassShard);
 	glassShardPool.Return(glassShard);
 	glassShards.remove(glassShard);
+}
+
+Bullet* SceneGame::TakeBullet()
+{
+	Bullet* bullet = bulletPool.Take();
+	bullets.push_back(bullet);
+	AddGo(bullet);
+	return bullet;
+}
+
+void SceneGame::ReturnBullet(Bullet* bullet)
+{
+	RemoveGo(bullet);
+	bulletPool.Return(bullet);
+	bullets.remove(bullet);
+}
+
+Cartridge* SceneGame::TakeCartridge()
+{
+	Cartridge* cartridge = cartridgePool.Take();
+	cartridges.push_back(cartridge);
+	AddGo(cartridge);
+	return cartridge;
+}
+
+void SceneGame::ReturnCartridge(Cartridge* cartridge)
+{
+	RemoveGo(cartridge);
+	cartridgePool.Return(cartridge);
+	cartridges.remove(cartridge);
 }
 
 void SceneGame::ClearTookObject()
@@ -232,6 +263,20 @@ void SceneGame::ClearTookObject()
 		roundboardPool.Return(roundboard);
 	}
 	roundboards.clear();
+
+	for (auto cartridge : cartridges)
+	{
+		RemoveGo(cartridge);
+		cartridgePool.Return(cartridge);
+	}
+	cartridges.clear();
+
+	for (auto bullet : bullets)
+	{
+		RemoveGo(bullet);
+		bulletPool.Return(bullet);
+	}
+	bullets.clear();
 }
 
 void SceneGame::SpawnWave()

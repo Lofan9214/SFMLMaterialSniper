@@ -3,6 +3,12 @@
 class Cartridge : public GameObject
 {
 protected:
+	sf::Sprite body;
+	std::string texId = "graphics/bullet/cartridge.png";
+
+	sf::Vector2f velocity;
+	float gravity;
+	float ejectionTimer;
 
 public:
 	Cartridge(const std::string& name = "");
@@ -20,4 +26,6 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void Eject(const sf::Vector2f& pos);
 };

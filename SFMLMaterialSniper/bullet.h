@@ -49,6 +49,8 @@ protected:
 	float gravityMultiplier = 2.f;
 	float windMultiplier = 8.f;
 
+	std::function<void(Bullet*)> returnBullet;
+
 public:
 	Bullet(const std::string& name = "");
 	~Bullet() = default;
@@ -67,6 +69,7 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void UpdateFired(float dt);
+	void UpdateHit(float dt);
 	void Draw(sf::RenderTarget& renderTarget) override;
 
 	void UpdateAccelation();

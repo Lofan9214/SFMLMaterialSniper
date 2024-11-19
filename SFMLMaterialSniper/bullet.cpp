@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
+#include "SceneGame.h"
 
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
@@ -63,19 +64,25 @@ void Bullet::SetOrigin(const sf::Vector2f& newOrigin)
 void Bullet::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 10;
+	sortingOrder = 0;
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
 	animator.AddEvent("bullethit", 17,
 		[this]()
 		{
-			active = false;
+			if (returnBullet)
+			{
+				returnBullet(this);
+			}
 		});
 	animator.AddEvent("bulletricochet", 3,
 		[this]()
 		{
-			active = false;
+			if (returnBullet)
+			{
+				returnBullet(this);
+			}
 		});
 }
 
@@ -88,6 +95,13 @@ void Bullet::Reset()
 	SetOrigin(Origins::MC);
 	active = false;
 	status = Status::Ready;
+
+	returnBullet = nullptr;
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
+	{
+		returnBullet = [scene](Bullet* bullet) { scene->ReturnBullet(bullet); };
+	}
 }
 
 void Bullet::Update(float dt)
@@ -97,6 +111,10 @@ void Bullet::Update(float dt)
 	if (status == Status::Fired)
 	{
 		UpdateFired(dt);
+	}
+	else if (status == Status::Hit)
+	{
+
 	}
 }
 
@@ -110,6 +128,14 @@ void Bullet::UpdateFired(float dt)
 	velocity3d += acc3d * dt;
 	position3Previous = position3;
 	SetPosition(position3 + velocity3d * dt);
+	if (position3.z > 4000.f&& returnBullet)
+	{
+		returnBullet(this);
+	}
+}
+
+void Bullet::UpdateHit(float dt)
+{
 }
 
 void Bullet::Draw(sf::RenderTarget& renderTarget)

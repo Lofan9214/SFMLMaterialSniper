@@ -2,6 +2,7 @@
 #include "SaveData.h"
 
 class Gun;
+class Cartridge;
 
 class Player : public GameObject
 {
@@ -33,6 +34,10 @@ protected:
 	float fireTimer;
 	float reloadTimer;
 
+	const sf::Vector2f muzzlePos = sf::Vector2f(680.f, 248.5f);
+	const sf::Vector2f ejectionPos = sf::Vector2f(446.f, 244.f);
+
+	std::function<Cartridge* ()> TakeCartridge;
 
 public:
 	Player(const std::string& name = "");
@@ -59,5 +64,5 @@ public:
 
 	int GetAmmo() const { return ammo; }
 	float GetBreath() const { return breath / maxBreath; }
-	sf::Vector2f GetMuzzlePos() const { return body.getTransform().transformPoint({ 680.f,248.5f }); }
+	sf::Vector2f GetMuzzlePos() const { return body.getTransform().transformPoint(muzzlePos); }
 };
