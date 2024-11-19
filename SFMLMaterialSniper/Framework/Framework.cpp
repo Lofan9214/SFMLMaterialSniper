@@ -3,7 +3,9 @@
 void Framework::Init(int width, int height, const std::string& name)
 {
 	window.create(sf::VideoMode(width, height), name);
-
+	defaultSize.x = width;
+	defaultSize.y = height;
+	
 	Utils::Init();
 	DATATABLE_MGR.Init();
 	SCENE_MGR.Init();

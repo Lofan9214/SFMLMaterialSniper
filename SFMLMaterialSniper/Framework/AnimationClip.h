@@ -12,7 +12,7 @@ struct AnimationFrame
 	sf::IntRect texCoord;
 	bool flipX;
 	sf::Vector2f scale;
-	float opacity;
+	sf::Color color;
 	sf::Vector2f displacement;
 	float rotation;
 

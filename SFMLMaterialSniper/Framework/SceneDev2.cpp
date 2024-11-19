@@ -33,7 +33,7 @@ void SceneDev2::Enter()
 {
 	Scene::Enter();
 
-	sf::Vector2f screensize = FRAMEWORK.GetWindowSizef();
+	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
 
 	drum->SetPosition({300.f,0.f,700.f});
 	roundBoard->SetPosition({-300.f,0.f,700.f});

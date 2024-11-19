@@ -12,6 +12,7 @@ protected:
 	Framework& operator=(const Framework& framework) = delete;
 
 	sf::RenderWindow window;
+	sf::Vector2f defaultSize;
 
 	sf::Clock clock;
 	float timeScale = 1.f;
@@ -35,6 +36,7 @@ public:
 	sf::Vector2u GetWindowSize() { return window.getSize(); }
 	sf::Vector2f GetWindowSizef() { return (sf::Vector2f)window.getSize(); }
 	sf::FloatRect GetWindowBounds() { return { {0.f,0.f}, GetWindowSizef() }; }
+	sf::Vector2f GetDefaultSize() const { return defaultSize; }
 
 	virtual void Init(int width, int height, const std::string& name);
 	virtual void Do();

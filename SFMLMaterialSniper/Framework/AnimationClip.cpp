@@ -20,9 +20,9 @@ bool AnimationClip::loadFromFile(const std::string& filePath)
 		frame.texCoord = { std::stoi(row[1]), std::stoi(row[2]), std::stoi(row[3]), std::stoi(row[4]) };
 		frame.flipX = (bool)std::stoi(row[5]);
 		frame.scale = { std::stof(row[6]) ,std::stof(row[7]) };
-		frame.opacity = std::stof(row[8]);
-		frame.displacement = { std::stof(row[9]) ,std::stof(row[10]) };
-		frame.rotation = std::stof(row[11]);
+		frame.color = { (sf::Uint8)std::stoi(row[8]),(sf::Uint8)std::stoi(row[9]),(sf::Uint8)std::stoi(row[10]),(sf::Uint8)std::stoi(row[11]) } ;
+		frame.displacement = { std::stof(row[12]) ,std::stof(row[13]) };
+		frame.rotation = std::stof(row[14]);
 		frames.push_back(frame);
 	}
 

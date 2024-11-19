@@ -10,6 +10,7 @@ class UiHud;
 class Player;
 class GlassShard;
 class DataStage;
+class Gun;
 
 class SceneGame :
 	public Scene
@@ -30,6 +31,7 @@ protected:
     Bullet* bullet;
     CircleView* scopeview;
 	Player* player;
+	Gun* gun;
 
     sf::Vector3f startpos;
 

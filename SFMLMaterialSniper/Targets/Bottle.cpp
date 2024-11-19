@@ -48,7 +48,7 @@ void Bottle::SetAnimationScale(const sf::Vector2f& scale)
 void Bottle::SetDisplacement(const sf::Vector2f& disp)
 {
 	displacement = disp;
-	body.setOrigin(origin + displacement);
+	body.setOrigin(origin - displacement);
 }
 
 void Bottle::SetColor(const sf::Color& color)
@@ -81,6 +81,7 @@ void Bottle::Init()
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
+	animator.AddEvent("bottlespawn", 12, []() {SOUND_MGR.PlaySfx("sounds/targets/bottlespawn.mp3"); });
 
 	stand.setFillColor(sf::Color::Black);
 	stand.setSize({ 70.f,100.f });
@@ -94,8 +95,7 @@ void Bottle::Release()
 void Bottle::Reset()
 {
 	active = true;
-
-	animator.AddEvent("bottlespawn", 12, []() {SOUND_MGR.PlaySfx("sounds/targets/bottlespawn.mp3"); });
+	body.setColor(sf::Color::Transparent);
 
 	animator.Play("animations/targets/bottlespawn.csv");
 	animator.PlayQueue("animations/targets/bottleidle.csv");

@@ -39,7 +39,7 @@ void UiHud::SetOrigin(const sf::Vector2f& newOrigin)
 void UiHud::Init()
 {
 	sortingLayer = SortingLayers::UI;
-	sortingOrder = 0;
+	sortingOrder = 300;
 
 }
 
@@ -69,7 +69,7 @@ void UiHud::Reset()
 	textWind.SetFillColor(sf::Color::White);
 	textWind.SetOrigin(Origins::BR);
 
-	sf::Vector2f size = FRAMEWORK.GetWindowSizef();
+	sf::Vector2f size = FRAMEWORK.GetDefaultSize();
 	float bottomY = size.y - 25.f;
 
 	textAmmo.SetPosition({ 100.f, bottomY });

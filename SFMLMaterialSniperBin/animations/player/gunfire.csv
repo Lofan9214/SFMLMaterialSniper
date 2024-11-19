@@ -1,0 +1,23 @@
+ID,FPS,"LootType (0: Single, 1: Loop)"
+gunfire,24,0
+
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,COLORRED,COLORGREEN,COLORBLUE,COLORALPHA,DISPLACEMENTX,DISPLACEMENTY,ROTATION
+graphics/player/firescene.png,0,0,1920,1125,0,1,1,182,182,182,255,0,0,0
+graphics/player/firescene.png,0,0,1920,1125,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,0,0,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,200,0,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,400,0,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,600,0,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,800,0,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,0,60,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,200,60,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,400,60,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,600,60,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,800,60,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,0,120,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,200,120,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,400,120,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,600,120,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,800,120,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,800,120,200,60,0,1,1,255,255,255,255,0,0,0
+graphics/player/muzzlesmoke.png,800,120,200,60,0,1,1,255,255,255,255,0,0,0

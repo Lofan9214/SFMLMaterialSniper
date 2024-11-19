@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "CircleView.h"
+#include "Gun.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -46,13 +47,7 @@ void Player::SetOrigin(const sf::Vector2f& newOrigin)
 void Player::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 300;
-
-	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
-	vibrationScaleOrigin.x = 30.f;
-	vibrationScaleOrigin.y = 30.f;
-	vibrationScale.x = vibrationScaleOrigin.x;
-	vibrationScale.y = vibrationScaleOrigin.y;
+	sortingOrder = 150;
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
@@ -61,9 +56,10 @@ void Player::Init()
 	animator.AddEvent("playerfire", 8, [this]()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
-			float rand = Utils::RandomRange(Utils::PI * 1.75f, Utils::PI * 1.85f);
-			scopeRecoilVel.x += cosf(rand) * boltrecoilSpeed;
-			scopeRecoilVel.y += sinf(rand) * boltrecoilSpeed;
+			if (gun != nullptr)
+			{
+				gun->NextRoad();
+			}
 		});
 	animator.AddEvent("playerreloadend", 2, [this]()
 		{
@@ -84,33 +80,33 @@ void Player::Release()
 
 void Player::Reset()
 {
-	vibrationTimer = 0.f;
 	breathover = false;
 
-	auto screensize = FRAMEWORK.GetWindowSizef();
-	SetPosition({ screensize.x * -0.5f, screensize.y * 0.5f });
+	auto screensize = FRAMEWORK.GetDefaultSize();
+	SetScale({ 1.5f,1.5f });
+	SetPosition({ -screensize.x * 0.5f - 150.f, screensize.y * 0.5f + 130.f });
 	SetOrigin(Origins::BL);
 
-	circleView = nullptr;
+	gun = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
-		circleView = dynamic_cast<CircleView*>(SCENE_MGR.GetCurrentScene()->FindGo("circleView"));
+		gun = dynamic_cast<Gun*>(scene->FindGo("gun"));
 	}
 
 	skillData = SAVEDATA_MGR.Load().skillData;
 	maxBreath = 2.7f + skillData.control * 0.3f;
 	magazine = 5 + skillData.magazine;
 
-	if (circleView != nullptr)
-	{
-		circleView->SetZoom(5.f);
-		circleView->SetCircleRadius(150.f + skillData.scopeSize * 15.f);
-	}
-	recoilSpeed = (1.f - skillData.control * 0.1f) * 1400.f;
-	boltrecoilSpeed = (1.f - skillData.control * 0.1f) * 700.f;
 	breath = maxBreath;
 	ammo = magazine;
+
+	if (gun != nullptr)
+	{
+		gun->SetScope(skillData.scopeSize);
+		gun->SetRecoilSpeed(skillData.stablility);
+	}
+
 	SetStatus(Status::Ready);
 }
 
@@ -119,7 +115,6 @@ void Player::Update(float dt)
 	animator.Update(dt);
 
 	UpdateBreathStatus(dt);
-	UpdateScopePosition(dt);
 
 	switch (status)
 	{
@@ -142,16 +137,12 @@ void Player::UpdateReady(float dt)
 		if (ammo > 0)
 		{
 			--ammo;
-			bullet->Reset();
-			bullet->SetPosition({ scopePos.x, scopePos.y, 0.f });
-			bullet->Fire(bullet->GetPosition3());
 
 			animator.Play("animations/player/playerfire.csv");
 			animator.PlayQueue("animations/player/playeridle.csv");
 
-			float rand = Utils::RandomRange(Utils::PI * 1.35f, Utils::PI * 1.40f);
-			scopeRecoilVel.x = cosf(rand) * recoilSpeed;
-			scopeRecoilVel.y = sinf(rand) * recoilSpeed;
+			gun->Fire();
+
 			SetStatus(Status::Fire);
 		}
 		else
@@ -212,57 +203,32 @@ void Player::SetStatus(Status status)
 	}
 }
 
-void Player::UpdateScopePosition(float dt)
-{
-	if (circleView == nullptr)
-	{
-		return;
-	}
-	Scene* currentScene = SCENE_MGR.GetCurrentScene();
-	sf::Vector2f mousePos = currentScene->ScreenToWorld(InputMgr::GetMousePosition());
-
-	vibrationTimer += dt * vibrationSpeed;
-	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
-	scopeVibration = Utils::ElementProduct({ xt,sinf(vibrationTimer) * xt }, vibrationScale);
-
-	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 4.f);
-	scopeRecoil += scopeRecoilVel * dt;
-
-	scopePos = mousePos + scopeVibration + scopeRecoil;
-	circleView->SetPosition(scopePos);
-}
-
 void Player::UpdateBreathStatus(float dt)
 {
 	if (breathover)
 	{
-		vibrationScale = Utils::Lerp(vibrationScale, vibrationScaleOrigin * 2.f, dt * 5.f);
 		breath = Utils::Clamp(breath + dt * 0.5f, 0.f, maxBreath);
 		if (breath == maxBreath)
 		{
 			breathover = false;
-			vibrationSpeed = 1.f;
+			gun->SetBreathover(false);
+			gun->SetVibrationSpeed(1.f);
 		}
 		return;
 	}
 
-	if (vibrationScale.x != vibrationScaleOrigin.x)
-	{
-		vibrationScale = Utils::Lerp(vibrationScale, vibrationScaleOrigin, dt * 2.5f);
-	}
-
 	if (InputMgr::GetKeyPressing(sf::Keyboard::Space))
 	{
-		breath = Utils::Clamp(breath - dt, 0.f, maxBreath);
 		if (breath == 0.f)
 		{
-			vibrationSpeed = 3.f;
+			gun->SetVibrationSpeed(3.f);
 			breathover = true;
 		}
 		else
 		{
-			vibrationSpeed = 0.5f;
+			gun->SetVibrationSpeed(0.5f);
 		}
+		breath = Utils::Clamp(breath - dt, 0.f, maxBreath);
 	}
 	else
 	{

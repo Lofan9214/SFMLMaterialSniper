@@ -64,7 +64,6 @@ public:
 	void AddEvent(const std::string& id, int frame, const std::function<void()>& action);
 	void ClearEvent() { events.clear(); }
 	void ClearEvent(const std::string& id, int frame);
-	void RemoveEvent(const std::string& id, int frame, const std::function<void()>& action);
 
 	void Update(float dt);
 

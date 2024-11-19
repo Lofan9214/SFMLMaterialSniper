@@ -8,6 +8,7 @@
 #include "UiHud.h"
 #include "Player.h"
 #include "GlassShard.h"
+#include "Gun.h";
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -25,6 +26,7 @@ void SceneGame::Init()
 	uiHud = AddGo(new UiHud("uiHud"));
 
 	scopeview = AddGo(new CircleView("circleView"));
+	gun = AddGo(new Gun("gun"));
 	player = AddGo(new Player("player"));
 
 	Scene::Init();
@@ -39,7 +41,7 @@ void SceneGame::Enter()
 
 	currentStatus = Status::Awake;
 
-	sf::Vector2f screensize = FRAMEWORK.GetWindowSizef();
+	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
 
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize(screensize);

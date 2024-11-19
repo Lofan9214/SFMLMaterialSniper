@@ -80,7 +80,7 @@ void CircleView::Draw(sf::RenderTarget& window)
 	std::list<GameObject*> lstobject = SCENE_MGR.GetCurrentScene()->GetWorldGameObjects();
 	for (auto obj : lstobject)
 	{
-		if (!obj->IsActive())
+		if (!obj->IsActive() || obj->GetSortingOrder() > 0)
 		{
 			continue;
 		}

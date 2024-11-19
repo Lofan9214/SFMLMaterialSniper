@@ -52,9 +52,9 @@ void RoundBoard::SetAnimationScale(const sf::Vector2f& scale)
 void RoundBoard::SetDisplacement(const sf::Vector2f& disp)
 {
 	displacement = disp;
-	body.setOrigin(origin + displacement);
-	internalHitBox.setOrigin(origin + displacement - offsetHitBox);
-	bulletMark.setOrigin(origin + displacement - positionHit);
+	body.setOrigin(origin - displacement);
+	internalHitBox.setOrigin(origin - displacement - offsetHitBox);
+	bulletMark.setOrigin(origin - displacement - positionHit);
 }
 
 void RoundBoard::SetColor(const sf::Color& color)
@@ -116,6 +116,7 @@ void RoundBoard::Release()
 void RoundBoard::Reset()
 {
 	active = true;
+	body.setColor(sf::Color::Transparent);
 	hit = false;
 
 	bullet = nullptr;

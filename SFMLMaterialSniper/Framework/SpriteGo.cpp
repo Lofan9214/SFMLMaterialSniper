@@ -25,7 +25,7 @@ void SpriteGo::SetOrigin(const sf::Vector2f& newOrigin)
 void SpriteGo::SetDisplacement(const sf::Vector2f& disp)
 {
 	displacement = disp;
-	body.setPosition(position + displacement);
+	body.setPosition(position - displacement);
 }
 
 void SpriteGo::SetColor(const sf::Color& color)

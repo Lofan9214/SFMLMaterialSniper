@@ -35,21 +35,6 @@ void Animator::ClearEvent(const std::string& id, int frame)
 	}
 }
 
-void Animator::RemoveEvent(const std::string& id, int frame, const std::function<void()>& action)
-{
-	auto it = events.find({ id,frame });
-	if (it != events.end())
-	{
-		auto& listAction = it->second;
-		//auto it2 = std::find(listAction.begin(), listAction.end(), &action);
-		//if (it2 != listAction.end())
-		//{
-		//	listAction.erase(it2);
-		//}
-		return;
-	}
-}
-
 void Animator::Update(float dt)
 {
 	if (!isPlaying)
@@ -161,8 +146,7 @@ void Animator::SetFrame(const AnimationFrame& frame)
 	}
 	if (SetColor)
 	{
-		sf::Uint8 opacity = Utils::Clamp(256.f * frame.opacity, 0, 255);
-		SetColor({ 255,255,255,opacity });
+		SetColor(frame.color);
 	}
 	if (SetDisplacement)
 	{

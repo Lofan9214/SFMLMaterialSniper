@@ -1,8 +1,7 @@
 #pragma once
 #include "SaveData.h"
 
-class Bullet;
-class CircleView;
+class Gun;
 
 class Player : public GameObject
 {
@@ -22,28 +21,15 @@ protected:
 	sf::Sprite body;
 	SkillData skillData;
 
-	Bullet* bullet;
-	CircleView* circleView;
-
-	sf::Vector2f scopePos;
-	sf::Vector2f scopeVibration;
-	sf::Vector2f vibrationScale;
-	sf::Vector2f vibrationScaleOrigin;
-	float vibrationSpeed = 1.f;
-	float vibrationTimer = 0.f;
-
-	sf::Vector2f scopeRecoil;
-	sf::Vector2f scopeRecoilVel;
-	float recoilSpeed;
-	float boltrecoilSpeed;
+	Gun* gun;
 
 	int ammo;
 	int magazine;
-	
+
 	float breath;
 	float maxBreath;
 	bool breathover;
-	
+
 	float fireTimer;
 	float reloadTimer;
 
@@ -65,13 +51,12 @@ public:
 	void UpdateReady(float dt);
 	void UpdateFire(float dt);
 	void UpdateReload(float dt);
-	void UpdateScopePosition(float dt);
 	void UpdateBreathStatus(float dt);
 	void Draw(sf::RenderTarget& window) override;
 
-	void SetVibrationSpeed(float speed) { vibrationSpeed = speed; }
 	void SetStatus(Status status);
 
 	int GetAmmo() const { return ammo; }
 	float GetBreath() const { return breath / maxBreath; }
+	sf::Vector2f GetMuzzlePos() const { return body.getTransform().transformPoint({ 680.f,248.5f }); }
 };

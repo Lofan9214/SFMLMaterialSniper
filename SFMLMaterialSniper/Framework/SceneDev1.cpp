@@ -19,7 +19,7 @@ void SceneDev1::Init()
 	Scene::Init();
 
 	worldView.setCenter(0.f, 0.f);
-	worldView.setSize(FRAMEWORK.GetWindowSizef());
+	worldView.setSize(FRAMEWORK.GetDefaultSize());
 }
 
 void SceneDev1::Enter()

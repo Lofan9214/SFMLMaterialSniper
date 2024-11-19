@@ -1,8 +1,8 @@
 ID,FPS,"LootType (0: Single, 1: Loop)"		
 bulletricochet,30,0	
 				
-TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,OPACITY,DISPLACEMENTX,DISPLACEMENTY,ROTATION
-graphics/bullet/bulletricochet.png,0,0,120,120,0,1,1,1,0,0,-1
-graphics/bullet/bulletricochet.png,120,0,120,120,0,1,1,1,0,0,-1
-graphics/bullet/bulletricochet.png,240,0,120,120,0,1,1,1,0,0,-1
-graphics/bullet/bulletricochet.png,360,0,120,120,0,1,1,1,0,0,-1
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,COLORRED,COLORGREEN,COLORBLUE,COLORALPHA,DISPLACEMENTX,DISPLACEMENTY,ROTATION
+graphics/bullet/bulletricochet.png,0,0,120,120,0,1,1,255,255,255,255,0,0,-1
+graphics/bullet/bulletricochet.png,120,0,120,120,0,1,1,255,255,255,255,0,0,-1
+graphics/bullet/bulletricochet.png,240,0,120,120,0,1,1,255,255,255,255,0,0,-1
+graphics/bullet/bulletricochet.png,360,0,120,120,0,1,1,255,255,255,255,0,0,-1

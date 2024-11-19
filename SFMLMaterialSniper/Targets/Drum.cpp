@@ -44,7 +44,7 @@ void Drum::SetAnimationScale(const sf::Vector2f& scale)
 void Drum::SetDisplacement(const sf::Vector2f& disp)
 {
 	displacement = disp;
-	body.setOrigin(origin + displacement);
+	body.setOrigin(origin - displacement);
 
 }
 
@@ -103,6 +103,7 @@ void Drum::Reset()
 	}
 
 	active = true;
+	body.setColor(sf::Color::Transparent);
 
 	animator.Play("animations/targets/drumspawn.csv");
 	animator.PlayQueue("animations/targets/drumidle.csv");
