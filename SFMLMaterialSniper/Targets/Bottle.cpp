@@ -139,10 +139,14 @@ void Bottle::FixedUpdate(float dt)
 	}
 
 	sf::FloatRect bodyRect = GetGlobalBounds();
-	if (bullet->GetPosition3().z > position3.z
-		&& bullet->GetPosition3Previous().z < position3.z)
+	sf::Vector3f bulletpos = bullet->GetPosition3();
+	sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
+	if (bulletpos.z > position3.z
+		&& bulletpospre.z < position3.z)
 	{
-		if (bodyRect.contains(bullet->GetPosition()))
+		float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
+		sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
+		if (bodyRect.contains(bulletlerppos))
 		{
 			std::cout << "hitbottle" << std::endl;
 			bullet->Hit();
@@ -155,7 +159,7 @@ void Bottle::FixedUpdate(float dt)
 				shard->Start({ position3.x + displacement.x,position3.y - body.getGlobalBounds().height * 0.5f + displacement.y ,position3.z });
 			}
 		}
-		else if (stand.getGlobalBounds().contains(bullet->GetPosition()))
+		else if (stand.getGlobalBounds().contains(bulletlerppos))
 		{
 			bullet->SetRotation(Utils::RandomRange(0.f, 360.f));
 			bullet->Hit(Bullet::Result::Ricochet);

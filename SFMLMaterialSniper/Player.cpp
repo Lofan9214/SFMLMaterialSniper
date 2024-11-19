@@ -49,8 +49,10 @@ void Player::Init()
 	sortingOrder = 300;
 
 	bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
-	vibrationScale.x = 20.f;
-	vibrationScale.y = 30.f;
+	vibrationScaleOrigin.x = 30.f;
+	vibrationScaleOrigin.y = 30.f;
+	vibrationScale.x = vibrationScaleOrigin.x;
+	vibrationScale.y = vibrationScaleOrigin.y;
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
@@ -105,8 +107,8 @@ void Player::Reset()
 		circleView->SetZoom(5.f);
 		circleView->SetCircleRadius(150.f + skillData.scopeSize * 15.f);
 	}
-	recoilSpeed = (1.f - skillData.control * 0.1f) * 1700.f;
-	boltrecoilSpeed = (1.f - skillData.control * 0.1f) * 1000.f;
+	recoilSpeed = (1.f - skillData.control * 0.1f) * 1400.f;
+	boltrecoilSpeed = (1.f - skillData.control * 0.1f) * 700.f;
 	breath = maxBreath;
 	ammo = magazine;
 	SetStatus(Status::Ready);
@@ -116,8 +118,8 @@ void Player::Update(float dt)
 {
 	animator.Update(dt);
 
-	UpdateScopePosition(dt);
 	UpdateBreathStatus(dt);
+	UpdateScopePosition(dt);
 
 	switch (status)
 	{
@@ -140,7 +142,6 @@ void Player::UpdateReady(float dt)
 		if (ammo > 0)
 		{
 			--ammo;
-			SOUND_MGR.PlaySfx("sounds/bullet/bulletfire1.mp3");
 			bullet->Reset();
 			bullet->SetPosition({ scopePos.x, scopePos.y, 0.f });
 			bullet->Fire(bullet->GetPosition3());
@@ -222,23 +223,46 @@ void Player::UpdateScopePosition(float dt)
 
 	vibrationTimer += dt * vibrationSpeed;
 	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
-	scopeVibration = { xt,sinf(vibrationTimer) * xt };
+	scopeVibration = Utils::ElementProduct({ xt,sinf(vibrationTimer) * xt }, vibrationScale);
 
-	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 5.f);
+	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 4.f);
 	scopeRecoil += scopeRecoilVel * dt;
 
-	sf::Vector2f vibration = Utils::ElementProduct(scopeVibration, vibrationScale);
-
-	scopePos = mousePos + vibration + scopeRecoil;
+	scopePos = mousePos + scopeVibration + scopeRecoil;
 	circleView->SetPosition(scopePos);
 }
 
 void Player::UpdateBreathStatus(float dt)
 {
+	if (breathover)
+	{
+		vibrationScale = Utils::Lerp(vibrationScale, vibrationScaleOrigin * 2.f, dt * 5.f);
+		breath = Utils::Clamp(breath + dt * 0.5f, 0.f, maxBreath);
+		if (breath == maxBreath)
+		{
+			breathover = false;
+			vibrationSpeed = 1.f;
+		}
+		return;
+	}
+
+	if (vibrationScale.x != vibrationScaleOrigin.x)
+	{
+		vibrationScale = Utils::Lerp(vibrationScale, vibrationScaleOrigin, dt * 2.5f);
+	}
+
 	if (InputMgr::GetKeyPressing(sf::Keyboard::Space))
 	{
 		breath = Utils::Clamp(breath - dt, 0.f, maxBreath);
-		vibrationSpeed = 0.5f;
+		if (breath == 0.f)
+		{
+			vibrationSpeed = 3.f;
+			breathover = true;
+		}
+		else
+		{
+			vibrationSpeed = 0.5f;
+		}
 	}
 	else
 	{

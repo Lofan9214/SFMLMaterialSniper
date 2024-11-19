@@ -6,6 +6,10 @@ protected:
 	sf::View renderView;
 	sf::CircleShape rendermask;
 
+	sf::Sprite bodytube;
+	sf::RectangleShape crosshairv;
+	sf::RectangleShape crosshairh;
+
 	float zoom;
 	float maskRadius;
 

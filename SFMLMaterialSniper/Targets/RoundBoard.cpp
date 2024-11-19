@@ -157,13 +157,17 @@ void RoundBoard::FixedUpdate(float dt)
 	}
 
 	sf::FloatRect bodyRect = GetGlobalBounds();
-	if (bullet->GetPosition3().z > position3.z
-		&& bullet->GetPosition3Previous().z < position3.z)
+	sf::Vector3f bulletpos = bullet->GetPosition3();
+	sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
+	if (bulletpos.z > position3.z
+		&& bulletpospre.z < position3.z)
 	{
+		float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
+		sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
 		sf::Image collisionImage = body.getTexture()->copyToImage();
-		sf::Vector2f point = body.getInverseTransform().transformPoint(bullet->GetPosition());
+		sf::Vector2f point = body.getInverseTransform().transformPoint(bulletlerppos);
 
-		if (bodyRect.contains(bullet->GetPosition())
+		if (bodyRect.contains(bulletlerppos)
 			&& collisionImage.getPixel(point.x, point.y).a != 0)
 		{
 			sf::Vector2f hitboxCenter(240.f, 240.f);

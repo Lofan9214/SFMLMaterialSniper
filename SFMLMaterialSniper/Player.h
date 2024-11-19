@@ -28,6 +28,7 @@ protected:
 	sf::Vector2f scopePos;
 	sf::Vector2f scopeVibration;
 	sf::Vector2f vibrationScale;
+	sf::Vector2f vibrationScaleOrigin;
 	float vibrationSpeed = 1.f;
 	float vibrationTimer = 0.f;
 

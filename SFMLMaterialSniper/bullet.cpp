@@ -131,6 +131,7 @@ void Bullet::Fire(const sf::Vector3f& startpos, const sf::Vector3f& dir)
 	active = true;
 	status = Status::Fired;
 
+	SOUND_MGR.PlaySfx("sounds/bullet/bulletfire1.mp3");
 	animator.Play("animations/bullet/bulletflying.csv");
 
 	positionStarted = startpos;
