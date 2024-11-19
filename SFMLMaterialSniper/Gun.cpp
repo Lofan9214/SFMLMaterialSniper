@@ -80,10 +80,15 @@ void Gun::Init()
 			SetOrigin(Origins::ML);
 
 			drawmuzzlefire = true;
-			muzzlepos.x += 10.f;
+			muzzlepos.x -= 60.f;
 			muzzlefire.setPosition(muzzlepos);
 			muzzlefire.setScale(2.5f, 3.5f);
 			Utils::SetOrigin(muzzlefire, Origins::ML);
+
+			if (ScreenRecoil)
+			{
+				ScreenRecoil();
+			}
 		});
 	animator.AddEvent("gunfire", 3, [this]()
 		{
@@ -118,15 +123,19 @@ void Gun::Reset()
 	muzzlefire.setTexture(TEXTURE_MGR.Get("graphics/player/muzzlefire.png"));
 
 	vibrationTimer = 0.f;
+
 	circleView = nullptr;
 	bullet = nullptr;
 	player = nullptr;
+	ScreenRecoil = nullptr;
+
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
 		circleView = dynamic_cast<CircleView*>(scene->FindGo("circleView"));
 		bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
 		player = dynamic_cast<Player*>(scene->FindGo("player"));
+		ScreenRecoil = [scene]() {scene->ResetScreenRecoilTimer();};
 	}
 
 	drawbody = false;

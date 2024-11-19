@@ -33,6 +33,7 @@ protected:
 	float fireTimer;
 	float reloadTimer;
 
+
 public:
 	Player(const std::string& name = "");
 	~Player() = default;

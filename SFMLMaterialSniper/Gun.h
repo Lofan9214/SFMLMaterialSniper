@@ -33,6 +33,8 @@ protected:
 
 	bool breathover;
 
+	std::function<void()> ScreenRecoil;
+
 public:
 	Gun(const std::string& name = "");
 	~Gun() = default;

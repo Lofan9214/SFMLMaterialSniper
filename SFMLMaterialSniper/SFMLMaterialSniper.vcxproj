@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cartridge.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="JsonDefines.h" />
     <ClInclude Include="SceneHome.h" />
@@ -64,6 +65,7 @@
     <ClInclude Include="UiHud.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Cartridge.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="SceneHome.cpp" />
     <ClCompile Include="StageTable.cpp" />

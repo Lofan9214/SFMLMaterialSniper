@@ -24,7 +24,6 @@ public:
 		Result,
 	};
 
-
 protected:
 	Status currentStatus = Status::Awake;
 	
@@ -32,8 +31,6 @@ protected:
     CircleView* scopeview;
 	Player* player;
 	Gun* gun;
-
-    sf::Vector3f startpos;
 
 	std::list<GlassShard*> glassShards;
 	ObjectPool<GlassShard> glassShardPool;
@@ -59,6 +56,9 @@ protected:
 	bool day;
 	int wave;
 
+	float screenRecoil;
+	float screenRecoilTimer;
+
 public:
 	SceneGame();
 	virtual ~SceneGame() = default;
@@ -74,18 +74,20 @@ public:
 	void UpdateAwake(float dt);
 	void UpdateInGame(float dt);
 	void UpdateInterlude(float dt);
+	void UpdateScreenRecoil(float dt);
 
 	GlassShard* TakeGlassShard();
 	void ReturnGlassShard(GlassShard* glassShard);
 
 	void ClearTookObject();
 
-	void SpawnWave();
-
+	void ResetScreenRecoilTimer() { screenRecoilTimer = 0.f; }
 	void TargetHit() { --remains; }
+	void SpawnWave();
 
 	void SpawnDrum(const sf::Vector3f& pos);
 	void SpawnBottle(const sf::Vector3f& pos);
 	void SpawnRoundBoard(const sf::Vector3f& pos);
+
 };
 

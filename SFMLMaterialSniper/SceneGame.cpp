@@ -58,6 +58,8 @@ void SceneGame::Enter()
 	wave = 0;
 	remains = 0;
 	day = true;
+
+	screenRecoilTimer = 2.f;
 }
 
 void SceneGame::Exit()
@@ -73,6 +75,9 @@ void SceneGame::Update(float dt)
 	uiHud->SetWind(wind);
 	uiHud->SetAmmo(player->GetAmmo());
 	uiHud->SetBreath(player->GetBreath());
+
+	UpdateScreenRecoil(dt);
+
 	switch (currentStatus)
 	{
 	case SceneGame::Status::Awake:
@@ -101,7 +106,6 @@ void SceneGame::SetStatus(Status status)
 {
 	Status prev = currentStatus;
 	currentStatus = status;
-	
 
 	switch (currentStatus)
 	{
@@ -171,6 +175,16 @@ void SceneGame::UpdateInterlude(float dt)
 	if (interludeTimer > 3.f)
 	{
 		SetStatus(Status::InGame);
+	}
+}
+
+void SceneGame::UpdateScreenRecoil(float dt)
+{
+	screenRecoilTimer += dt;
+	screenRecoil = 240.f * sinf((screenRecoilTimer - 0.22f) * Utils::PI * 2.f) * std::exp(-(screenRecoilTimer - 0.3f) * Utils::PI * 2.f) * -1.f;
+	if (screenRecoilTimer > 0.22f && screenRecoilTimer < 4.f)
+	{
+		worldView.setCenter({ screenRecoil, 0.f });
 	}
 }
 
