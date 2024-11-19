@@ -1,0 +1,6 @@
+ID,FPS,"LootType (0: Single, 1: Loop)"
+playerreloadstart,20,0
+
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,OPACITY,DISPLACEMENTX,DISPLACEMENTY,ROTATION
+graphics/player/ALL_10000.png,0,0,1024,512,0,1,1,1,0,0,0
+graphics/player/ALL_10001.png,0,0,1024,512,0,1,1,1,0,0,0

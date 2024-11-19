@@ -6,7 +6,17 @@ class CircleView;
 
 class Player : public GameObject
 {
+public:
+	enum class Status
+	{
+		Ready,
+		Fire,
+		Reloading,
+	};
+
 protected:
+
+	Status status;
 
 	Animator animator;
 	sf::Sprite body;
@@ -15,6 +25,7 @@ protected:
 	Bullet* bullet;
 	CircleView* circleView;
 
+	sf::Vector2f scopePos;
 	sf::Vector2f scopeVibration;
 	sf::Vector2f vibrationScale;
 	float vibrationSpeed = 1.f;
@@ -22,12 +33,18 @@ protected:
 
 	sf::Vector2f scopeRecoil;
 	sf::Vector2f scopeRecoilVel;
-	bool recoiltic;
+	float recoilSpeed;
+	float boltrecoilSpeed;
 
 	int ammo;
-	int magazine = 5;
+	int magazine;
+	
 	float breath;
-	float maxBreath = 2.7;
+	float maxBreath;
+	bool breathover;
+	
+	float fireTimer;
+	float reloadTimer;
 
 public:
 	Player(const std::string& name = "");
@@ -44,9 +61,15 @@ public:
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
+	void UpdateReady(float dt);
+	void UpdateFire(float dt);
+	void UpdateReload(float dt);
+	void UpdateScopePosition(float dt);
+	void UpdateBreathStatus(float dt);
 	void Draw(sf::RenderTarget& window) override;
 
 	void SetVibrationSpeed(float speed) { vibrationSpeed = speed; }
+	void SetStatus(Status status);
 
 	int GetAmmo() const { return ammo; }
 	float GetBreath() const { return breath / maxBreath; }

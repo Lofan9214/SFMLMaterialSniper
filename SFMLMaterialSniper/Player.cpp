@@ -60,8 +60,16 @@ void Player::Init()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
 			float rand = Utils::RandomRange(Utils::PI * 1.75f, Utils::PI * 1.85f);
-			scopeRecoilVel.x += cosf(rand) * (1200.f - skillData.control * 120.f);
-			scopeRecoilVel.y += sinf(rand) * (1200.f - skillData.control * 120.f);
+			scopeRecoilVel.x += cosf(rand) * boltrecoilSpeed;
+			scopeRecoilVel.y += sinf(rand) * boltrecoilSpeed;
+		});
+	animator.AddEvent("playerreloadend", 2, [this]()
+		{
+			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
+		});
+	animator.AddEvent("playerfire", 21, [this]()
+		{
+			SetStatus(Status::Ready);
 		});
 }
 
@@ -75,7 +83,7 @@ void Player::Release()
 void Player::Reset()
 {
 	vibrationTimer = 0.f;
-	recoiltic = true;
+	breathover = false;
 
 	auto screensize = FRAMEWORK.GetWindowSizef();
 	SetPosition({ screensize.x * -0.5f, screensize.y * 0.5f });
@@ -89,37 +97,44 @@ void Player::Reset()
 	}
 
 	skillData = SAVEDATA_MGR.Load().skillData;
-	maxBreath += skillData.control;
-	magazine += skillData.magazine;
+	maxBreath = 2.7f + skillData.control * 0.3f;
+	magazine = 5 + skillData.magazine;
 
 	if (circleView != nullptr)
 	{
 		circleView->SetZoom(5.f);
 		circleView->SetCircleRadius(150.f + skillData.scopeSize * 15.f);
 	}
-
+	recoilSpeed = (1.f - skillData.control * 0.1f) * 1700.f;
+	boltrecoilSpeed = (1.f - skillData.control * 0.1f) * 1000.f;
 	breath = maxBreath;
 	ammo = magazine;
+	SetStatus(Status::Ready);
 }
 
 void Player::Update(float dt)
 {
 	animator.Update(dt);
-	Scene* currentScene = SCENE_MGR.GetCurrentScene();
 
-	sf::Vector2f mousePos = currentScene->ScreenToWorld(InputMgr::GetMousePosition());
+	UpdateScopePosition(dt);
+	UpdateBreathStatus(dt);
 
-	vibrationTimer += dt * vibrationSpeed;
-	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
-	scopeVibration = { xt,sinf(vibrationTimer) * xt };
+	switch (status)
+	{
+	case Player::Status::Ready:
+		UpdateReady(dt);
+		break;
+	case Player::Status::Fire:
+		UpdateFire(dt);
+		break;
+	case Player::Status::Reloading:
+		UpdateReload(dt);
+		break;
+	}
+}
 
-	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 7.0f);
-	scopeRecoil += scopeRecoilVel * dt;
-
-	sf::Vector2f vibration = Utils::ElementProduct(scopeVibration, vibrationScale);
-
-	sf::Vector2f scopePos = mousePos + vibration + scopeRecoil;
-
+void Player::UpdateReady(float dt)
+{
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
 		if (ammo > 0)
@@ -130,17 +145,13 @@ void Player::Update(float dt)
 			bullet->SetPosition({ scopePos.x, scopePos.y, 0.f });
 			bullet->Fire(bullet->GetPosition3());
 
-			scopeRecoil.x = 0.f;
-			scopeRecoil.y = 0.f;
-
 			animator.Play("animations/player/playerfire.csv");
 			animator.PlayQueue("animations/player/playeridle.csv");
 
-			recoiltic = false;
-
 			float rand = Utils::RandomRange(Utils::PI * 1.35f, Utils::PI * 1.40f);
-			scopeRecoilVel.x = cosf(rand) * (3000.f - skillData.control * 300.f);
-			scopeRecoilVel.y = sinf(rand) * (3000.f - skillData.control * 300.f);
+			scopeRecoilVel.x = cosf(rand) * recoilSpeed;
+			scopeRecoilVel.y = sinf(rand) * recoilSpeed;
+			SetStatus(Status::Fire);
 		}
 		else
 		{
@@ -150,26 +161,87 @@ void Player::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z)
 		|| InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
+		ammo = 0;
+		reloadTimer = 0.f;
+		SetStatus(Status::Reloading);
+	}
+}
+
+void Player::UpdateFire(float dt)
+{
+}
+
+void Player::UpdateReload(float dt)
+{
+	reloadTimer += dt;
+	float reloadDuration = 100.f / (24.f * (3.f + skillData.reload));
+	if (reloadTimer > reloadDuration - 0.5f
+		&& animator.GetCurrentClipId() == "playerreloadstart")
+	{
+		SOUND_MGR.PlaySfx("sounds/player/endreload.mp3");
+		animator.Play("animations/player/playerreloadend.csv");
+		animator.PlayQueue("animations/player/playeridle.csv");
+	}
+	if (reloadTimer > reloadDuration)
+	{
+		SetStatus(Status::Ready);
 		ammo = magazine;
-	}
-
-	if (InputMgr::GetKeyPressing(sf::Keyboard::Space))
-	{
-		breath -= dt;
-		vibrationSpeed = 0.5f;
-	}
-	else
-	{
-		breath = Utils::Clamp(breath + dt * 0.5f, 0.f, maxBreath);
-	}
-
-	if (circleView != nullptr)
-	{
-		circleView->SetPosition(scopePos);
 	}
 }
 
 void Player::Draw(sf::RenderTarget& renderTarget)
 {
 	renderTarget.draw(body);
+}
+
+void Player::SetStatus(Status status)
+{
+	Status prev = this->status;
+	this->status = status;
+	switch (status)
+	{
+	case Player::Status::Ready:
+		break;
+	case Player::Status::Fire:
+		break;
+	case Player::Status::Reloading:
+		animator.Play("animations/player/playerreloadstart.csv");
+		SOUND_MGR.PlaySfx("sounds/player/startreload.mp3");
+		break;
+	}
+}
+
+void Player::UpdateScopePosition(float dt)
+{
+	if (circleView == nullptr)
+	{
+		return;
+	}
+	Scene* currentScene = SCENE_MGR.GetCurrentScene();
+	sf::Vector2f mousePos = currentScene->ScreenToWorld(InputMgr::GetMousePosition());
+
+	vibrationTimer += dt * vibrationSpeed;
+	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
+	scopeVibration = { xt,sinf(vibrationTimer) * xt };
+
+	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 5.f);
+	scopeRecoil += scopeRecoilVel * dt;
+
+	sf::Vector2f vibration = Utils::ElementProduct(scopeVibration, vibrationScale);
+
+	scopePos = mousePos + vibration + scopeRecoil;
+	circleView->SetPosition(scopePos);
+}
+
+void Player::UpdateBreathStatus(float dt)
+{
+	if (InputMgr::GetKeyPressing(sf::Keyboard::Space))
+	{
+		breath = Utils::Clamp(breath - dt, 0.f, maxBreath);
+		vibrationSpeed = 0.5f;
+	}
+	else
+	{
+		breath = Utils::Clamp(breath + dt * 0.5f, 0.f, maxBreath);
+	}
 }
