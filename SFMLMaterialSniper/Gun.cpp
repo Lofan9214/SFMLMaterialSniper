@@ -80,7 +80,8 @@ void Gun::Init()
 			SetOrigin(Origins::ML);
 
 			drawmuzzlefire = true;
-			muzzlepos.x -= 60.f;
+			muzzlepos.x -= 100.f;
+			muzzlefire.setColor({ 255,255,255,255 });
 			muzzlefire.setPosition(muzzlepos);
 			muzzlefire.setScale(2.5f, 3.5f);
 			Utils::SetOrigin(muzzlefire, Origins::ML);
@@ -179,13 +180,13 @@ void Gun::UpdateScopeVibration(float dt)
 
 void Gun::Draw(sf::RenderTarget& window)
 {
-	if (drawmuzzlefire)
-	{
-		window.draw(muzzlefire);
-	}
 	if (drawbody)
 	{
 		window.draw(body);
+	}
+	if (drawmuzzlefire)
+	{
+		window.draw(muzzlefire);
 	}
 }
 
