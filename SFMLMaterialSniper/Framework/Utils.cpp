@@ -12,12 +12,24 @@ void Utils::Init()
 
 int Utils::RandomRange(int min, int max)
 {
+	if (min > max)
+	{
+		int tmp = min;
+		min = max;
+		max = tmp;
+	}
 	std::uniform_int_distribution<int> dist(min, max);
 	return dist(generator);
 }
 
 float Utils::RandomRange(float min, float max)
 {
+	if (min > max)
+	{
+		float tmp = min;
+		min = max;
+		max = tmp;
+	}
 	std::uniform_real_distribution<float> dist(min, max);
 	return dist(generator);
 }

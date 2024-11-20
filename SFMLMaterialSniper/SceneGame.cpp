@@ -74,7 +74,6 @@ void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
 	uiHud->SetWind(wind);
-	uiHud->SetAmmo(player->GetAmmo());
 	uiHud->SetBreath(player->GetBreath());
 
 	UpdateScreenRecoil(dt);
@@ -182,7 +181,7 @@ void SceneGame::UpdateInterlude(float dt)
 void SceneGame::UpdateScreenRecoil(float dt)
 {
 	screenRecoilTimer += dt;
-	screenRecoil = 300.f * sinf((screenRecoilTimer)*Utils::PI * 2.f) * std::exp(screenRecoilTimer * -2.f);
+	screenRecoil = 350.f * sinf((screenRecoilTimer)*Utils::PI * 2.f) * std::exp(screenRecoilTimer * -3.f);
 	if (screenRecoilTimer > 0.f && screenRecoilTimer < 4.f)
 	{
 		worldView.setCenter({ screenRecoil, 0.f });
@@ -206,6 +205,7 @@ void SceneGame::ReturnGlassShard(GlassShard* glassShard)
 
 Bullet* SceneGame::TakeBullet()
 {
+	uiHud->Fired();
 	Bullet* bullet = bulletPool.Take();
 	bullets.push_back(bullet);
 	AddGo(bullet);

@@ -12,6 +12,16 @@ protected:
 	TextGo textAmmo;
 	TextGo textBreath;
 
+	SpriteGo* uiBar;
+	std::string uiBarTexId = "graphics/ui/uibar.png";
+
+	std::vector<SpriteGo*> uiBullets;
+	std::string uiBulletTexId = "graphics/ui/uibullet.png";
+
+	int ammo;
+	float fireTimer;
+	const float fireDuration = 0.25f;
+
 public:
 	UiHud(const std::string& name = "");
 	~UiHud() = default;
@@ -34,6 +44,7 @@ public:
 	void SetWind(int wind);
 	void SetAmmo(int ammo);
 	void SetBreath(float breath);
+	void Fired();
 
 	void OnLocalize(Languages lang) override;
 };

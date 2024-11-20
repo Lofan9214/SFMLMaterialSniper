@@ -52,7 +52,6 @@ void Player::Init()
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
-	animator.Play("animations/player/playeridle.csv");
 
 	animator.AddEvent("playerfire", 8, [this]()
 		{
@@ -86,6 +85,12 @@ void Player::Release()
 
 void Player::Reset()
 {
+	animator.Play("animations/player/playeridle.csv");
+	ANIMATIONCLIP_MGR.Load("animations/player/playerfire.csv");
+	ANIMATIONCLIP_MGR.Load("animations/player/playerreloadend.csv");
+	ANIMATIONCLIP_MGR.Load("animations/player/playerreloadstart.csv");
+
+
 	breathover = false;
 
 	auto screensize = FRAMEWORK.GetDefaultSize();

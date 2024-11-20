@@ -11,6 +11,9 @@ protected:
 	sf::RectangleShape crosshairv;
 	sf::RectangleShape crosshairh;
 
+	sf::Sprite noScope;
+	sf::String noScopeTexId = "graphics/scopes/noscope.png";
+
 	float zoom;
 	float maskRadius;
 

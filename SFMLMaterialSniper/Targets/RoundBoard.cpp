@@ -130,7 +130,11 @@ void RoundBoard::Reset()
 
 	bulletMark.setTexture(TEXTURE_MGR.Get("graphics/targets/bulletmark.png"));
 
+
 	animator.Play("animations/targets/roundboardspawn.csv");
+	ANIMATIONCLIP_MGR.Load("animations/targets/roundboardidle.csv");
+	ANIMATIONCLIP_MGR.Load("animations/targets/roundboardhit.csv");
+	ANIMATIONCLIP_MGR.Load("animations/targets/roundboardcrit.csv");
 	animator.PlayQueue("animations/targets/roundboardidle.csv");
 
 	SetOrigin(Origins::BC);

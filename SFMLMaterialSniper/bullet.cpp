@@ -102,6 +102,10 @@ void Bullet::Reset()
 	{
 		returnBullet = [scene](Bullet* bullet) { scene->ReturnBullet(bullet); };
 	}
+
+	ANIMATIONCLIP_MGR.Load("animations/bullet/bulletflying.csv");
+	ANIMATIONCLIP_MGR.Load("animations/bullet/bullethit.csv");
+	ANIMATIONCLIP_MGR.Load("animations/bullet/bulletricochet.csv");
 }
 
 void Bullet::Update(float dt)

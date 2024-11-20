@@ -85,8 +85,6 @@ void Gun::Init()
 			muzzlefire.setPosition(muzzlepos);
 			muzzlefire.setScale(2.5f, 3.5f);
 			Utils::SetOrigin(muzzlefire, Origins::ML);
-
-
 		});
 	animator.AddEvent("gunfire", 3, [this]()
 		{
@@ -117,6 +115,8 @@ void Gun::Release()
 
 void Gun::Reset()
 {
+	ANIMATIONCLIP_MGR.Load("animations/player/gunfire.csv");
+
 	muzzlefire.setTexture(TEXTURE_MGR.Get("graphics/player/muzzlefire.png"));
 
 	vibrationTimer = 0.f;
@@ -230,5 +230,5 @@ void Gun::Fire()
 	body.setPosition(0.f, 0.f);
 	SetOrigin(Origins::MC);
 	sortingOrder = 200;
-	animator.Play("animations/player/gunfire.csv");
+ 	animator.Play("animations/player/gunfire.csv");
 }

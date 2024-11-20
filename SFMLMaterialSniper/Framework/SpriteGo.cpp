@@ -22,6 +22,12 @@ void SpriteGo::SetOrigin(const sf::Vector2f& newOrigin)
 	body.setOrigin(origin);
 }
 
+void SpriteGo::SetRotation(float angle)
+{
+	rotation = angle;
+	body.setRotation(rotation);
+}
+
 void SpriteGo::SetDisplacement(const sf::Vector2f& disp)
 {
 	displacement = disp;

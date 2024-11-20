@@ -61,6 +61,7 @@ void CircleView::Release()
 void CircleView::Reset()
 {
 	bodytube.setTexture(TEXTURE_MGR.Get(bodytubeTexId));
+	noScope.setTexture(TEXTURE_MGR.Get(noScopeTexId));
 }
 
 void CircleView::Update(float dt)

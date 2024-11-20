@@ -50,7 +50,7 @@ void BulletShell::Init()
 
 	screensize = FRAMEWORK.GetDefaultSize();
 
-	gravity = 900.f;
+	gravity = 1500.f;
 }
 
 void BulletShell::Release()
@@ -74,7 +74,7 @@ void BulletShell::Reset()
 void BulletShell::Update(float dt)
 {
 	ejectionTimer -= dt * ejectionAngle;
-	velocity.x *= powf(0.65f, dt);
+	velocity.x *= powf(0.5f, dt);
 	velocity.y += gravity * dt;
 	SetPosition(position + velocity * dt);
 	SetRotation(ejectionTimer);
@@ -95,8 +95,8 @@ void BulletShell::Eject(const sf::Vector2f& pos)
 {
 	SetPosition(pos);
 	ejectionTimer = 0.f;
-	velocity.x = Utils::RandomRange(-500.f, -400.f);
-	velocity.y = Utils::RandomRange(-550.f, -400.f);
+	velocity.x = Utils::RandomRange(-800.f, -900.f);
+	velocity.y = Utils::RandomRange(-1200.f, -1300.f);
 	SetRotation(ejectionTimer);
 	ejectionAngle = Utils::RandomRange(170.f, 200.f);
 }

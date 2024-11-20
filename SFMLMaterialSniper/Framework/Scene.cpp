@@ -43,6 +43,7 @@ void Scene::Exit()
 	TEXTURE_MGR.UnloadAll();
 	FONT_MGR.UnloadAll();
 	SOUNDBUFFER_MGR.UnloadAll();
+	ANIMATIONCLIP_MGR.UnloadAll();
 }
 
 void Scene::Update(float dt)
