@@ -9,18 +9,26 @@ class UiHud : public GameObject
 protected:
 
 	TextGo textWind;
-	TextGo textAmmo;
-	TextGo textBreath;
 
-	SpriteGo* uiBar;
+	sf::Sprite uiBar;
 	std::string uiBarTexId = "graphics/ui/uibar.png";
-
-	std::vector<SpriteGo*> uiBullets;
-	std::string uiBulletTexId = "graphics/ui/uibullet.png";
 
 	int ammo;
 	float fireTimer;
-	const float fireDuration = 0.25f;
+	const float fireDuration = 0.3f;
+	std::vector<sf::Sprite> uiBullets;
+	std::string uiBulletTexId = "graphics/ui/uibullet.png";
+
+	const sf::Vector2f bulletStartPos = { 71.f, 45.f };
+	const float bulletOffset = 31.f;
+
+	sf::VertexArray uiBreath;
+	const sf::Vector2f breathMaxSize = { 390.f,50.f };
+	const sf::Vector2f breathStartPos = { 460.f,92.f };
+	
+	sf::Sprite uiWindCone;
+	std::string uiWindCone = "graphics/ui/uiWindCone.png";
+
 
 public:
 	UiHud(const std::string& name = "");
