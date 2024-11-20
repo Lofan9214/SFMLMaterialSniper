@@ -36,5 +36,6 @@ public:
 	void SetString(const std::string& id, const std::string& str);
 	void SetCharSize(unsigned int iSize);
 	void SetFillColor(sf::Color color);
+	void SetOutline(sf::Color color,float thickness);
 };
 

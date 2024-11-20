@@ -2,6 +2,7 @@
 #include "SaveData.h"
 
 class Gun;
+class UiHud;
 class BulletShell;
 
 class Player : public GameObject
@@ -23,6 +24,7 @@ protected:
 	SkillData skillData;
 
 	Gun* gun;
+	UiHud* uiHud;
 
 	int ammo;
 	int magazine;

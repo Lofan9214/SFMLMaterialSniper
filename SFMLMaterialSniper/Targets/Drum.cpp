@@ -75,8 +75,6 @@ void Drum::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
-	bullet = nullptr;
-
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
 	animator.AddEvent("drumspawn", 12, []() {SOUND_MGR.PlaySfx("sounds/targets/drumspawn.mp3"); });
@@ -93,12 +91,12 @@ void Drum::Release()
 
 void Drum::Reset()
 {
-	bullet = nullptr;
+	GetBulletList = nullptr;
 	TargetHit = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
-		bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
+		GetBulletList = [scene]() {return scene->GetBulletList();};
 		TargetHit = [scene]() {scene->TargetHit();};
 	}
 
@@ -127,38 +125,40 @@ void Drum::Update(float dt)
 
 void Drum::FixedUpdate(float dt)
 {
-	if (bullet == nullptr
-		|| animator.GetCurrentClipId() != "drumidle")
+	if (!GetBulletList || animator.GetCurrentClipId() != "drumidle")
 	{
 		return;
 	}
 
-	sf::FloatRect bodyRect = GetGlobalBounds();
-	sf::Vector3f bulletpos = bullet->GetPosition3();
-	sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
-
-	if (bulletpos.z > position3.z
-		&& bulletpospre.z < position3.z)
+	auto& bulletlist = GetBulletList();
+	for (auto bullet : bulletlist)
 	{
-		float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
-		sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
+		sf::FloatRect bodyRect = GetGlobalBounds();
+		sf::Vector3f bulletpos = bullet->GetPosition3();
+		sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
 
-		if (bodyRect.contains(bulletlerppos))
+		if (bulletpos.z > position3.z
+			&& bulletpospre.z < position3.z)
 		{
-			SOUND_MGR.PlaySfx("sounds/targets/drumhit.mp3");
-			std::cout << "hitdrum" << std::endl;
-			animator.Play("animations/targets/drumhit.csv");
-			if (bullet != nullptr)
+			float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
+			sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
+
+			if (bodyRect.contains(bulletlerppos))
 			{
-				bullet->Hit();
-			}
-			if (TargetHit)
-			{
-				TargetHit();
+				SOUND_MGR.PlaySfx("sounds/targets/drumhit.mp3");
+				std::cout << "hitdrum" << std::endl;
+				animator.Play("animations/targets/drumhit.csv");
+				if (bullet != nullptr)
+				{
+					bullet->Hit();
+				}
+				if (TargetHit)
+				{
+					TargetHit();
+				}
 			}
 		}
 	}
-
 }
 
 void Drum::Draw(sf::RenderTarget& window)

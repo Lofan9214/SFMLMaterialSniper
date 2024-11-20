@@ -100,7 +100,7 @@ void Bottle::Reset()
 	animator.Play("animations/targets/bottlespawn.csv");
 	animator.PlayQueue("animations/targets/bottleidle.csv");
 
-	bullet = nullptr;
+	GetBulletList = nullptr;
 	TakeGlassShard = nullptr;
 	TargetHit = nullptr;
 
@@ -108,7 +108,7 @@ void Bottle::Reset()
 
 	if (scene != nullptr)
 	{
-		bullet = dynamic_cast<Bullet*>(SCENE_MGR.GetCurrentScene()->FindGo("bullet"));
+		GetBulletList = [scene]() {return scene->GetBulletList();};
 		TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
 		TargetHit = [scene]() {scene->TargetHit();};
 	}
@@ -132,37 +132,39 @@ void Bottle::Update(float dt)
 
 void Bottle::FixedUpdate(float dt)
 {
-	if (bullet == nullptr
-		|| animator.GetCurrentClipId() != "bottleidle")
+	if (!GetBulletList || animator.GetCurrentClipId() != "bottleidle")
 	{
 		return;
 	}
-
-	sf::FloatRect bodyRect = GetGlobalBounds();
-	sf::Vector3f bulletpos = bullet->GetPosition3();
-	sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
-	if (bulletpos.z > position3.z
-		&& bulletpospre.z < position3.z)
+	auto& bulletlist = GetBulletList();
+	for (auto bullet : bulletlist)
 	{
-		float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
-		sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
-		if (bodyRect.contains(bulletlerppos))
+		sf::FloatRect bodyRect = GetGlobalBounds();
+		sf::Vector3f bulletpos = bullet->GetPosition3();
+		sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
+		if (bulletpos.z > position3.z
+			&& bulletpospre.z < position3.z)
 		{
-			std::cout << "hitbottle" << std::endl;
-			bullet->Hit();
-			active = false;
-			TargetHit();
-			for (int i = 0; i < 20; ++i)
+			float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
+			sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
+			if (bodyRect.contains(bulletlerppos))
 			{
-				SOUND_MGR.PlaySfx("sounds/targets/bottlehit.mp3");
-				GlassShard* shard = TakeGlassShard();
-				shard->Start({ position3.x + displacement.x,position3.y - body.getGlobalBounds().height * 0.5f + displacement.y ,position3.z });
+				std::cout << "hitbottle" << std::endl;
+				bullet->Hit();
+				active = false;
+				TargetHit();
+				for (int i = 0; i < 20; ++i)
+				{
+					SOUND_MGR.PlaySfx("sounds/targets/bottlehit.mp3");
+					GlassShard* shard = TakeGlassShard();
+					shard->Start({ position3.x + displacement.x,position3.y - body.getGlobalBounds().height * 0.5f + displacement.y ,position3.z });
+				}
 			}
-		}
-		else if (stand.getGlobalBounds().contains(bulletlerppos))
-		{
-			bullet->SetRotation(Utils::RandomRange(0.f, 360.f));
-			bullet->Hit(Bullet::Result::Ricochet);
+			else if (stand.getGlobalBounds().contains(bulletlerppos))
+			{
+				bullet->SetRotation(Utils::RandomRange(0.f, 360.f));
+				bullet->Hit(Bullet::Result::Ricochet);
+			}
 		}
 	}
 }

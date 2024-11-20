@@ -5,6 +5,7 @@
 #include "CircleView.h"
 #include "BulletShell.h"
 #include "Gun.h"
+#include "UiHud.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -99,11 +100,13 @@ void Player::Reset()
 	SetOrigin(Origins::BL);
 
 	gun = nullptr;
+	uiHud = nullptr;
 	TakeBulletShell = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
 		gun = dynamic_cast<Gun*>(scene->FindGo("gun"));
+		uiHud = dynamic_cast<UiHud*>(scene->FindGo("uiHud"));
 		TakeBulletShell = [scene]() {return scene->TakeBulletShell(); };
 	}
 
@@ -183,6 +186,11 @@ void Player::UpdateReload(float dt)
 	if (reloadTimer > reloadDuration - 0.5f
 		&& animator.GetCurrentClipId() == "playerreloadstart")
 	{
+		if (uiHud != nullptr)
+		{
+			uiHud->SetAmmo(magazine);
+			uiHud->SetReloadStatus(UiHud::ReloadStatus::MagazineInserted);
+		}
 		SOUND_MGR.PlaySfx("sounds/player/endreload.mp3");
 		animator.Play("animations/player/playerreloadend.csv");
 		animator.PlayQueue("animations/player/playeridle.csv");
@@ -210,6 +218,10 @@ void Player::SetStatus(Status status)
 	case Player::Status::Fire:
 		break;
 	case Player::Status::Reloading:
+		if (uiHud != nullptr)
+		{
+			uiHud->SetReloadStatus(UiHud::ReloadStatus::MagazineEjecting);
+		}
 		animator.Play("animations/player/playerreloadstart.csv");
 		SOUND_MGR.PlaySfx("sounds/player/startreload.mp3");
 		break;

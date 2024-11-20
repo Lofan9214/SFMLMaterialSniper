@@ -3,6 +3,7 @@
 class Bullet;
 class CircleView;
 class Player;
+class UiHud;
 
 class Gun : public GameObject
 {
@@ -14,6 +15,7 @@ protected:
 
 	CircleView* circleView;
 	Player* player;
+	UiHud* uiHud;
 	
 	bool drawbody;
 	bool drawmuzzlefire;

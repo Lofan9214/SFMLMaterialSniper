@@ -6,17 +6,36 @@ class TextGo;
 
 class UiHud : public GameObject
 {
-protected:
+public:
+	enum class ReloadStatus
+	{
+		Ready,
+		MagazineEjecting,
+		MagazineInserted,
+	};
+	enum class BoltStatus
+	{
+		Ready,
+		Fired,
+		BoltPulling,
+	};
 
-	TextGo textWind;
+protected:
 
 	sf::Sprite uiBar;
 	std::string uiBarTexId = "graphics/ui/uibar.png";
+	sf::Sprite uiBarback;
+	std::string uiBarbackTexId = "graphics/ui/uibarback.png";
 
 	int ammo;
-	float fireTimer;
-	const float fireDuration = 0.3f;
+	BoltStatus boltStatus;
+	ReloadStatus reloadStatus;
+	float boltTimer;
+	float boltDuration;
+	float ammodisplacement;
 	std::vector<sf::Sprite> uiBullets;
+	std::vector<sf::Vector2f> uiBulletDefaultPos;
+	sf::Vector2f uiBulletVelocity;
 	std::string uiBulletTexId = "graphics/ui/uibullet.png";
 
 	const sf::Vector2f bulletStartPos = { 71.f, 45.f };
@@ -27,8 +46,10 @@ protected:
 	const sf::Vector2f breathStartPos = { 460.f,92.f };
 	
 	sf::Sprite uiWindCone;
-	std::string uiWindCone = "graphics/ui/uiWindCone.png";
-
+	std::string uiWindConeTexId = "graphics/ui/uiwindcone.png";
+	sf::Sprite uiWindBack;
+	std::string uiWindBackTexId = "graphics/ui/uiwindback.png";
+	TextGo textWind;
 
 public:
 	UiHud(const std::string& name = "");
@@ -52,7 +73,10 @@ public:
 	void SetWind(int wind);
 	void SetAmmo(int ammo);
 	void SetBreath(float breath);
-	void Fired();
+	void ReloadStart();
+	void ReloadEnd();
+	void SetBoltStatus(BoltStatus status);
+	void SetReloadStatus(ReloadStatus status);
 
 	void OnLocalize(Languages lang) override;
 };

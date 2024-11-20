@@ -88,8 +88,6 @@ void RoundBoard::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
-	bullet = nullptr;
-
 	internalHitBox.setRadius(240);
 	internalHitBox.setFillColor(sf::Color::Transparent);
 	internalHitBox.setOutlineColor(sf::Color::Red);
@@ -119,12 +117,12 @@ void RoundBoard::Reset()
 	body.setColor(sf::Color::Transparent);
 	hit = false;
 
-	bullet = nullptr;
+	GetBulletList = nullptr;
 	TargetHit = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
-		bullet = dynamic_cast<Bullet*>(scene->FindGo("bullet"));
+		GetBulletList = [scene]() {return scene->GetBulletList();};
 		TargetHit = [scene]() {scene->TargetHit();};
 	}
 
@@ -156,55 +154,57 @@ void RoundBoard::Update(float dt)
 
 void RoundBoard::FixedUpdate(float dt)
 {
-	if (bullet == nullptr)
+	if (!GetBulletList)
 	{
 		return;
 	}
-
-	sf::FloatRect bodyRect = GetGlobalBounds();
-	sf::Vector3f bulletpos = bullet->GetPosition3();
-	sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
-	if (bulletpos.z > position3.z
-		&& bulletpospre.z < position3.z)
+	auto& bulletlist = GetBulletList();
+	for (auto bullet : bulletlist)
 	{
-		float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
-		sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
-		sf::Image collisionImage = body.getTexture()->copyToImage();
-		sf::Vector2f point = body.getInverseTransform().transformPoint(bulletlerppos);
-
-		if (bodyRect.contains(bulletlerppos)
-			&& collisionImage.getPixel(point.x, point.y).a != 0)
+		sf::FloatRect bodyRect = GetGlobalBounds();
+		sf::Vector3f bulletpos = bullet->GetPosition3();
+		sf::Vector3f bulletpospre = bullet->GetPosition3Previous();
+		if (bulletpos.z > position3.z
+			&& bulletpospre.z < position3.z)
 		{
-			sf::Vector2f hitboxCenter(240.f, 240.f);
-			hitboxCenter += offsetHitBox;
-			float distance = Utils::Distance(point, hitboxCenter);
-			if (distance < 15)
+			float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
+			sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
+			sf::Image collisionImage = body.getTexture()->copyToImage();
+			sf::Vector2f point = body.getInverseTransform().transformPoint(bulletlerppos);
+
+			if (bodyRect.contains(bulletlerppos)
+				&& collisionImage.getPixel(point.x, point.y).a != 0)
 			{
-				animator.Play("animations/targets/roundboardcrit.csv");
-				SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
-				bullet->Hit();
-				std::cout << "critboard" << std::endl;
-				TargetHit();
-			}
-			else if (distance < internalHitBox.getRadius())
-			{
-				hit = true;
-				animator.Play("animations/targets/roundboardhit.csv");
-				SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
-				positionHit = point - bulletMark.getLocalBounds().getSize() * 0.5f;
-				bulletMark.setOrigin(origin - positionHit);
-				std::cout << "hitboard" << std::endl;
-				bullet->Hit();
-				TargetHit();
-			}
-			else
-			{
-				bullet->SetRotation(Utils::RandomRange(0.f, 360.f));
-				bullet->Hit(Bullet::Result::Ricochet);
+				sf::Vector2f hitboxCenter(240.f, 240.f);
+				hitboxCenter += offsetHitBox;
+				float distance = Utils::Distance(point, hitboxCenter);
+				if (distance < 15)
+				{
+					animator.Play("animations/targets/roundboardcrit.csv");
+					SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
+					bullet->Hit();
+					std::cout << "critboard" << std::endl;
+					TargetHit();
+				}
+				else if (distance < internalHitBox.getRadius())
+				{
+					hit = true;
+					animator.Play("animations/targets/roundboardhit.csv");
+					SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
+					positionHit = point - bulletMark.getLocalBounds().getSize() * 0.5f;
+					bulletMark.setOrigin(origin - positionHit);
+					std::cout << "hitboard" << std::endl;
+					bullet->Hit();
+					TargetHit();
+				}
+				else
+				{
+					bullet->SetRotation(Utils::RandomRange(0.f, 360.f));
+					bullet->Hit(Bullet::Result::Ricochet);
+				}
 			}
 		}
 	}
-
 }
 
 void RoundBoard::Draw(sf::RenderTarget& window)

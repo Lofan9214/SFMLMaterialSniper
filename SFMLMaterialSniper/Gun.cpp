@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 #include "Player.h"
+#include "UiHud.h"
 
 Gun::Gun(const std::string& name)
 	: GameObject(name)
@@ -73,26 +74,36 @@ void Gun::Init()
 	animator.BindFunction(this);
 	animator.AddEvent("gunfire", 2, [this]()
 		{
-			sf::Vector2f muzzlepos = player->GetMuzzlePos();
-			sortingOrder = 100;
-			body.setPosition(muzzlepos);
-			body.setScale(3.0f, 3.0f);
-			SetOrigin(Origins::ML);
+			if (player != nullptr)
+			{
+				sf::Vector2f muzzlepos = player->GetMuzzlePos();
+				sortingOrder = 100;
+				body.setPosition(muzzlepos);
+				body.setScale(3.0f, 3.0f);
+				SetOrigin(Origins::ML);
 
-			drawmuzzlefire = true;
-			muzzlepos.x -= 100.f;
-			muzzlefire.setColor({ 255,255,255,255 });
-			muzzlefire.setPosition(muzzlepos);
-			muzzlefire.setScale(2.5f, 3.5f);
-			Utils::SetOrigin(muzzlefire, Origins::ML);
+				drawmuzzlefire = true;
+				muzzlepos.x -= 100.f;
+				muzzlefire.setColor({ 255,255,255,255 });
+				muzzlefire.setPosition(muzzlepos);
+				muzzlefire.setScale(2.5f, 3.5f);
+				Utils::SetOrigin(muzzlefire, Origins::ML);
+			}
 		});
 	animator.AddEvent("gunfire", 3, [this]()
 		{
-			sf::Vector2f muzzlepos = player->GetMuzzlePos();
-			muzzlepos.x += 110.f;
-			muzzlefire.setPosition(muzzlepos);
-			muzzlefire.setScale(3.5f, 0.4f);
-			Utils::SetOrigin(muzzlefire, Origins::ML);
+			if (player != nullptr)
+			{
+				sf::Vector2f muzzlepos = player->GetMuzzlePos();
+				muzzlepos.x += 110.f;
+				muzzlefire.setPosition(muzzlepos);
+				muzzlefire.setScale(3.5f, 0.4f);
+				Utils::SetOrigin(muzzlefire, Origins::ML);
+			}
+			if (uiHud != nullptr)
+			{
+				uiHud->SetBoltStatus(UiHud::BoltStatus::BoltPulling);
+			}
 		});
 	animator.AddEvent("gunfire", 4, [this]()
 		{
@@ -125,12 +136,14 @@ void Gun::Reset()
 	player = nullptr;
 	ScreenRecoil = nullptr;
 	TakeBullet = nullptr;
+	uiHud = nullptr;
 
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
 		circleView = dynamic_cast<CircleView*>(scene->FindGo("circleView"));
 		player = dynamic_cast<Player*>(scene->FindGo("player"));
+		uiHud = dynamic_cast<UiHud*>(scene->FindGo("uiHud"));
 		ScreenRecoil = [scene]() {scene->ResetScreenRecoilTimer();};
 		TakeBullet = [scene]() {return scene->TakeBullet(); };
 	}
@@ -230,5 +243,10 @@ void Gun::Fire()
 	body.setPosition(0.f, 0.f);
 	SetOrigin(Origins::MC);
 	sortingOrder = 200;
- 	animator.Play("animations/player/gunfire.csv");
+	animator.Play("animations/player/gunfire.csv");
+
+	if (uiHud != nullptr)
+	{
+		uiHud->SetBoltStatus(UiHud::BoltStatus::Fired);
+	}
 }

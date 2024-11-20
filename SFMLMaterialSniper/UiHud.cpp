@@ -10,7 +10,8 @@ UiHud::UiHud(const std::string& name)
 void UiHud::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
-	uiBar.setPosition(pos);
+	uiBar.setPosition(position);
+	uiBarback.setPosition(position);
 }
 
 void UiHud::SetRotation(float angle)
@@ -31,6 +32,7 @@ void UiHud::SetOrigin(Origins preset)
 	if (originPreset != Origins::Custom)
 	{
 		origin = Utils::SetOrigin(uiBar, originPreset);
+		uiBarback.setOrigin({ origin.x + 10.f,origin.y - 25.f });
 	}
 }
 
@@ -47,6 +49,11 @@ void UiHud::Init()
 	sortingOrder = 300;
 
 	uiBullets.resize(12);
+	uiBulletDefaultPos.resize(12);
+
+	boltDuration = 0.5f;
+	boltTimer = boltDuration * 8.f;
+	ammodisplacement = 15.f;
 }
 
 void UiHud::Release()
@@ -56,38 +63,51 @@ void UiHud::Release()
 
 void UiHud::Reset()
 {
+	uiBar.setTexture(TEXTURE_MGR.Get(uiBarTexId));
+	uiBarback.setTexture(TEXTURE_MGR.Get(uiBarbackTexId));
+	uiWindCone.setTexture(TEXTURE_MGR.Get(uiWindConeTexId));
+	uiWindBack.setTexture(TEXTURE_MGR.Get(uiWindBackTexId));
+	textWind.SetFont(FONT_MGR.Get("fonts/malgun.ttf"));
+
+	boltStatus = BoltStatus::Ready;
+	reloadStatus = ReloadStatus::Ready;
+
 	float textSize = 50.f;
 
-	sf::Font& font = FONT_MGR.Get("fonts/malgun.ttf");
-
-	textWind.SetFont(font);
 	textWind.SetCharSize(textSize);
-	textWind.SetFillColor(sf::Color::White);
-	textWind.SetOrigin(Origins::BR);
+	textWind.SetFillColor(sf::Color::Green);
+	textWind.SetOutline(sf::Color::White,2.f);
+	textWind.SetOrigin(Origins::MC);
 
 	sf::Vector2f size = FRAMEWORK.GetDefaultSize();
-	float bottomY = size.y - 25.f;
 
-	textWind.SetPosition({ size.x - 25.f, bottomY });
+	textWind.SetPosition({ 1395.f,size.y - 75.f });
 
-	uiBar.setTexture(TEXTURE_MGR.Get(uiBarTexId));
 	SetOrigin(Origins::BL);
 	SetPosition({ 0.f,size.y });
 
 	for (int i = 0; i < uiBullets.size();++i)
 	{
 		uiBullets[i].setTexture(TEXTURE_MGR.Get(uiBulletTexId));
-		uiBullets[i].setScale({ 2.f,2.f });
+		uiBullets[i].setScale({ 2.5f,2.5f });
 		Utils::SetOrigin(uiBullets[i], Origins::BC);
-		uiBullets[i].setPosition({ bulletStartPos.x + i * bulletOffset,size.y - bulletStartPos.y });
+		uiBulletDefaultPos[i].x = bulletStartPos.x + i * bulletOffset;
+		uiBulletDefaultPos[i].y = position.y - bulletStartPos.y;
+		uiBullets[i].setPosition(uiBulletDefaultPos[i]);
 	}
 
 	uiBreath.resize(4);
 	uiBreath.setPrimitiveType(sf::PrimitiveType::Quads);
-	uiBreath[0].position = { breathStartPos.x + breathMaxSize.x,size.y - breathStartPos.y + breathMaxSize.y };
-	uiBreath[1].position = { breathStartPos.x + breathMaxSize.x,size.y - breathStartPos.y };
-	uiBreath[2].position = { breathStartPos.x, size.y - breathStartPos.y };
-	uiBreath[3].position = { breathStartPos.x, size.y - breathStartPos.y + breathMaxSize.y };
+	uiBreath[0].position = { breathStartPos.x + breathMaxSize.x,position.y - breathStartPos.y + breathMaxSize.y };
+	uiBreath[1].position = { breathStartPos.x + breathMaxSize.x,position.y - breathStartPos.y };
+	uiBreath[2].position = { breathStartPos.x, position.y - breathStartPos.y };
+	uiBreath[3].position = { breathStartPos.x, position.y - breathStartPos.y + breathMaxSize.y };
+
+	uiWindCone.setScale(2.2f, 2.2f);
+	uiWindCone.setPosition(1105.f, size.y-100.f);
+	uiWindBack.setScale(2.8f, 2.8f);
+	uiWindBack.setPosition(1395.f, size.y - 65.f);
+	Utils::SetOrigin(uiWindBack, Origins::MC);
 }
 
 void UiHud::LateUpdate(float dt)
@@ -96,30 +116,45 @@ void UiHud::LateUpdate(float dt)
 
 void UiHud::Update(float dt)
 {
-	float firelast = fireTimer;
-
-	if (firelast > 0.f)
+	switch (boltStatus)
 	{
-		fireTimer -= dt;
-
+	case UiHud::BoltStatus::BoltPulling:
 		for (int i = 0; i < ammo;++i)
 		{
-			if (fireTimer > 0.f)
+			boltTimer -= dt;
+			uiBullets[i].move(dt * ammodisplacement / (boltDuration - 0.1f), 0.f);
+			if (boltTimer < 0.1f)
 			{
-				float maxangle = 33.f;
-				float peak = fireDuration * 0.5f;
-				float angle = abs(maxangle / peak * (fireTimer - peak)) - maxangle;
-				uiBullets[i].setRotation(angle);
-			}
-			else
-			{
-				uiBullets[i].setRotation(0.f);
+				uiBullets[i].setRotation(3.f);
 			}
 		}
-		if (firelast > fireDuration * 0.5f && fireTimer < fireDuration * 0.5f)
+		if (boltTimer < 0.f)
 		{
-			ammo--;
+			SetBoltStatus(BoltStatus::Ready);
 		}
+		break;
+	}
+
+	switch (reloadStatus)
+	{
+	case UiHud::ReloadStatus::MagazineEjecting:
+		uiBulletVelocity.y += 8000.f * dt;
+		for (int i = 0; i < uiBullets.size();++i)
+		{
+			uiBullets[i].move(uiBulletVelocity * dt);
+		}
+		break;
+	case UiHud::ReloadStatus::MagazineInserted:
+		for (int i = 0; i < uiBullets.size();++i)
+		{
+			uiBullets[i].move(uiBulletVelocity * dt);
+			uiBullets[i].setColor({ 255,255,255,(sf::Uint8)((400.f + uiBulletDefaultPos[i].x - uiBullets[i].getPosition().x) / 400.f * 255.f) });
+		}
+		if (uiBullets[0].getPosition().x < uiBulletDefaultPos[0].x)
+		{
+			SetReloadStatus(ReloadStatus::Ready);
+		}
+		break;
 	}
 }
 
@@ -129,9 +164,12 @@ void UiHud::FixedUpdate(float dt)
 
 void UiHud::Draw(sf::RenderTarget& window)
 {
-	textWind.Draw(window);
+	window.draw(uiBarback);
 	window.draw(uiBreath);
+	window.draw(uiWindBack);
+	textWind.Draw(window);
 	window.draw(uiBar);
+	window.draw(uiWindCone);
 
 	for (int i = 0; i < ammo;++i)
 	{
@@ -141,7 +179,7 @@ void UiHud::Draw(sf::RenderTarget& window)
 
 void UiHud::SetWind(int wind)
 {
-	textWind.SetString("Wind : " + std::to_string(wind));
+	textWind.SetString(std::to_string(wind));
 }
 
 void UiHud::SetAmmo(int ammo)
@@ -160,9 +198,64 @@ void UiHud::SetBreath(float breath)
 	uiBreath[3].color = uiBreath[2].color;
 }
 
-void UiHud::Fired()
+void UiHud::SetBoltStatus(BoltStatus status)
 {
-	fireTimer = fireDuration;
+	boltStatus = status;
+	switch (boltStatus)
+	{
+	case UiHud::BoltStatus::Ready:
+		for (int i = 0; i < uiBullets.size();++i)
+		{
+			uiBullets[i].setRotation(0.f);
+			uiBullets[i].setPosition(uiBulletDefaultPos[i]);
+		}
+		break;
+	case UiHud::BoltStatus::Fired:
+		for (int i = 0; i < ammo;++i)
+		{
+			uiBullets[i].setRotation(-20.f);
+			uiBullets[i].move(-ammodisplacement, 0.f);
+		}
+		break;
+	case UiHud::BoltStatus::BoltPulling:
+		boltTimer = boltDuration;
+		for (int i = 0; i < ammo;++i)
+		{
+			uiBullets[i].setRotation(0.f);
+		}
+		--ammo;
+		break;
+	}
+}
+
+void UiHud::SetReloadStatus(ReloadStatus status)
+{
+	reloadStatus = status;
+	uiBulletVelocity.x = 0.f;
+	uiBulletVelocity.y = 0.f;
+	switch (reloadStatus)
+	{
+	case UiHud::ReloadStatus::Ready:
+		for (int i = 0; i < uiBullets.size();++i)
+		{
+			uiBullets[i].setColor(sf::Color::White);
+			uiBullets[i].setRotation(0.f);
+			uiBullets[i].setPosition(uiBulletDefaultPos[i]);
+		}
+		break;
+	case UiHud::ReloadStatus::MagazineEjecting:
+		uiBulletVelocity.y = -500.f;
+		break;
+	case UiHud::ReloadStatus::MagazineInserted:
+		uiBulletVelocity.x = -2000.f;
+		for (int i = 0; i < uiBullets.size();++i)
+		{
+			uiBullets[i].setColor({ 255,255,255,0 });
+			uiBullets[i].setRotation(45.f);
+			uiBullets[i].setPosition(uiBulletDefaultPos[i].x + 400.f, uiBulletDefaultPos[i].y);
+		}
+		break;
+	}
 }
 
 void UiHud::OnLocalize(Languages lang)

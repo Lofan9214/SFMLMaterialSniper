@@ -132,7 +132,7 @@ void Bullet::UpdateFired(float dt)
 	velocity3d += acc3d * dt;
 	position3Previous = position3;
 	SetPosition(position3 + velocity3d * dt);
-	if (position3.z > 4000.f&& returnBullet)
+	if (position3.z > 2000.f&& returnBullet)
 	{
 		returnBullet(this);
 	}

@@ -83,6 +83,12 @@ void TextGo::SetFillColor(sf::Color color)
 	text.setFillColor(color);
 }
 
+void TextGo::SetOutline(sf::Color color,float thickness)
+{
+	text.setOutlineColor(color);
+	text.setOutlineThickness(thickness);
+}
+
 void TextGo::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);

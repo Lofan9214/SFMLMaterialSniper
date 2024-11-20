@@ -15,11 +15,10 @@ protected:
 	sf::CircleShape internalHitBox;
 	sf::Vector2f offsetHitBox = {40.f,32.f};
 
-	Bullet* bullet;
-
 	sf::Vector3f position3;
 	float defaultdistance = 75.f;
 	std::function<void()> TargetHit;
+	std::function<const std::list<Bullet*>()> GetBulletList;
 
 public:
 	RoundBoard(const std::string& name = "");

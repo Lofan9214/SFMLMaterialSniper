@@ -11,13 +11,12 @@ protected:
 	Animator animator;
 	sf::RectangleShape stand;
 
-	Bullet* bullet;
-
 	sf::Vector3f position3;
 	float defaultdistance = 100.f;
 
 	std::function<GlassShard* ()> TakeGlassShard;
 	std::function<void()> TargetHit;
+	std::function<const std::list<Bullet*>()> GetBulletList;
 
 public:
 	Bottle(const std::string& name = "");

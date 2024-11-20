@@ -9,11 +9,10 @@ protected:
 	sf::Sprite body;
 	Animator animator;
 
-	Bullet* bullet;
-
 	sf::Vector3f position3;
 	float defaultdistance = 800.f;
 	std::function<void()> TargetHit;
+	std::function<const std::list<Bullet*>()> GetBulletList;
 
 public:
 	Drum(const std::string& name = "");

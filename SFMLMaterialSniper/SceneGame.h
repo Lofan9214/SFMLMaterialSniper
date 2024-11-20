@@ -27,9 +27,9 @@ public:
 
 protected:
 	Status currentStatus = Status::Awake;
-	
-    Bullet* bullet;
-    CircleView* scopeview;
+
+	Bullet* bullet;
+	CircleView* scopeview;
 	Player* player;
 	Gun* gun;
 
@@ -51,10 +51,10 @@ protected:
 	std::list<RoundBoard*> roundboards;
 	ObjectPool<RoundBoard> roundboardPool;
 
-    UiHud* uiHud;
+	UiHud* uiHud;
 
-    float wind = 0.f;
-	
+	float wind = 0.f;
+
 	float interludeTimer = 0.f;
 
 	int remains;
@@ -87,6 +87,7 @@ public:
 	void ReturnGlassShard(GlassShard* glassShard);
 
 	Bullet* TakeBullet();
+	const std::list<Bullet*>& GetBulletList() { return bullets; }
 	void ReturnBullet(Bullet* bullet);
 
 	BulletShell* TakeBulletShell();
