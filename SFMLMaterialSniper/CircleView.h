@@ -17,6 +17,8 @@ protected:
 	float zoom;
 	float maskRadius;
 
+	bool useScope;
+
 	sf::Vector2f position;
 public:
 

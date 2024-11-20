@@ -40,6 +40,7 @@ void CircleView::SetOrigin(Origins preset)
 	Utils::SetOrigin(crosshairv, originPreset);
 	Utils::SetOrigin(crosshairh, originPreset);
 	Utils::SetOrigin(bodytube, originPreset);
+	Utils::SetOrigin(noScope, originPreset);
 }
 
 void CircleView::SetPosition(const sf::Vector2f& pos)
@@ -66,6 +67,7 @@ void CircleView::Reset()
 
 void CircleView::Update(float dt)
 {
+	useScope = !InputMgr::GetKeyPressing(sf::Keyboard::LShift);
 }
 
 void CircleView::LateUpdate(float dt)
@@ -74,27 +76,35 @@ void CircleView::LateUpdate(float dt)
 	bodytube.setPosition((sf::Vector2f)SCENE_MGR.GetCurrentScene()->WorldToScreen(position));
 	crosshairh.setPosition((sf::Vector2f)SCENE_MGR.GetCurrentScene()->WorldToScreen(position));
 	crosshairv.setPosition((sf::Vector2f)SCENE_MGR.GetCurrentScene()->WorldToScreen(position));
+	noScope.setPosition(InputMgr::GetMousePositionf());
 }
 
 void CircleView::Draw(sf::RenderTarget& window)
 {
-	renderTexture.clear();
-	renderTexture.setView(renderView);
-	std::list<GameObject*> lstobject = SCENE_MGR.GetCurrentScene()->GetWorldGameObjects();
-	for (auto obj : lstobject)
+	if (useScope)
 	{
-		if (!obj->IsActive() || obj->GetSortingOrder() > 0)
+		renderTexture.clear();
+		renderTexture.setView(renderView);
+		std::list<GameObject*> lstobject = SCENE_MGR.GetCurrentScene()->GetWorldGameObjects();
+		for (auto obj : lstobject)
 		{
-			continue;
+			if (!obj->IsActive() || obj->GetSortingOrder() > 0)
+			{
+				continue;
+			}
+			obj->Draw(renderTexture);
 		}
-		obj->Draw(renderTexture);
+		renderTexture.display();
+		rendermask.setTexture(&renderTexture.getTexture());
+
+		window.draw(rendermask);
+
+		window.draw(crosshairv);
+		window.draw(crosshairh);
+		window.draw(bodytube);
 	}
-	renderTexture.display();
-	rendermask.setTexture(&renderTexture.getTexture());
-
-	window.draw(rendermask);
-
-	window.draw(crosshairv);
-	window.draw(crosshairh);
-	window.draw(bodytube);
+	else
+	{
+		window.draw(noScope);
+	}
 }

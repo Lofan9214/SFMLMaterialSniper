@@ -66,8 +66,8 @@ void Gun::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 200;
 
-	vibrationScale.x = vibrationScaleOrigin.x = 30.f;
-	vibrationScale.y = vibrationScaleOrigin.y = 30.f;
+	vibrationScale.x = vibrationScaleOrigin.x = 20.f;
+	vibrationScale.y = vibrationScaleOrigin.y = 20.f;
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
