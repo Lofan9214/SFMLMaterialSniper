@@ -3,7 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "CircleView.h"
-#include "Cartridge.h"
+#include "BulletShell.h"
 #include "Gun.h"
 
 Player::Player(const std::string& name)
@@ -57,10 +57,10 @@ void Player::Init()
 	animator.AddEvent("playerfire", 8, [this]()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
-			if (TakeCartridge)
+			if (TakeBulletShell)
 			{
-				Cartridge* cartridge = TakeCartridge();
-				cartridge->Eject(body.getTransform().transformPoint(ejectionPos));
+				BulletShell* bulletShell = TakeBulletShell();
+				bulletShell->Eject(body.getTransform().transformPoint(ejectionPos));
 			}
 			if (gun != nullptr)
 			{
@@ -94,12 +94,12 @@ void Player::Reset()
 	SetOrigin(Origins::BL);
 
 	gun = nullptr;
-	TakeCartridge = nullptr;
+	TakeBulletShell = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
 		gun = dynamic_cast<Gun*>(scene->FindGo("gun"));
-		TakeCartridge = [scene]() {return scene->TakeCartridge(); };
+		TakeBulletShell = [scene]() {return scene->TakeBulletShell(); };
 	}
 
 	skillData = SAVEDATA_MGR.Load().skillData;
@@ -224,13 +224,17 @@ void Player::UpdateBreathStatus(float dt)
 		}
 		return;
 	}
-
+	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	{
+		SOUND_MGR.PlaySfx("sounds/player/breathstop.mp3");
+	}
 	if (InputMgr::GetKeyPressing(sf::Keyboard::Space))
 	{
 		if (breath == 0.f)
 		{
 			gun->SetVibrationSpeed(3.f);
 			breathover = true;
+			SOUND_MGR.PlaySfx("sounds/player/breathover.mp3");
 		}
 		else
 		{

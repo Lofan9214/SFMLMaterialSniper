@@ -9,7 +9,7 @@
 #include "Player.h"
 #include "GlassShard.h"
 #include "Gun.h";
-#include "Cartridge.h"
+#include "BulletShell.h"
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -182,8 +182,8 @@ void SceneGame::UpdateInterlude(float dt)
 void SceneGame::UpdateScreenRecoil(float dt)
 {
 	screenRecoilTimer += dt;
-	screenRecoil = 300.f * sinf((screenRecoilTimer - 0.22f) * Utils::PI * 2.f) * std::exp(screenRecoilTimer * -2.f);
-	if (screenRecoilTimer > 0.22f && screenRecoilTimer < 4.22f)
+	screenRecoil = 300.f * sinf((screenRecoilTimer)*Utils::PI * 2.f) * std::exp(screenRecoilTimer * -2.f);
+	if (screenRecoilTimer > 0.f && screenRecoilTimer < 4.f)
 	{
 		worldView.setCenter({ screenRecoil, 0.f });
 	}
@@ -219,19 +219,19 @@ void SceneGame::ReturnBullet(Bullet* bullet)
 	bullets.remove(bullet);
 }
 
-Cartridge* SceneGame::TakeCartridge()
+BulletShell* SceneGame::TakeBulletShell()
 {
-	Cartridge* cartridge = cartridgePool.Take();
-	cartridges.push_back(cartridge);
-	AddGo(cartridge);
-	return cartridge;
+	BulletShell* bulletShell = bulletShellPool.Take();
+	bulletShells.push_back(bulletShell);
+	AddGo(bulletShell);
+	return bulletShell;
 }
 
-void SceneGame::ReturnCartridge(Cartridge* cartridge)
+void SceneGame::ReturnBulletShell(BulletShell* bulletShell)
 {
-	RemoveGo(cartridge);
-	cartridgePool.Return(cartridge);
-	cartridges.remove(cartridge);
+	RemoveGo(bulletShell);
+	bulletShellPool.Return(bulletShell);
+	bulletShells.remove(bulletShell);
 }
 
 void SceneGame::ClearTookObject()
@@ -264,12 +264,12 @@ void SceneGame::ClearTookObject()
 	}
 	roundboards.clear();
 
-	for (auto cartridge : cartridges)
+	for (auto bulletShell : bulletShells)
 	{
-		RemoveGo(cartridge);
-		cartridgePool.Return(cartridge);
+		RemoveGo(bulletShell);
+		bulletShellPool.Return(bulletShell);
 	}
-	cartridges.clear();
+	bulletShells.clear();
 
 	for (auto bullet : bullets)
 	{

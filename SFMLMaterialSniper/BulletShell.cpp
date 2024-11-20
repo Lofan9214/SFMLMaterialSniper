@@ -1,30 +1,31 @@
 #include "stdafx.h"
-#include "Cartridge.h"
+#include "BulletShell.h"
+#include "SceneGame.h"
 
-Cartridge::Cartridge(const std::string& name)
+BulletShell::BulletShell(const std::string& name)
 	: GameObject(name)
 {
 }
 
-void Cartridge::SetPosition(const sf::Vector2f& pos)
+void BulletShell::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
 }
 
-void Cartridge::SetRotation(float angle)
+void BulletShell::SetRotation(float angle)
 {
 	rotation = angle;
 	body.setRotation(rotation);
 }
 
-void Cartridge::SetScale(const sf::Vector2f& s)
+void BulletShell::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	body.setScale(scale);
 }
 
-void Cartridge::SetOrigin(Origins preset)
+void BulletShell::SetOrigin(Origins preset)
 {
 	originPreset = preset;
 	if (originPreset != Origins::Custom)
@@ -33,49 +34,64 @@ void Cartridge::SetOrigin(Origins preset)
 	}
 }
 
-void Cartridge::SetOrigin(const sf::Vector2f& newOrigin)
+void BulletShell::SetOrigin(const sf::Vector2f& newOrigin)
 {
 	originPreset = Origins::Custom;
 	origin = newOrigin;
 	body.setOrigin(newOrigin);
 }
 
-void Cartridge::Init()
+void BulletShell::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 190;
 
 	SetOrigin(Origins::MC);
 
+	screensize = FRAMEWORK.GetDefaultSize();
+
 	gravity = 900.f;
 }
 
-void Cartridge::Release()
+void BulletShell::Release()
 {
 }
 
-void Cartridge::Reset()
+void BulletShell::Reset()
 {
 	body.setTexture(TEXTURE_MGR.Get(texId));
 	SetScale({ 1.5f,1.5f });
 	SetOrigin(originPreset);
+
+	ReturnBulletShell = nullptr;
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
+	{
+		ReturnBulletShell = [scene](BulletShell* shell) { scene->ReturnBulletShell(shell); };
+	}
 }
 
-void Cartridge::Update(float dt)
+void BulletShell::Update(float dt)
 {
 	ejectionTimer -= dt * ejectionAngle;
 	velocity.x *= powf(0.65f, dt);
 	velocity.y += gravity * dt;
 	SetPosition(position + velocity * dt);
 	SetRotation(ejectionTimer);
+
+	if (position.y > screensize.y*0.6f && ReturnBulletShell)
+	{
+		SOUND_MGR.PlaySfx("sounds/bullet/bulletshell.mp3");
+		ReturnBulletShell(this);
+	}
 }
 
-void Cartridge::Draw(sf::RenderTarget& window)
+void BulletShell::Draw(sf::RenderTarget& window)
 {
 	window.draw(body);
 }
 
-void Cartridge::Eject(const sf::Vector2f& pos)
+void BulletShell::Eject(const sf::Vector2f& pos)
 {
 	SetPosition(pos);
 	ejectionTimer = 0.f;

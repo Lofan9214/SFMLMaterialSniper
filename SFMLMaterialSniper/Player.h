@@ -2,7 +2,7 @@
 #include "SaveData.h"
 
 class Gun;
-class Cartridge;
+class BulletShell;
 
 class Player : public GameObject
 {
@@ -37,7 +37,7 @@ protected:
 	const sf::Vector2f muzzlePos = sf::Vector2f(680.f, 248.5f);
 	const sf::Vector2f ejectionPos = sf::Vector2f(446.f, 244.f);
 
-	std::function<Cartridge* ()> TakeCartridge;
+	std::function<BulletShell* ()> TakeBulletShell;
 
 public:
 	Player(const std::string& name = "");

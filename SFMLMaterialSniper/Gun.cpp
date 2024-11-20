@@ -85,10 +85,7 @@ void Gun::Init()
 			muzzlefire.setScale(2.5f, 3.5f);
 			Utils::SetOrigin(muzzlefire, Origins::ML);
 
-			if (ScreenRecoil)
-			{
-				ScreenRecoil();
-			}
+
 		});
 	animator.AddEvent("gunfire", 3, [this]()
 		{
@@ -106,11 +103,10 @@ void Gun::Init()
 			muzzlefire.setScale(3.7f, 0.4f);
 			muzzlefire.setColor({ 255,255,255,54 });
 			Utils::SetOrigin(muzzlefire, Origins::ML);
-		});
-	animator.AddEvent("gunfire", 4, [this]()
-		{
 			drawmuzzlefire = false;
 		});
+	animator.AddEvent("gunfire", 5, [this]() {if (ScreenRecoil) ScreenRecoil();});
+
 	animator.AddEvent("gunfire", 17, [this]() {drawbody = false;});
 }
 

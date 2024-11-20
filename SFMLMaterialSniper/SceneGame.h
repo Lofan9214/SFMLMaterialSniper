@@ -11,7 +11,7 @@ class Player;
 class GlassShard;
 class DataStage;
 class Gun;
-class Cartridge;
+class BulletShell;
 
 class SceneGame :
 	public Scene
@@ -36,8 +36,8 @@ protected:
 	std::list<Bullet*> bullets;
 	ObjectPool<Bullet> bulletPool;
 
-	std::list<Cartridge*> cartridges;
-	ObjectPool<Cartridge> cartridgePool;
+	std::list<BulletShell*> bulletShells;
+	ObjectPool<BulletShell> bulletShellPool;
 
 	std::list<GlassShard*> glassShards;
 	ObjectPool<GlassShard> glassShardPool;
@@ -89,8 +89,8 @@ public:
 	Bullet* TakeBullet();
 	void ReturnBullet(Bullet* bullet);
 
-	Cartridge* TakeCartridge();
-	void ReturnCartridge(Cartridge* cartridge);
+	BulletShell* TakeBulletShell();
+	void ReturnBulletShell(BulletShell* bulletShell);
 
 	void ClearTookObject();
 

@@ -1,19 +1,23 @@
 #pragma once
 
-class Cartridge : public GameObject
+class BulletShell : public GameObject
 {
 protected:
 	sf::Sprite body;
-	std::string texId = "graphics/bullet/cartridge.png";
+	std::string texId = "graphics/bullet/bulletshell.png";
 
 	sf::Vector2f velocity;
+	sf::Vector2f screensize;
+
 	float gravity;
 	float ejectionTimer;
 	float ejectionAngle;
 
+	std::function<void(BulletShell*)> ReturnBulletShell;
+
 public:
-	Cartridge(const std::string& name = "");
-	~Cartridge() = default;
+	BulletShell(const std::string& name = "");
+	~BulletShell() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
