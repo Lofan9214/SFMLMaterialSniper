@@ -76,7 +76,7 @@ void UiHud::Reset()
 
 	textWind.SetCharSize(textSize);
 	textWind.SetFillColor(sf::Color::Green);
-	textWind.SetOutline(sf::Color::White,2.f);
+	textWind.SetOutline(sf::Color::White, 2.f);
 	textWind.SetOrigin(Origins::MC);
 
 	sf::Vector2f size = FRAMEWORK.GetDefaultSize();
@@ -89,7 +89,7 @@ void UiHud::Reset()
 	for (int i = 0; i < uiBullets.size();++i)
 	{
 		uiBullets[i].setTexture(TEXTURE_MGR.Get(uiBulletTexId));
-		uiBullets[i].setScale({ 2.5f,2.5f });
+		uiBullets[i].setScale({ 2.3f,2.3f });
 		Utils::SetOrigin(uiBullets[i], Origins::BC);
 		uiBulletDefaultPos[i].x = bulletStartPos.x + i * bulletOffset;
 		uiBulletDefaultPos[i].y = position.y - bulletStartPos.y;
@@ -104,7 +104,7 @@ void UiHud::Reset()
 	uiBreath[3].position = { breathStartPos.x, position.y - breathStartPos.y + breathMaxSize.y };
 
 	uiWindCone.setScale(2.2f, 2.2f);
-	uiWindCone.setPosition(1105.f, size.y-100.f);
+	uiWindCone.setPosition(1105.f, size.y - 100.f);
 	uiWindBack.setScale(2.8f, 2.8f);
 	uiWindBack.setPosition(1395.f, size.y - 65.f);
 	Utils::SetOrigin(uiWindBack, Origins::MC);
@@ -125,7 +125,7 @@ void UiHud::Update(float dt)
 			uiBullets[i].move(dt * ammodisplacement / (boltDuration - 0.1f), 0.f);
 			if (boltTimer < 0.1f)
 			{
-				uiBullets[i].setRotation(3.f);
+				uiBullets[i].setRotation(2.f);
 			}
 		}
 		if (boltTimer < 0.f)
@@ -138,7 +138,7 @@ void UiHud::Update(float dt)
 	switch (reloadStatus)
 	{
 	case UiHud::ReloadStatus::MagazineEjecting:
-		uiBulletVelocity.y += 8000.f * dt;
+		uiBulletVelocity.y += 10000.f * dt;
 		for (int i = 0; i < uiBullets.size();++i)
 		{
 			uiBullets[i].move(uiBulletVelocity * dt);
@@ -165,16 +165,16 @@ void UiHud::FixedUpdate(float dt)
 void UiHud::Draw(sf::RenderTarget& window)
 {
 	window.draw(uiBarback);
+	for (int i = 0; i < ammo;++i)
+	{
+		window.draw(uiBullets[i]);
+	}
 	window.draw(uiBreath);
 	window.draw(uiWindBack);
 	textWind.Draw(window);
 	window.draw(uiBar);
 	window.draw(uiWindCone);
 
-	for (int i = 0; i < ammo;++i)
-	{
-		window.draw(uiBullets[i]);
-	}
 }
 
 void UiHud::SetWind(int wind)
@@ -214,13 +214,14 @@ void UiHud::SetBoltStatus(BoltStatus status)
 		for (int i = 0; i < ammo;++i)
 		{
 			uiBullets[i].setRotation(-20.f);
-			uiBullets[i].move(-ammodisplacement, 0.f);
+			uiBullets[i].move(-ammodisplacement * 0.5f, 0.f);
 		}
 		break;
 	case UiHud::BoltStatus::BoltPulling:
 		boltTimer = boltDuration;
 		for (int i = 0; i < ammo;++i)
 		{
+			uiBullets[i].move(-ammodisplacement * 0.5f, 0.f);
 			uiBullets[i].setRotation(0.f);
 		}
 		--ammo;

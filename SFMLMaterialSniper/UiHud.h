@@ -38,8 +38,8 @@ protected:
 	sf::Vector2f uiBulletVelocity;
 	std::string uiBulletTexId = "graphics/ui/uibullet.png";
 
-	const sf::Vector2f bulletStartPos = { 71.f, 45.f };
-	const float bulletOffset = 31.f;
+	const sf::Vector2f bulletStartPos = { 70.f, 50.f };
+	const float bulletOffset = 31.5f;
 
 	sf::VertexArray uiBreath;
 	const sf::Vector2f breathMaxSize = { 390.f,50.f };
@@ -73,8 +73,6 @@ public:
 	void SetWind(int wind);
 	void SetAmmo(int ammo);
 	void SetBreath(float breath);
-	void ReloadStart();
-	void ReloadEnd();
 	void SetBoltStatus(BoltStatus status);
 	void SetReloadStatus(ReloadStatus status);
 

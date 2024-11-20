@@ -54,6 +54,9 @@ public:
 	sf::Vector2f ScreenToUi(sf::Vector2i screenPos);
 	sf::Vector2i UiToScreen(sf::Vector2f uiPos);
 
+	sf::Vector2f WorldToUi(sf::Vector2f worldPos);
+	sf::Vector2f UiToWorld(sf::Vector2f uiPos);
+
 	const std::list<GameObject*>& GetWorldGameObjects() { return worldViewObjects; }
 
 	sf::FloatRect WorldRegion();

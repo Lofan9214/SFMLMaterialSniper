@@ -72,10 +72,12 @@ void CircleView::Update(float dt)
 
 void CircleView::LateUpdate(float dt)
 {
-	rendermask.setPosition((sf::Vector2f)SCENE_MGR.GetCurrentScene()->WorldToScreen(position));
-	bodytube.setPosition((sf::Vector2f)SCENE_MGR.GetCurrentScene()->WorldToScreen(position));
-	crosshairh.setPosition((sf::Vector2f)SCENE_MGR.GetCurrentScene()->WorldToScreen(position));
-	crosshairv.setPosition((sf::Vector2f)SCENE_MGR.GetCurrentScene()->WorldToScreen(position));
+	auto uipos = SCENE_MGR.GetCurrentScene()->WorldToUi(position);
+	rendermask.setPosition(uipos);
+	bodytube.setPosition(uipos);
+	crosshairh.setPosition(uipos);
+	crosshairv.setPosition(uipos);
+
 	noScope.setPosition(InputMgr::GetMousePositionf());
 }
 
