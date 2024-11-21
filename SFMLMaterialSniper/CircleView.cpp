@@ -72,13 +72,14 @@ void CircleView::Update(float dt)
 
 void CircleView::LateUpdate(float dt)
 {
-	auto uipos = SCENE_MGR.GetCurrentScene()->WorldToUi(position);
+	Scene* scene = SCENE_MGR.GetCurrentScene();
+	auto uipos = scene->WorldToUi(position);
 	rendermask.setPosition(uipos);
 	bodytube.setPosition(uipos);
 	crosshairh.setPosition(uipos);
 	crosshairv.setPosition(uipos);
 
-	noScope.setPosition(InputMgr::GetMousePositionf());
+	noScope.setPosition(scene->ScreenToUi(InputMgr::GetMousePosition()));
 }
 
 void CircleView::Draw(sf::RenderTarget& window)

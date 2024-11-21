@@ -181,7 +181,7 @@ void SceneGame::UpdateInterlude(float dt)
 void SceneGame::UpdateScreenRecoil(float dt)
 {
 	screenRecoilTimer += dt;
-	screenRecoil = 270.f * sinf(screenRecoilTimer * Utils::PI * 3.f) * std::exp(screenRecoilTimer * -3.f);
+	screenRecoil = 270.f * sinf(screenRecoilTimer * Utils::PI * 3.f) * std::exp(screenRecoilTimer * -4.f);
 	if (screenRecoilTimer > 0.f && screenRecoilTimer < 3.f)
 	{
 		worldView.setCenter({ screenRecoil, 0.f });
