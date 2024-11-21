@@ -7,17 +7,16 @@ class BulletShell;
 
 class Player : public GameObject
 {
-public:
-	enum class Status
+protected:
+enum class PlayerStatus
 	{
 		Ready,
 		Fire,
 		Reloading,
 	};
 
-protected:
-
-	Status status;
+	PlayerStatus playerStatus;
+	GameDefine::BreathStatus breathStatus;
 
 	Animator animator;
 	sf::Sprite body;
@@ -31,7 +30,6 @@ protected:
 
 	float breath;
 	float maxBreath;
-	bool breathover;
 
 	float fireTimer;
 	float reloadTimer;
@@ -61,8 +59,6 @@ public:
 	void UpdateReload(float dt);
 	void UpdateBreathStatus(float dt);
 	void Draw(sf::RenderTarget& window) override;
-
-	void SetStatus(Status status);
 
 	int GetAmmo() const { return ammo; }
 	float GetBreath() const { return breath / maxBreath; }

@@ -51,8 +51,8 @@ void CircleView::SetPosition(const sf::Vector2f& pos)
 
 void CircleView::Init()
 {
-	sortingLayer = SortingLayers::UI;
-	sortingOrder = -300;
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 150;
 }
 
 void CircleView::Release()
@@ -72,34 +72,36 @@ void CircleView::Update(float dt)
 
 void CircleView::LateUpdate(float dt)
 {
-	Scene* scene = SCENE_MGR.GetCurrentScene();
-	auto uipos = scene->WorldToUi(position);
-	rendermask.setPosition(uipos);
-	bodytube.setPosition(uipos);
-	crosshairh.setPosition(uipos);
-	crosshairv.setPosition(uipos);
+	if (!useScope)
+	{
+		noScope.setPosition(SCENE_MGR.GetCurrentScene()->ScreenToWorld(InputMgr::GetMousePosition()));
+		return;
+	}
 
-	noScope.setPosition(scene->ScreenToUi(InputMgr::GetMousePosition()));
+	rendermask.setPosition(position);
+	bodytube.setPosition(position);
+	crosshairh.setPosition(position);
+	crosshairv.setPosition(position);
+
+	renderTexture.clear();
+	renderTexture.setView(renderView);
+	std::list<GameObject*> lstobject = SCENE_MGR.GetCurrentScene()->GetWorldGameObjects();
+	for (auto obj : lstobject)
+	{
+		if (!obj->IsActive() || obj->GetSortingOrder() > 0 || obj == this)
+		{
+			continue;
+		}
+		obj->Draw(renderTexture);
+	}
+	renderTexture.display();
+	rendermask.setTexture(&renderTexture.getTexture());
 }
 
 void CircleView::Draw(sf::RenderTarget& window)
 {
 	if (useScope)
 	{
-		renderTexture.clear();
-		renderTexture.setView(renderView);
-		std::list<GameObject*> lstobject = SCENE_MGR.GetCurrentScene()->GetWorldGameObjects();
-		for (auto obj : lstobject)
-		{
-			if (!obj->IsActive() || obj->GetSortingOrder() > 0)
-			{
-				continue;
-			}
-			obj->Draw(renderTexture);
-		}
-		renderTexture.display();
-		rendermask.setTexture(&renderTexture.getTexture());
-
 		window.draw(rendermask);
 		window.draw(crosshairv);
 		window.draw(crosshairh);

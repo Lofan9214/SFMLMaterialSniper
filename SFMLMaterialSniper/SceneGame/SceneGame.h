@@ -105,6 +105,8 @@ public:
 	void SpawnDrum(const sf::Vector3f& pos);
 	void SpawnBottle(const sf::Vector3f& pos);
 	void SpawnRoundBoard(const sf::Vector3f& pos);
-
+	void ReturnDrum(Drum* drum);
+	void ReturnBottle(Bottle* bottle);
+	void ReturnRoundBoard(RoundBoard* roundboard);
 };
 

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BulletTable.h" />
+    <ClInclude Include="GameDefine.h" />
     <ClInclude Include="SceneGame\BulletShell.h" />
     <ClInclude Include="SceneGame\Gun.h" />
     <ClInclude Include="JsonDefines.h" />

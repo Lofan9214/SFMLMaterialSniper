@@ -121,10 +121,6 @@ void Bullet::Update(float dt)
 	{
 		UpdateFired(dt);
 	}
-	else if (status == Status::Hit)
-	{
-
-	}
 }
 
 void Bullet::UpdateFired(float dt)

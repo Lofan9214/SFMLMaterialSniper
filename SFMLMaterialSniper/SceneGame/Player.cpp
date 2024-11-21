@@ -54,7 +54,15 @@ void Player::Init()
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
 
-	animator.AddEvent("playerfire", 8, [this]()
+	animator.AddEvent("playerfire", 6, [this]()
+		{
+			if (gun != nullptr)
+			{
+				gun->SetRecoilStatus(GameDefine::BoltStatus::BoltPulling);
+			}
+		});
+
+	animator.AddEvent("playerfire", 10, [this]()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
 			if (TakeBulletShell)
@@ -62,18 +70,15 @@ void Player::Init()
 				BulletShell* bulletShell = TakeBulletShell();
 				bulletShell->Eject(body.getTransform().transformPoint(ejectionPos));
 			}
-			if (gun != nullptr)
-			{
-				gun->NextRoad();
-			}
+		});
+	animator.AddEvent("playerfire", 40, [this]()
+		{
+			playerStatus = PlayerStatus::Ready;
+			gun->SetRecoilStatus(GameDefine::BoltStatus::Ready);
 		});
 	animator.AddEvent("playerreloadend", 2, [this]()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
-		});
-	animator.AddEvent("playerfire", 21, [this]()
-		{
-			SetStatus(Status::Ready);
 		});
 }
 
@@ -90,9 +95,6 @@ void Player::Reset()
 	ANIMATIONCLIP_MGR.Load("animations/player/playerfire.csv");
 	ANIMATIONCLIP_MGR.Load("animations/player/playerreloadend.csv");
 	ANIMATIONCLIP_MGR.Load("animations/player/playerreloadstart.csv");
-
-
-	breathover = false;
 
 	auto screensize = FRAMEWORK.GetDefaultSize();
 	SetScale({ 1.5f,1.5f });
@@ -120,10 +122,11 @@ void Player::Reset()
 	if (gun != nullptr)
 	{
 		gun->SetScope(skillData.scopeSize);
-		gun->SetRecoilSpeed(skillData.stablility);
+		gun->SetRecoilScale(skillData.stablility);
 	}
 
-	SetStatus(Status::Ready);
+	breathStatus = GameDefine::BreathStatus::Normal;
+	playerStatus = PlayerStatus::Ready;
 }
 
 void Player::Update(float dt)
@@ -132,15 +135,15 @@ void Player::Update(float dt)
 
 	UpdateBreathStatus(dt);
 
-	switch (status)
+	switch (playerStatus)
 	{
-	case Player::Status::Ready:
+	case Player::PlayerStatus::Ready:
 		UpdateReady(dt);
 		break;
-	case Player::Status::Fire:
+	case Player::PlayerStatus::Fire:
 		UpdateFire(dt);
 		break;
-	case Player::Status::Reloading:
+	case Player::PlayerStatus::Reloading:
 		UpdateReload(dt);
 		break;
 	}
@@ -159,7 +162,7 @@ void Player::UpdateReady(float dt)
 
 			gun->Fire();
 
-			SetStatus(Status::Fire);
+			playerStatus = PlayerStatus::Fire;
 		}
 		else
 		{
@@ -171,7 +174,13 @@ void Player::UpdateReady(float dt)
 	{
 		ammo = 0;
 		reloadTimer = 0.f;
-		SetStatus(Status::Reloading);
+		playerStatus = PlayerStatus::Reloading;
+		if (uiHud != nullptr)
+		{
+			uiHud->SetReloadStatus(UiHud::ReloadStatus::MagazineEjecting);
+		}
+		animator.Play("animations/player/playerreloadstart.csv");
+		SOUND_MGR.PlaySfx("sounds/player/startreload.mp3");
 	}
 }
 
@@ -197,7 +206,7 @@ void Player::UpdateReload(float dt)
 	}
 	if (reloadTimer > reloadDuration)
 	{
-		SetStatus(Status::Ready);
+		playerStatus = PlayerStatus::Ready;
 		ammo = magazine;
 	}
 }
@@ -207,60 +216,46 @@ void Player::Draw(sf::RenderTarget& renderTarget)
 	renderTarget.draw(body);
 }
 
-void Player::SetStatus(Status status)
-{
-	Status prev = this->status;
-	this->status = status;
-	switch (status)
-	{
-	case Player::Status::Ready:
-		break;
-	case Player::Status::Fire:
-		break;
-	case Player::Status::Reloading:
-		if (uiHud != nullptr)
-		{
-			uiHud->SetReloadStatus(UiHud::ReloadStatus::MagazineEjecting);
-		}
-		animator.Play("animations/player/playerreloadstart.csv");
-		SOUND_MGR.PlaySfx("sounds/player/startreload.mp3");
-		break;
-	}
-}
-
 void Player::UpdateBreathStatus(float dt)
 {
-	if (breathover)
+	switch (breathStatus)
 	{
-		breath = Utils::Clamp(breath + dt * 0.5f, 0.f, maxBreath);
-		if (breath == maxBreath)
+	case GameDefine::BreathStatus::Normal:
+		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 		{
-			breathover = false;
-			gun->SetBreathover(false);
-			gun->SetVibrationSpeed(1.f);
-		}
-		return;
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		SOUND_MGR.PlaySfx("sounds/player/breathstop.mp3");
-	}
-	if (InputMgr::GetKeyPressing(sf::Keyboard::Space))
-	{
-		if (breath == 0.f)
-		{
-			gun->SetVibrationSpeed(3.f);
-			breathover = true;
-			SOUND_MGR.PlaySfx("sounds/player/breathover.mp3");
+			SOUND_MGR.PlaySfx("sounds/player/breathstop.mp3");
+			breathStatus = GameDefine::BreathStatus::Hold;
+			gun->SetBreathStatus(breathStatus);
 		}
 		else
 		{
-			gun->SetVibrationSpeed(0.5f);
+			breath = Utils::Clamp(breath + dt * 0.5f, 0.f, maxBreath);
 		}
-		breath = Utils::Clamp(breath - dt, 0.f, maxBreath);
-	}
-	else
-	{
+		break;
+	case GameDefine::BreathStatus::Hold:
+		if (InputMgr::GetKeyUp(sf::Keyboard::Space))
+		{
+			breathStatus = GameDefine::BreathStatus::Normal;
+			gun->SetBreathStatus(breathStatus);
+		}
+		else
+		{
+			breath = Utils::Clamp(breath - dt, 0.f, maxBreath);
+			if (breath == 0.f)
+			{
+				breathStatus = GameDefine::BreathStatus::Over;
+				gun->SetBreathStatus(breathStatus);
+				SOUND_MGR.PlaySfx("sounds/player/breathover.mp3");
+			}
+		}
+		break;
+	case GameDefine::BreathStatus::Over:
 		breath = Utils::Clamp(breath + dt * 0.5f, 0.f, maxBreath);
+		if (breath == maxBreath)
+		{
+			breathStatus = GameDefine::BreathStatus::Normal;
+			gun->SetBreathStatus(breathStatus);
+		}
+		break;
 	}
 }

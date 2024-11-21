@@ -96,11 +96,11 @@ void UiHud::Reset()
 	}
 
 	uiBreath.resize(4);
-	uiBreath.setPrimitiveType(sf::PrimitiveType::Quads);
+	uiBreath.setPrimitiveType(sf::PrimitiveType::TrianglesStrip);
 	uiBreath[0].position = { breathStartPos.x + breathMaxSize.x,position.y - breathStartPos.y + breathMaxSize.y };
 	uiBreath[1].position = { breathStartPos.x + breathMaxSize.x,position.y - breathStartPos.y };
-	uiBreath[2].position = { breathStartPos.x, position.y - breathStartPos.y };
-	uiBreath[3].position = { breathStartPos.x, position.y - breathStartPos.y + breathMaxSize.y };
+	uiBreath[2].position = { breathStartPos.x, position.y - breathStartPos.y + breathMaxSize.y };
+	uiBreath[3].position = { breathStartPos.x, position.y - breathStartPos.y };
 
 	uiWindCone.setScale(2.2f, 2.2f);
 	uiWindCone.setPosition(1105.f, size.y - 100.f);

@@ -79,7 +79,6 @@ void Gun::Init()
 				sf::Vector2f muzzlepos = player->GetMuzzlePos();
 				sortingOrder = 100;
 				body.setPosition(muzzlepos);
-				body.setScale(3.0f, 3.0f);
 				SetOrigin(Origins::ML);
 
 				drawmuzzlefire = true;
@@ -115,8 +114,6 @@ void Gun::Init()
 			Utils::SetOrigin(muzzlefire, Origins::ML);
 			drawmuzzlefire = false;
 		});
-	animator.AddEvent("gunfire", 5, [this]() {if (ScreenRecoil) ScreenRecoil();});
-
 	animator.AddEvent("gunfire", 17, [this]() {drawbody = false;});
 }
 
@@ -156,6 +153,7 @@ void Gun::Update(float dt)
 {
 	animator.Update(dt);
 	UpdateScopeVibration(dt);
+	UpdateScopeRecoil(dt);
 	UpdateScopePosition(dt);
 }
 
@@ -168,27 +166,60 @@ void Gun::UpdateScopePosition(float dt)
 	Scene* currentScene = SCENE_MGR.GetCurrentScene();
 	sf::Vector2f mousePos = currentScene->ScreenToWorld(InputMgr::GetMousePosition());
 
-	vibrationTimer += dt * vibrationSpeed;
-	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
-	scopeVibration = Utils::ElementProduct({ xt,sinf(vibrationTimer) * xt }, vibrationScale);
-
-	scopeRecoilVel = Utils::Lerp(scopeRecoilVel, -scopeRecoil, dt * 4.f);
-	scopeRecoil += scopeRecoilVel * dt;
-
 	scopePos = mousePos + scopeVibration + scopeRecoil;
 	circleView->SetPosition(scopePos);
 }
 
+void Gun::UpdateScopeRecoil(float dt)
+{
+	switch (boltState)
+	{
+	case GameDefine::BoltStatus::Ready:
+		break;
+	case GameDefine::BoltStatus::Fire:
+	{
+		recoilTimer += dt;
+		scopeRecoil = scopeRecoilDir1 * (1.f - cosf(Utils::Clamp(recoilTimer * Utils::PI / firetobolt, 0.f, Utils::PI))) * firstRecoil;
+		//scopeRecoilVel += scopeRecoilDir*sinf(recoilTimer*Utils::PI*2.f/firetobolt)*recoilSpeed*dt;
+		break;
+	}
+	case GameDefine::BoltStatus::BoltPulling:
+		recoilTimer += dt;
+		scopeRecoilDir1 = Utils::GetNormal(scopeRecoilDir1 + scopeRecoilDir2 * dt * 4.0f);
+		if (recoilTimer < firetobolt * 0.75f)
+		{
+			scopeRecoil = scopeRecoilDir1 * (2.f + recoilTimer * 3.5f) * firstRecoil;
+		}
+		else
+		{
+			SetRecoilStatus(GameDefine::BoltStatus::Recovery);
+		}
+		break;
+	case GameDefine::BoltStatus::Recovery:
+		recoilTimer += dt;
+		scopeRecoilDir1 = Utils::GetNormal(scopeRecoilDir1 + scopeRecoilDir2 * dt * 3.0f);
+		scopeRecoil = Utils::Lerp(scopeRecoilOrigin, { 0.f,0.f }, recoilTimer * 1.7f);
+		break;
+	}
+
+	//scopeRecoil += scopeRecoilVel * dt;
+}
+
 void Gun::UpdateScopeVibration(float dt)
 {
-	if (breathover)
+	vibrationTimer += dt * vibrationSpeed;
+	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
+	switch (breathState)
 	{
-		vibrationScale = Utils::Lerp(vibrationScale, vibrationScaleOrigin * 2.f, dt * 5.f);
-	}
-	if (vibrationScale.x != vibrationScaleOrigin.x)
-	{
+	case GameDefine::BreathStatus::Normal:
+	case GameDefine::BreathStatus::Hold:
 		vibrationScale = Utils::Lerp(vibrationScale, vibrationScaleOrigin, dt * 2.5f);
+		break;
+	case GameDefine::BreathStatus::Over:
+		vibrationScale = Utils::Lerp(vibrationScale, vibrationScaleOrigin * 2.f, dt * 5.f);
+		break;
 	}
+	scopeVibration = Utils::ElementProduct({ xt,sinf(vibrationTimer) * xt }, vibrationScale);
 }
 
 void Gun::Draw(sf::RenderTarget& window)
@@ -203,13 +234,6 @@ void Gun::Draw(sf::RenderTarget& window)
 	}
 }
 
-void Gun::NextRoad()
-{
-	float rand = Utils::RandomRange(Utils::PI * 1.75f, Utils::PI * 1.85f);
-	scopeRecoilVel.x += cosf(rand) * boltrecoilSpeed;
-	scopeRecoilVel.y += sinf(rand) * boltrecoilSpeed;
-}
-
 void Gun::SetScope(int scopelevel)
 {
 	if (circleView != nullptr)
@@ -219,10 +243,67 @@ void Gun::SetScope(int scopelevel)
 	}
 }
 
-void Gun::SetRecoilSpeed(int control)
+void Gun::SetRecoilScale(int control)
 {
-	recoilSpeed = (1.f - control * 0.1f) * 1400.f;
-	boltrecoilSpeed = (1.f - control * 0.1f) * 700.f;
+	firstRecoil = (1.f - control * 0.1f) * 70.f;
+}
+
+void Gun::SetRecoilStatus(GameDefine::BoltStatus state)
+{
+	GameDefine::BoltStatus prev = boltState;
+	boltState = state;
+	switch (boltState)
+	{
+	case GameDefine::BoltStatus::Ready:
+		//std::cout << recoilTimer << std::endl;
+		//std::cout << scopeRecoil.x << std::endl;
+		//std::cout << scopeRecoil.y << std::endl;
+		scopeRecoil.x = 0.f;
+		scopeRecoil.y = 0.f;
+		break;
+	case GameDefine::BoltStatus::Fire:
+	{
+		recoilTimer = 0.f;
+		float rand = Utils::RandomRange(Utils::PI * 1.30f, Utils::PI * 1.34f);
+		scopeRecoilDir1.x = cosf(rand);
+		scopeRecoilDir1.y = sinf(rand);
+		break;
+	}
+	case GameDefine::BoltStatus::BoltPulling:
+	{
+ 		//std::cout << recoilTimer << std::endl;
+
+		recoilTimer = 0.f;
+		float rand = Utils::RandomRange(Utils::PI * 1.75f, Utils::PI * 1.80f);
+		scopeRecoilDir2.x = cosf(rand);
+		scopeRecoilDir2.y = sinf(rand);
+		break;
+	}
+	case GameDefine::BoltStatus::Recovery:
+		recoilTimer = 0.f;
+		scopeRecoilOrigin = scopeRecoil;
+		break;
+	}
+}
+
+void Gun::SetBreathStatus(GameDefine::BreathStatus state)
+{
+	GameDefine::BreathStatus prev = breathState;
+	breathState = state;
+	switch (breathState)
+	{
+	case GameDefine::BreathStatus::Normal:
+		vibrationSpeed = 1.f;
+		break;
+	case GameDefine::BreathStatus::Hold:
+		vibrationSpeed = 0.33f;
+		break;
+	case GameDefine::BreathStatus::Over:
+		vibrationSpeed = 3.f;
+		break;
+	default:
+		break;
+	}
 }
 
 void Gun::Fire()
@@ -234,11 +315,8 @@ void Gun::Fire()
 	Bullet* bullet = TakeBullet();
 	bullet->Fire(firePos);
 
-	float rand = Utils::RandomRange(Utils::PI * 1.35f, Utils::PI * 1.40f);
-	scopeRecoilVel.x = cosf(rand) * recoilSpeed;
-	scopeRecoilVel.y = sinf(rand) * recoilSpeed;
-
 	drawbody = true;
+	SetRecoilStatus(GameDefine::BoltStatus::Fire);
 
 	body.setPosition(0.f, 0.f);
 	SetOrigin(Origins::MC);
@@ -248,5 +326,10 @@ void Gun::Fire()
 	if (uiHud != nullptr)
 	{
 		uiHud->SetBoltStatus(UiHud::BoltStatus::Fired);
+	}
+
+	if (ScreenRecoil)
+	{
+		ScreenRecoil();
 	}
 }

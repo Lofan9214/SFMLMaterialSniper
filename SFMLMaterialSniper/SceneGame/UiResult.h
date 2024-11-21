@@ -1,8 +1,24 @@
 #pragma once
 
+class TextGo;
+
 class UiResult : public GameObject
 {
 protected:
+
+	sf::RectangleShape titleBackground;
+	sf::RectangleShape resultBackground;
+
+	TextGo* txtTitle;
+	TextGo* txtResult;
+
+	sf::Sprite toHome;
+	TextGo* txtToHome;
+	sf::Sprite retry;
+	TextGo* txtRetry;
+
+	std::string fontId = "fonts/malgun.ttf";
+	std::string buttonTexId = "graphics/ui/uiroundbutton.png";
 
 public:
 	UiResult(const std::string& name = "");

@@ -41,6 +41,13 @@ void SceneGame::Enter()
 
 	SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
 
+	bulletPool.Return(bulletPool.Take());
+	glassShardPool.Return(glassShardPool.Take());
+	bulletShellPool.Return(bulletShellPool.Take());
+	bottlePool.Return(bottlePool.Take());
+	drumPool.Return(drumPool.Take());
+	roundboardPool.Return(roundboardPool.Take());
+
 	currentStatus = Status::Awake;
 
 	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
@@ -134,6 +141,7 @@ void SceneGame::SetStatus(Status status)
 		interludeTimer = 0.f;
 		break;
 	case SceneGame::Status::Result:
+		FRAMEWORK.GetWindow().setMouseCursorVisible(true);
 		SOUND_MGR.PlayBgm("sounds/bgm/stageclear.mp3");
 		break;
 	}
@@ -191,11 +199,16 @@ void SceneGame::UpdateInterlude(float dt)
 void SceneGame::UpdateScreenRecoil(float dt)
 {
 	screenRecoilTimer += dt;
-	screenRecoil = 270.f * sinf(screenRecoilTimer * Utils::PI * 3.f) * std::exp(screenRecoilTimer * -4.f);
-	if (screenRecoilTimer > 0.f && screenRecoilTimer < 3.f)
+	if (screenRecoilTimer > 0.f && screenRecoilTimer < 1.7f)
 	{
+		screenRecoil = 1500.f * sinf(std::powf(screenRecoilTimer, 0.75f) * Utils::PI * 2.f * 1.f) * std::exp((screenRecoilTimer + 1.f) * -2.f);
 		worldView.setCenter({ screenRecoil, 0.f });
 	}
+	else
+	{
+		worldView.setCenter({ 0.f, 0.f });
+	}
+
 }
 
 GlassShard* SceneGame::TakeGlassShard()
@@ -209,8 +222,8 @@ GlassShard* SceneGame::TakeGlassShard()
 void SceneGame::ReturnGlassShard(GlassShard* glassShard)
 {
 	RemoveGo(glassShard);
-	glassShardPool.Return(glassShard);
 	glassShards.remove(glassShard);
+	glassShardPool.Return(glassShard);
 }
 
 Bullet* SceneGame::TakeBullet()
@@ -225,8 +238,8 @@ Bullet* SceneGame::TakeBullet()
 void SceneGame::ReturnBullet(Bullet* bullet)
 {
 	RemoveGo(bullet);
-	bulletPool.Return(bullet);
 	bullets.remove(bullet);
+	bulletPool.Return(bullet);
 }
 
 BulletShell* SceneGame::TakeBulletShell()
@@ -240,8 +253,8 @@ BulletShell* SceneGame::TakeBulletShell()
 void SceneGame::ReturnBulletShell(BulletShell* bulletShell)
 {
 	RemoveGo(bulletShell);
-	bulletShellPool.Return(bulletShell);
 	bulletShells.remove(bulletShell);
+	bulletShellPool.Return(bulletShell);
 }
 
 void SceneGame::ClearTookObject()
@@ -339,4 +352,25 @@ void SceneGame::SpawnRoundBoard(const sf::Vector3f& pos)
 	roundboards.push_back(roundboard);
 	AddGo(roundboard);
 	roundboard->SetPosition(pos);
+}
+
+void SceneGame::ReturnDrum(Drum* drum)
+{
+	RemoveGo(drum);
+	drums.remove(drum);
+	drumPool.Return(drum);
+}
+
+void SceneGame::ReturnBottle(Bottle* bottle)
+{
+	RemoveGo(bottle);
+	bottles.remove(bottle);
+	bottlePool.Return(bottle);
+}
+
+void SceneGame::ReturnRoundBoard(RoundBoard* roundboard)
+{
+	RemoveGo(roundboard);
+	roundboards.remove(roundboard);
+	roundboardPool.Return(roundboard);
 }

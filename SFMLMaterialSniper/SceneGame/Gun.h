@@ -8,7 +8,6 @@ class UiHud;
 class Gun : public GameObject
 {
 protected:
-
 	Animator animator;
 	sf::Sprite body;
 	sf::Sprite muzzlefire;
@@ -28,11 +27,15 @@ protected:
 	float vibrationTimer = 0.f;
 
 	sf::Vector2f scopeRecoil;
-	sf::Vector2f scopeRecoilVel;
-	float recoilSpeed;
-	float boltrecoilSpeed;
+	sf::Vector2f scopeRecoilOrigin;
+	sf::Vector2f scopeRecoilDir1;
+	sf::Vector2f scopeRecoilDir2;
+	float recoilTimer;
+	float firstRecoil;
+	const float firetobolt = 0.13f;
 
-	bool breathover;
+	GameDefine::BreathStatus breathState;
+	GameDefine::BoltStatus boltState;
 
 	std::function<void()> ScreenRecoil;
 	std::function<Bullet* ()> TakeBullet;
@@ -56,13 +59,14 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void UpdateScopePosition(float dt);
+	void UpdateScopeRecoil(float dt);
 	void UpdateScopeVibration(float dt);
 	void Draw(sf::RenderTarget& window) override;
 
-	void NextRoad();
 	void SetScope(int scopeSize);
-	void SetRecoilSpeed(int control);
-	void SetBreathover(bool over) { breathover = over; }
-	void SetVibrationSpeed(float speed) { vibrationSpeed = speed; }
+	void SetRecoilScale(int control);
+
+	void SetRecoilStatus(GameDefine::BoltStatus state);
+	void SetBreathStatus(GameDefine::BreathStatus state);
 	void Fire();
 };
