@@ -22,7 +22,6 @@ void SceneGame::Init()
 
 	bg->SetSortingLayer(SortingLayers::Background);
 	bg->SetOrigin(Origins::MC);
-	bullet = AddGo(new Bullet("bullet"));
 
 	uiHud = AddGo(new UiHud("uiHud"));
 
@@ -140,12 +139,10 @@ void SceneGame::UpdateInGame(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
 	{
 		wind -= 1.f;
-		bullet->SetWind({ wind,0.f,0.f });
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
 	{
 		wind += 1.f;
-		bullet->SetWind({ wind,0.f,0.f });
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
@@ -208,6 +205,7 @@ Bullet* SceneGame::TakeBullet()
 	Bullet* bullet = bulletPool.Take();
 	bullets.push_back(bullet);
 	AddGo(bullet);
+	bullet->SetWind({ wind,0.f,0.f });
 	return bullet;
 }
 
