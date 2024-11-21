@@ -28,7 +28,6 @@ public:
 protected:
 	Status currentStatus = Status::Awake;
 
-	Bullet* bullet;
 	CircleView* scopeview;
 	Player* player;
 	Gun* gun;
