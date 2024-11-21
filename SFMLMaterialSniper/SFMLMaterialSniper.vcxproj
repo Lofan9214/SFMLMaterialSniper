@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BulletTable.h" />
+    <ClInclude Include="ButtonRound.h" />
     <ClInclude Include="GameDefine.h" />
     <ClInclude Include="SceneGame\BulletShell.h" />
     <ClInclude Include="SceneGame\Gun.h" />
@@ -72,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BulletTable.cpp" />
+    <ClCompile Include="ButtonRound.cpp" />
     <ClCompile Include="SceneGame\BulletShell.cpp" />
     <ClCompile Include="SceneGame\Gun.cpp" />
     <ClCompile Include="SceneHome\SceneHome.cpp" />

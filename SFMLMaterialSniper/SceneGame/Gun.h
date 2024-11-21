@@ -27,15 +27,15 @@ protected:
 	float vibrationTimer = 0.f;
 
 	sf::Vector2f scopeRecoil;
-	sf::Vector2f scopeRecoilOrigin;
 	sf::Vector2f scopeRecoilDir1;
 	sf::Vector2f scopeRecoilDir2;
 	float recoilTimer;
 	float firstRecoil;
+	float secondRecoil;
 	const float firetobolt = 0.13f;
 
-	GameDefine::BreathStatus breathState;
-	GameDefine::BoltStatus boltState;
+	GameDefine::BreathStatus breathStatus;
+	GameDefine::BoltStatus boltStatus;
 
 	std::function<void()> ScreenRecoil;
 	std::function<Bullet* ()> TakeBullet;

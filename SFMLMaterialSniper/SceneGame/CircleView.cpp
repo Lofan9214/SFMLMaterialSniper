@@ -52,7 +52,7 @@ void CircleView::SetPosition(const sf::Vector2f& pos)
 void CircleView::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 150;
+	sortingOrder = (int)GameDefine::SortingOrders::CircleView;
 }
 
 void CircleView::Release()

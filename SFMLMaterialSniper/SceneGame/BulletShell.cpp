@@ -44,7 +44,7 @@ void BulletShell::SetOrigin(const sf::Vector2f& newOrigin)
 void BulletShell::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 190;
+	sortingOrder = (int)GameDefine::SortingOrders::BulletShell;
 
 	SetOrigin(Origins::MC);
 

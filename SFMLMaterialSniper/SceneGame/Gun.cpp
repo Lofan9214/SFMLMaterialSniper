@@ -65,7 +65,7 @@ void Gun::SetOrigin(const sf::Vector2f& newOrigin)
 void Gun::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 200;
+	sortingOrder = (int)GameDefine::SortingOrders::Gun;
 
 	vibrationScale.x = vibrationScaleOrigin.x = 20.f;
 	vibrationScale.y = vibrationScaleOrigin.y = 20.f;
@@ -147,6 +147,8 @@ void Gun::Reset()
 
 	drawbody = false;
 	drawmuzzlefire = false;
+	boltStatus = GameDefine::BoltStatus::Ready;
+	breathStatus = GameDefine::BreathStatus::Normal;
 }
 
 void Gun::Update(float dt)
@@ -172,7 +174,7 @@ void Gun::UpdateScopePosition(float dt)
 
 void Gun::UpdateScopeRecoil(float dt)
 {
-	switch (boltState)
+	switch (boltStatus)
 	{
 	case GameDefine::BoltStatus::Ready:
 		break;
@@ -197,11 +199,10 @@ void Gun::UpdateScopeRecoil(float dt)
 		break;
 	case GameDefine::BoltStatus::Recovery:
 		recoilTimer += dt;
-		scopeRecoilDir1 = Utils::GetNormal(scopeRecoilDir1 + scopeRecoilDir2 * dt * 3.0f);
-		scopeRecoil = Utils::Lerp(scopeRecoilOrigin, { 0.f,0.f }, recoilTimer * 1.7f);
+		scopeRecoilDir1 = Utils::GetNormal(scopeRecoilDir1 + scopeRecoilDir2 * dt * 2.5f);
+		scopeRecoil = scopeRecoilDir1*secondRecoil*(cosf(recoilTimer * 1.5f * Utils::PI) + 1.f) * 0.5f;
 		break;
 	}
-
 	//scopeRecoil += scopeRecoilVel * dt;
 }
 
@@ -209,7 +210,7 @@ void Gun::UpdateScopeVibration(float dt)
 {
 	vibrationTimer += dt * vibrationSpeed;
 	float xt = cosf(vibrationTimer) / (1 + sinf(vibrationTimer) * sinf(vibrationTimer));
-	switch (breathState)
+	switch (breathStatus)
 	{
 	case GameDefine::BreathStatus::Normal:
 	case GameDefine::BreathStatus::Hold:
@@ -224,13 +225,13 @@ void Gun::UpdateScopeVibration(float dt)
 
 void Gun::Draw(sf::RenderTarget& window)
 {
-	if (drawbody)
-	{
-		window.draw(body);
-	}
 	if (drawmuzzlefire)
 	{
 		window.draw(muzzlefire);
+	}
+	if (drawbody)
+	{
+		window.draw(body);
 	}
 }
 
@@ -250,9 +251,9 @@ void Gun::SetRecoilScale(int control)
 
 void Gun::SetRecoilStatus(GameDefine::BoltStatus state)
 {
-	GameDefine::BoltStatus prev = boltState;
-	boltState = state;
-	switch (boltState)
+	GameDefine::BoltStatus prev = boltStatus;
+	boltStatus = state;
+	switch (boltStatus)
 	{
 	case GameDefine::BoltStatus::Ready:
 		//std::cout << recoilTimer << std::endl;
@@ -271,7 +272,7 @@ void Gun::SetRecoilStatus(GameDefine::BoltStatus state)
 	}
 	case GameDefine::BoltStatus::BoltPulling:
 	{
- 		//std::cout << recoilTimer << std::endl;
+		//std::cout << recoilTimer << std::endl;
 
 		recoilTimer = 0.f;
 		float rand = Utils::RandomRange(Utils::PI * 1.75f, Utils::PI * 1.80f);
@@ -281,16 +282,16 @@ void Gun::SetRecoilStatus(GameDefine::BoltStatus state)
 	}
 	case GameDefine::BoltStatus::Recovery:
 		recoilTimer = 0.f;
-		scopeRecoilOrigin = scopeRecoil;
+		secondRecoil = Utils::Magnitude(scopeRecoil);
 		break;
 	}
 }
 
 void Gun::SetBreathStatus(GameDefine::BreathStatus state)
 {
-	GameDefine::BreathStatus prev = breathState;
-	breathState = state;
-	switch (breathState)
+	GameDefine::BreathStatus prev = breathStatus;
+	breathStatus = state;
+	switch (breathStatus)
 	{
 	case GameDefine::BreathStatus::Normal:
 		vibrationSpeed = 1.f;

@@ -41,7 +41,7 @@ void UiResult::SetOrigin(const sf::Vector2f& newOrigin)
 void UiResult::Init()
 {
 	sortingLayer = SortingLayers::UI;
-	sortingOrder = 500;
+	sortingOrder = (int)GameDefine::UiSortingOrders::UiResult;
 
 	txtResult = new TextGo(fontId, "result");
 	txtRetry = new TextGo(fontId, "retry");

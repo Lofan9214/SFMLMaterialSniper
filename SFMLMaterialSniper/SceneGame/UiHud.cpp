@@ -45,7 +45,7 @@ void UiHud::SetOrigin(const sf::Vector2f& newOrigin)
 void UiHud::Init()
 {
 	sortingLayer = SortingLayers::UI;
-	sortingOrder = 300;
+	sortingOrder = (int)GameDefine::UiSortingOrders::UiHud;
 
 	uiBullets.resize(12);
 	uiBulletDefaultPos.resize(12);

@@ -13,6 +13,7 @@ class DataStage;
 class Gun;
 class BulletShell;
 class UiResult;
+class ButtonRound;
 
 class SceneGame :
 	public Scene
@@ -53,6 +54,7 @@ protected:
 
 	UiHud* uiHud;
 	UiResult* uiResult;
+	ButtonRound* btnStart;
 
 	float wind = 0.f;
 

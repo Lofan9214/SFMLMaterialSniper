@@ -7,14 +7,16 @@ class BulletShell;
 
 class Player : public GameObject
 {
-protected:
-enum class PlayerStatus
+public:
+	enum class PlayerStatus
 	{
+		Wait,
 		Ready,
 		Fire,
 		Reloading,
 	};
-
+protected:
+	
 	PlayerStatus playerStatus;
 	GameDefine::BreathStatus breathStatus;
 
@@ -63,4 +65,5 @@ public:
 	int GetAmmo() const { return ammo; }
 	float GetBreath() const { return breath / maxBreath; }
 	sf::Vector2f GetMuzzlePos() const { return body.getTransform().transformPoint(muzzlePos); }
+	void SetStatus(PlayerStatus status);
 };

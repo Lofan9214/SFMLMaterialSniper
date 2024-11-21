@@ -49,7 +49,7 @@ void Player::SetOrigin(const sf::Vector2f& newOrigin)
 void Player::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 150;
+	sortingOrder = (int)GameDefine::SortingOrders::Player;
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
@@ -126,7 +126,7 @@ void Player::Reset()
 	}
 
 	breathStatus = GameDefine::BreathStatus::Normal;
-	playerStatus = PlayerStatus::Ready;
+	playerStatus = PlayerStatus::Wait;
 }
 
 void Player::Update(float dt)
@@ -214,6 +214,11 @@ void Player::UpdateReload(float dt)
 void Player::Draw(sf::RenderTarget& renderTarget)
 {
 	renderTarget.draw(body);
+}
+
+void Player::SetStatus(PlayerStatus status)
+{
+	playerStatus = status;
 }
 
 void Player::UpdateBreathStatus(float dt)

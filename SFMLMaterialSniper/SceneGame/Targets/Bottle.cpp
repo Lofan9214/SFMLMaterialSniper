@@ -147,7 +147,10 @@ void Bottle::FixedUpdate(float dt)
 		{
 			float t = (position3.z - bulletpospre.z) / (bulletpos.z - bulletpospre.z);
 			sf::Vector2f bulletlerppos = Utils::Lerp({ bulletpospre.x, bulletpospre.y }, { bulletpos.x, bulletpos.y }, t);
-			if (bodyRect.contains(bulletlerppos))
+			sf::Image collisionImage = body.getTexture()->copyToImage();
+			sf::Vector2f point = body.getInverseTransform().transformPoint(bulletlerppos);
+			if (bodyRect.contains(bulletlerppos)
+				&& collisionImage.getPixel(point.x, point.y).a != 0)
 			{
 				std::cout << "hitbottle" << std::endl;
 				bullet->Hit();

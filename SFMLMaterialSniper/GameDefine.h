@@ -21,4 +21,16 @@ namespace GameDefine
 		BoltPulling,
 		Recovery,
 	};
+	enum class SortingOrders
+	{
+		CircleView = 140,
+		Player = 150,
+		BulletShell = 190,
+		Gun = 200,
+	};
+	enum class UiSortingOrders
+	{
+		UiHud = 300,
+		UiResult = 500,
+	};
 }

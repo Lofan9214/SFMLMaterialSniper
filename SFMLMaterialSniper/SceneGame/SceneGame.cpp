@@ -11,6 +11,7 @@
 #include "BulletShell.h"
 #include "UiHud.h"
 #include "UiResult.h"
+#include "ButtonRound.h"
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -31,13 +32,14 @@ void SceneGame::Init()
 	gun = AddGo(new Gun("gun"));
 	player = AddGo(new Player("player"));
 
+	btnStart = AddGo(new ButtonRound("btnStart"));
+
 	Scene::Init();
 }
 
 void SceneGame::Enter()
 {
 	Scene::Enter();
-	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 
 	SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
 
@@ -70,6 +72,10 @@ void SceneGame::Enter()
 
 	screenRecoilTimer = 1000.f;
 	stageEnterTime = FRAMEWORK.GetRealTime();
+	btnStart->SetPosition({ screensize.x * 0.5f,screensize.y * 0.25f });
+	btnStart->SetString(L"클릭하여 시작");
+	btnStart->SetScale({ 2.f,2.f });
+	btnStart->SetClicked([this]() {this->SetStatus(Status::InGame);});
 }
 
 void SceneGame::Exit()
@@ -133,9 +139,13 @@ void SceneGame::SetStatus(Status status)
 		difficulty = 1;
 		wave = 0;
 		remains = 0;
+		btnStart->SetActive(true);
 		break;
 	case SceneGame::Status::InGame:
+		FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 		SpawnWave();
+		player->SetStatus(Player::PlayerStatus::Ready);
+		btnStart->SetActive(false);
 		break;
 	case SceneGame::Status::Interlude:
 		interludeTimer = 0.f;
@@ -149,10 +159,10 @@ void SceneGame::SetStatus(Status status)
 
 void SceneGame::UpdateAwake(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
-	{
-		SetStatus(Status::InGame);
-	}
+	//if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	//{
+	//	SetStatus(Status::InGame);
+	//}
 }
 
 void SceneGame::UpdateInGame(float dt)
