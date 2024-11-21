@@ -5,12 +5,13 @@
 class SaveDataMgr : public Singleton<SaveDataMgr>
 {
 	friend Singleton<SaveDataMgr>;
+public:
 
 private:
 	SaveDataMgr() = default;
 	~SaveDataMgr() = default;
 
-	std::string savePath = "save.json";
+	std::string savePath = "tables/save.json";
 
 	SaveDataVC data;
 

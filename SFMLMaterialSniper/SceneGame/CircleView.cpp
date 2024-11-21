@@ -101,7 +101,6 @@ void CircleView::Draw(sf::RenderTarget& window)
 		rendermask.setTexture(&renderTexture.getTexture());
 
 		window.draw(rendermask);
-
 		window.draw(crosshairv);
 		window.draw(crosshairh);
 		window.draw(bodytube);

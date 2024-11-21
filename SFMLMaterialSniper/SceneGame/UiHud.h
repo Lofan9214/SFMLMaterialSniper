@@ -2,8 +2,6 @@
 
 #include "TextGo.h"
 
-class TextGo;
-
 class UiHud : public GameObject
 {
 public:

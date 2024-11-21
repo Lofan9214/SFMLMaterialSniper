@@ -6,6 +6,7 @@ public:
 	{
 		String,
 		Stage,
+		Bullet,
 	};
 
 protected:

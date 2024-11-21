@@ -31,9 +31,9 @@ protected:
 	const float coeff = 0.295f; // 항력 계수 (0.295가 일반적인 수치)
 	const float rho = 1.2f; // 공기 저항 (정상 기압 및 온도에서 1.2kg/m^3)
 
-	float weight = 11.3f; // 탄두중량 (mg)
-	float diameter = 7.82f; // 탄두지름 (mm)
-	float muzzleSpeed = 980.f;
+	float weight; // 탄두중량 (mg)
+	float diameter; // 탄두지름 (mm)
+	float muzzleSpeed;
 
 	sf::Sprite body;
 	Animator animator;
@@ -82,4 +82,6 @@ public:
 	sf::Vector3f GetPosition3() { return position3; }
 	sf::Vector3f GetPosition3Previous() { return position3Previous; }
 	sf::Vector3f GetVelocity3() { return velocity3d; }
+
+	void SetBulletType(const DataBullet& data);
 };

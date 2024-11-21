@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "StageTable.h"
+#include <io.h>
 #include "Includes/rapidcsv.h"
 
 const DataStage StageTable::Undefined;
@@ -7,6 +8,11 @@ const DataStage StageTable::Undefined;
 bool StageTable::Load()
 {
 	Release();
+
+	if (_access(filePath.c_str(), 0) == -1)
+	{
+		return false;
+	}
 
 	rapidcsv::Document doc(filePath, rapidcsv::LabelParams(0, -1));
 

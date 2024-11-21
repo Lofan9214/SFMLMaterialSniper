@@ -34,6 +34,12 @@ SaveDataVC SaveDataMgr::Load()
 		saveData = new SaveDataV1(v1);
 		break;
 	}
+	case 2:
+	{
+		SaveDataV2 v2 = loadJson.get<SaveDataV2>();
+		saveData = new SaveDataV2(v2);
+		break;
+	}
 	default:
 	{
 		SaveDataVC vc = loadJson.get<SaveDataVC>();

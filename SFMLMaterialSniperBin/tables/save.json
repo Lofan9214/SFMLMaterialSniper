@@ -1,4 +1,5 @@
 {
+    "selectedBullet": ".338 Lapua Magnum",
     "skillData": {
         "control": 0,
         "magazine": 0,
@@ -7,5 +8,5 @@
         "skillPoint": 20,
         "stablility": 0
     },
-    "version": 1
+    "version": 2
 }

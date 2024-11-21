@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "UiHud.h"
-#include "TextGo.h"
 
 UiHud::UiHud(const std::string& name)
 	: GameObject(name)

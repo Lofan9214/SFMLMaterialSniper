@@ -103,6 +103,11 @@ void Bullet::Reset()
 		returnBullet = [scene](Bullet* bullet) { scene->ReturnBullet(bullet); };
 	}
 
+	const auto& data = BULLET_TABLE->Get(SAVEDATA_MGR.Get().selectedBullet);
+	weight = data.weight;
+	diameter = data.diameter;
+	muzzleSpeed = data.muzzleSpeed;
+
 	ANIMATIONCLIP_MGR.Load("animations/bullet/bulletflying.csv");
 	ANIMATIONCLIP_MGR.Load("animations/bullet/bullethit.csv");
 	ANIMATIONCLIP_MGR.Load("animations/bullet/bulletricochet.csv");
@@ -132,7 +137,7 @@ void Bullet::UpdateFired(float dt)
 	velocity3d += acc3d * dt;
 	position3Previous = position3;
 	SetPosition(position3 + velocity3d * dt);
-	if (position3.z > 2000.f&& returnBullet)
+	if (position3.z > 2000.f && returnBullet)
 	{
 		returnBullet(this);
 	}
@@ -186,4 +191,11 @@ void Bullet::Hit(Result result)
 		SOUND_MGR.PlaySfx("sounds/bullet/bulletricochet.mp3");
 		animator.Play("animations/bullet/bulletricochet.csv");
 	}
+}
+
+void Bullet::SetBulletType(const DataBullet& data)
+{
+	weight = data.weight;
+	diameter = data.diameter;
+	muzzleSpeed = data.muzzleSpeed;
 }
