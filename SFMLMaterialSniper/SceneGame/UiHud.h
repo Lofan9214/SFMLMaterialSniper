@@ -36,12 +36,12 @@ protected:
 	sf::Vector2f uiBulletVelocity;
 	std::string uiBulletTexId = "graphics/ui/uibullet.png";
 
-	const sf::Vector2f bulletStartPos = { 70.f, 50.f };
+	const sf::Vector2f bulletStartPos = { 70.f, 60.f };
 	const float bulletOffset = 31.5f;
 
 	sf::VertexArray uiBreath;
 	const sf::Vector2f breathMaxSize = { 390.f,50.f };
-	const sf::Vector2f breathStartPos = { 460.f,92.f };
+	const sf::Vector2f breathStartPos = { 460.f,102.f };
 	
 	sf::Sprite uiWindCone;
 	std::string uiWindConeTexId = "graphics/ui/uiwindcone.png";

@@ -71,9 +71,10 @@ void Player::Init()
 				bulletShell->Eject(body.getTransform().transformPoint(ejectionPos));
 			}
 		});
-	animator.AddEvent("playerfire", 40, [this]()
+	animator.AddEvent("playerfire", 39, [this]()
 		{
-			playerStatus = PlayerStatus::Ready;
+			std::cout << "fireready" << std::endl;
+			SetStatus(PlayerStatus::Ready);
 			gun->SetRecoilStatus(GameDefine::BoltStatus::Ready);
 		});
 	animator.AddEvent("playerreloadend", 2, [this]()
@@ -155,14 +156,7 @@ void Player::UpdateReady(float dt)
 	{
 		if (ammo > 0)
 		{
-			--ammo;
-
-			animator.Play("animations/player/playerfire.csv");
-			animator.PlayQueue("animations/player/playeridle.csv");
-
-			gun->Fire();
-
-			playerStatus = PlayerStatus::Fire;
+			SetStatus(PlayerStatus::Fire);
 		}
 		else
 		{
@@ -172,15 +166,7 @@ void Player::UpdateReady(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z)
 		|| InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
-		ammo = 0;
-		reloadTimer = 0.f;
-		playerStatus = PlayerStatus::Reloading;
-		if (uiHud != nullptr)
-		{
-			uiHud->SetReloadStatus(UiHud::ReloadStatus::MagazineEjecting);
-		}
-		animator.Play("animations/player/playerreloadstart.csv");
-		SOUND_MGR.PlaySfx("sounds/player/startreload.mp3");
+		SetStatus(PlayerStatus::Reloading);
 	}
 }
 
@@ -206,8 +192,8 @@ void Player::UpdateReload(float dt)
 	}
 	if (reloadTimer > reloadDuration)
 	{
-		playerStatus = PlayerStatus::Ready;
 		ammo = magazine;
+		SetStatus(PlayerStatus::Ready);
 	}
 }
 
@@ -218,7 +204,38 @@ void Player::Draw(sf::RenderTarget& renderTarget)
 
 void Player::SetStatus(PlayerStatus status)
 {
+	PlayerStatus prev = playerStatus;
 	playerStatus = status;
+
+	switch (status)
+	{
+	case Player::PlayerStatus::Wait:
+		break;
+	case Player::PlayerStatus::Ready:
+		if (prev == PlayerStatus::Reloading && reloadTimer < 100.f / (24.f * (3.f + skillData.reload)))
+		{
+			std::cout << "sf" << std::endl;
+
+			playerStatus = prev;
+		}
+		break;
+	case Player::PlayerStatus::Fire:
+		--ammo;
+		animator.Play("animations/player/playerfire.csv");
+		animator.PlayQueue("animations/player/playeridle.csv");
+		gun->Fire();
+		break;
+	case Player::PlayerStatus::Reloading:
+		ammo = 0;
+		reloadTimer = 0.f;
+		if (uiHud != nullptr)
+		{
+			uiHud->SetReloadStatus(UiHud::ReloadStatus::MagazineEjecting);
+		}
+		animator.Play("animations/player/playerreloadstart.csv");
+		SOUND_MGR.PlaySfx("sounds/player/startreload.mp3");
+		break;
+	}
 }
 
 void Player::UpdateBreathStatus(float dt)

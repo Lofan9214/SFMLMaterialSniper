@@ -24,6 +24,7 @@ void SceneGame::Init()
 
 	bg->SetSortingLayer(SortingLayers::Background);
 	bg->SetOrigin(Origins::MC);
+	bg->SetScale({ 0.4f,0.4f });
 
 	uiHud = AddGo(new UiHud("uiHud"));
 	uiResult = AddGo(new UiResult("uiResult"));
@@ -75,7 +76,7 @@ void SceneGame::Enter()
 	btnStart->SetPosition({ screensize.x * 0.5f,screensize.y * 0.25f });
 	btnStart->SetString(L"클릭하여 시작");
 	btnStart->SetScale({ 2.f,2.f });
-	btnStart->SetClicked([this]() {this->SetStatus(Status::InGame);});
+	btnStart->SetClicked([this]() {this->SetStatus(Status::InGame); });
 }
 
 void SceneGame::Exit()
@@ -142,10 +143,13 @@ void SceneGame::SetStatus(Status status)
 		btnStart->SetActive(true);
 		break;
 	case SceneGame::Status::InGame:
-		FRAMEWORK.GetWindow().setMouseCursorVisible(false);
+		if (prev == Status::Awake)
+		{
+			FRAMEWORK.GetWindow().setMouseCursorVisible(false);
+			player->SetStatus(Player::PlayerStatus::Ready);
+			btnStart->SetActive(false);
+		}
 		SpawnWave();
-		player->SetStatus(Player::PlayerStatus::Ready);
-		btnStart->SetActive(false);
 		break;
 	case SceneGame::Status::Interlude:
 		interludeTimer = 0.f;

@@ -50,7 +50,7 @@ void BulletShell::Init()
 
 	screensize = FRAMEWORK.GetDefaultSize();
 
-	gravity = 1500.f;
+	gravity = 2500.f;
 }
 
 void BulletShell::Release()
@@ -60,7 +60,7 @@ void BulletShell::Release()
 void BulletShell::Reset()
 {
 	body.setTexture(TEXTURE_MGR.Get(texId));
-	SetScale({ 1.5f,1.5f });
+	SetScale({ 0.375f,0.375f });
 	SetOrigin(originPreset);
 
 	ReturnBulletShell = nullptr;
@@ -74,7 +74,7 @@ void BulletShell::Reset()
 void BulletShell::Update(float dt)
 {
 	ejectionTimer -= dt * ejectionAngle;
-	velocity.x *= powf(0.5f, dt);
+	velocity.x *= powf(0.4f, dt);
 	velocity.y += gravity * dt;
 	SetPosition(position + velocity * dt);
 	SetRotation(ejectionTimer);

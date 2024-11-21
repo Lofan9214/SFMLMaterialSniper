@@ -83,17 +83,20 @@ void UiHud::Reset()
 	textWind.SetPosition({ 1395.f,size.y - 75.f });
 
 	SetOrigin(Origins::BL);
-	SetPosition({ 0.f,size.y });
+	SetPosition({ 0.f,size.y+12.f });
 
 	for (int i = 0; i < uiBullets.size();++i)
 	{
 		uiBullets[i].setTexture(TEXTURE_MGR.Get(uiBulletTexId));
-		uiBullets[i].setScale({ 2.3f,2.3f });
+		uiBullets[i].setScale({ 0.575f,0.575f });
 		Utils::SetOrigin(uiBullets[i], Origins::BC);
 		uiBulletDefaultPos[i].x = bulletStartPos.x + i * bulletOffset;
 		uiBulletDefaultPos[i].y = position.y - bulletStartPos.y;
 		uiBullets[i].setPosition(uiBulletDefaultPos[i]);
 	}
+	float ratio = 1600.f / 2276.f;
+	uiBar.setScale(ratio, ratio);
+	uiBarback.setScale(ratio, ratio);
 
 	uiBreath.resize(4);
 	uiBreath.setPrimitiveType(sf::PrimitiveType::TrianglesStrip);

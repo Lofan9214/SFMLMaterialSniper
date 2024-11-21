@@ -17,7 +17,7 @@ void CircleView::SetCircleRadius(float radius)
 	renderView.reset({ 0.f,0.f ,diameter,diameter });
 	renderView.zoom(1.f / zoom);
 
-	bodytube.setScale({ diameter / 150.f ,diameter / 150.f });
+	bodytube.setScale({ diameter / 600.f ,diameter / 600.f });
 	crosshairh.setSize({ diameter * 0.8f,3.f });
 	crosshairv.setSize({ 3.f,diameter * 0.8f });
 	SetOrigin(Origins::MC);

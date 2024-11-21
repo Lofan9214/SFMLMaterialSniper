@@ -2,16 +2,16 @@ ID,FPS,"LootType (0: Single, 1: Loop)"
 bottlespawn,24,0
 
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,COLORRED,COLORGREEN,COLORBLUE,COLORALPHA,DISPLACEMENTX,DISPLACEMENTY,ROTATION
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,8,0,-270,0
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,31,0,-255,0
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,64,0,-230,0
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,115,0,-130,0
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,179,0,-70,0
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,255,0,0,0
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,255,0,-5,-5
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,255,0,-3,-4
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,255,0,0,-2
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,255,0,0,0
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,255,0,0,2
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,255,0,0,4
-graphics/targets/bottle.png,0,0,55,258,0,1,1,255,255,255,255,0,0,1
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,8,0,-270,0
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,31,0,-255,0
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,64,0,-230,0
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,115,0,-130,0
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,179,0,-70,0
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,255,0,0,0
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,255,0,-5,-5
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,255,0,-3,-4
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,255,0,0,-2
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,255,0,0,0
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,255,0,0,2
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,255,0,0,4
+graphics/targets/bottle.png,0,0,220,1032,0,0.25,0.25,255,255,255,255,0,0,1
