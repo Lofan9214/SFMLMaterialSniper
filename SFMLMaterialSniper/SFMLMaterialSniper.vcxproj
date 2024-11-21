@@ -64,8 +64,10 @@
     <ClInclude Include="SceneGame\SceneGame.h" />
     <ClInclude Include="StringTable.h" />
     <ClInclude Include="SceneGame\UiHud.h" />
-    <ClInclude Include="UiBullet.h" />
-    <ClInclude Include="UiStage.h" />
+    <ClInclude Include="SceneHome\UiBullet.h" />
+    <ClInclude Include="SceneHome\UiSkill.h" />
+    <ClInclude Include="SceneHome\UiStage.h" />
+    <ClInclude Include="SceneGame\UiResult.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BulletTable.cpp" />
@@ -110,8 +112,10 @@
     <ClCompile Include="SceneGame\SceneGame.cpp" />
     <ClCompile Include="StringTable.cpp" />
     <ClCompile Include="SceneGame\UiHud.cpp" />
-    <ClCompile Include="UiBullet.cpp" />
-    <ClCompile Include="UiStage.cpp" />
+    <ClCompile Include="SceneHome\UiBullet.cpp" />
+    <ClCompile Include="SceneHome\UiSkill.cpp" />
+    <ClCompile Include="SceneHome\UiStage.cpp" />
+    <ClCompile Include="SceneGame\UiResult.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

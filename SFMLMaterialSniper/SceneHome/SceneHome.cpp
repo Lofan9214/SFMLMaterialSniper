@@ -29,4 +29,9 @@ void SceneHome::Exit()
 void SceneHome::Update(float dt)
 {
 	Scene::Update(dt);
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
 }

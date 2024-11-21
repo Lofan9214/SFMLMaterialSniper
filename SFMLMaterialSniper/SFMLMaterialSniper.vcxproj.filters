@@ -150,10 +150,16 @@
     <ClInclude Include="BulletTable.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UiBullet.h">
+    <ClInclude Include="SceneHome\UiBullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UiStage.h">
+    <ClInclude Include="SceneHome\UiStage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneHome\UiSkill.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame\UiResult.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -275,10 +281,16 @@
     <ClCompile Include="BulletTable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UiBullet.cpp">
+    <ClCompile Include="SceneHome\UiBullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UiStage.cpp">
+    <ClCompile Include="SceneHome\UiStage.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneHome\UiSkill.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame\UiResult.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

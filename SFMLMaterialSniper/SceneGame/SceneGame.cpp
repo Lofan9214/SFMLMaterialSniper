@@ -5,11 +5,12 @@
 #include "Drum.h"
 #include "RoundBoard.h"
 #include "Bottle.h"
-#include "UiHud.h"
 #include "Player.h"
 #include "GlassShard.h"
 #include "Gun.h";
 #include "BulletShell.h"
+#include "UiHud.h"
+#include "UiResult.h"
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -24,6 +25,7 @@ void SceneGame::Init()
 	bg->SetOrigin(Origins::MC);
 
 	uiHud = AddGo(new UiHud("uiHud"));
+	uiResult = AddGo(new UiResult("uiResult"));
 
 	scopeview = AddGo(new CircleView("circleView"));
 	gun = AddGo(new Gun("gun"));
@@ -60,6 +62,7 @@ void SceneGame::Enter()
 	day = true;
 
 	screenRecoilTimer = 1000.f;
+	stageEnterTime = FRAMEWORK.GetRealTime();
 }
 
 void SceneGame::Exit()
@@ -88,6 +91,16 @@ void SceneGame::Update(float dt)
 	case SceneGame::Status::Interlude:
 		UpdateInterlude(dt);
 		break;
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Home);
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::F2))
+	{
+		uiResult->SetActive(!uiResult->IsActive());
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::F9))

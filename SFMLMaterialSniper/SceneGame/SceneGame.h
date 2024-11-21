@@ -12,6 +12,7 @@ class GlassShard;
 class DataStage;
 class Gun;
 class BulletShell;
+class UiResult;
 
 class SceneGame :
 	public Scene
@@ -51,6 +52,7 @@ protected:
 	ObjectPool<RoundBoard> roundboardPool;
 
 	UiHud* uiHud;
+	UiResult* uiResult;
 
 	float wind = 0.f;
 
@@ -64,6 +66,8 @@ protected:
 
 	float screenRecoil;
 	float screenRecoilTimer;
+
+	float stageEnterTime;
 
 public:
 	SceneGame();
