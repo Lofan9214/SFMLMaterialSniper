@@ -157,3 +157,9 @@ void Animator::SetFrame(const AnimationFrame& frame)
 		SetRotation(frame.rotation);
 	}
 }
+
+void Animator::SetFPS(int fps)
+{
+	currentClip->fps = std::abs(fps);
+	frameDuration = 1.f / currentClip->fps;
+}

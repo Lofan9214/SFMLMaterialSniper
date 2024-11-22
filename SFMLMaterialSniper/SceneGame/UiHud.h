@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TextGo.h"
+class WindCone;
 
 class UiHud : public GameObject
 {
@@ -43,8 +44,7 @@ protected:
 	const sf::Vector2f breathMaxSize = { 390.f,50.f };
 	const sf::Vector2f breathStartPos = { 460.f,102.f };
 	
-	sf::Sprite uiWindCone;
-	std::string uiWindConeTexId = "graphics/ui/uiwindcone.png";
+	WindCone* windCone;
 	sf::Sprite uiWindBack;
 	std::string uiWindBackTexId = "graphics/ui/uiwindback.png";
 	TextGo textWind;

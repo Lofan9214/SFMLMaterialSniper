@@ -77,6 +77,8 @@ public:
 
 	void SetFrame(const AnimationFrame& frame);
 
+	void SetFPS(int fps);
+
 	const std::string& GetCurrentClipId()
 	{
 		if (currentClip == nullptr)

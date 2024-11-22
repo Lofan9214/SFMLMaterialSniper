@@ -97,7 +97,7 @@ void Player::Reset()
 	ANIMATIONCLIP_MGR.Load("animations/player/playerreloadstart.csv");
 
 	auto screensize = FRAMEWORK.GetDefaultSize();
-	SetScale({ 1.5f,1.5f });
+	SetScale({ 0.375f,0.375f });
 	SetPosition({ -screensize.x * 0.5f - 150.f, screensize.y * 0.5f + 130.f });
 	SetOrigin(Origins::BL);
 

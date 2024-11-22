@@ -71,7 +71,7 @@ void ButtonRound::Reset()
 
 void ButtonRound::Update(float dt)
 {
-	sf::Vector2f mousepos = InputMgr::GetMousePositionf();
+	sf::Vector2f mousepos = SCENE_MGR.GetCurrentScene()->ScreenToUi(InputMgr::GetMousePosition());
 	sf::Image collisionImage = buttonBackground.getTexture()->copyToImage();
 	sf::Vector2f point = buttonBackground.getInverseTransform().transformPoint(mousepos);
 	if (buttonBackground.getGlobalBounds().contains(mousepos) && collisionImage.getPixel(point.x, point.y).a != 0)

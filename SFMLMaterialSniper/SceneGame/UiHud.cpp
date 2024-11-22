@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UiHud.h"
+#include "WindCone.h"
 
 UiHud::UiHud(const std::string& name)
 	: GameObject(name)
@@ -53,18 +54,22 @@ void UiHud::Init()
 	boltDuration = 0.5f;
 	boltTimer = boltDuration * 8.f;
 	ammodisplacement = 15.f;
+	
+	windCone = new WindCone("windcone");
+	windCone->Init();
 }
 
 void UiHud::Release()
 {
 	uiBullets.clear();
+	windCone->Release();
+	delete windCone;
 }
 
 void UiHud::Reset()
 {
 	uiBar.setTexture(TEXTURE_MGR.Get(uiBarTexId));
 	uiBarback.setTexture(TEXTURE_MGR.Get(uiBarbackTexId));
-	uiWindCone.setTexture(TEXTURE_MGR.Get(uiWindConeTexId));
 	uiWindBack.setTexture(TEXTURE_MGR.Get(uiWindBackTexId));
 	textWind.SetFont(FONT_MGR.Get("fonts/malgun.ttf"));
 
@@ -105,8 +110,9 @@ void UiHud::Reset()
 	uiBreath[2].position = { breathStartPos.x, position.y - breathStartPos.y + breathMaxSize.y };
 	uiBreath[3].position = { breathStartPos.x, position.y - breathStartPos.y };
 
-	uiWindCone.setScale(2.2f, 2.2f);
-	uiWindCone.setPosition(1105.f, size.y - 100.f);
+	windCone->Reset();
+	windCone->SetScale({ 2.f, 2.f });
+	windCone->SetPosition({ 1165.f, size.y - 55.f });
 	uiWindBack.setScale(2.8f, 2.8f);
 	uiWindBack.setPosition(1395.f, size.y - 65.f);
 	Utils::SetOrigin(uiWindBack, Origins::MC);
@@ -118,6 +124,7 @@ void UiHud::LateUpdate(float dt)
 
 void UiHud::Update(float dt)
 {
+	windCone->Update(dt);
 	switch (boltStatus)
 	{
 	case UiHud::BoltStatus::BoltPulling:
@@ -175,13 +182,13 @@ void UiHud::Draw(sf::RenderTarget& window)
 	window.draw(uiWindBack);
 	textWind.Draw(window);
 	window.draw(uiBar);
-	window.draw(uiWindCone);
-
+	windCone->Draw(window);
 }
 
 void UiHud::SetWind(int wind)
 {
 	textWind.SetString(std::to_string(wind));
+	windCone->SetWindSpeed(wind);
 }
 
 void UiHud::SetAmmo(int ammo)
