@@ -33,7 +33,7 @@
     <ClInclude Include="Framework\ResourceMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CircleView.h">
+    <ClInclude Include="SceneGame\CircleView.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Scene.h">
@@ -66,7 +66,7 @@
     <ClInclude Include="Framework\Utils.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SceneGame.h">
+    <ClInclude Include="SceneGame\SceneGame.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\DebugBox.h">
@@ -84,7 +84,7 @@
     <ClInclude Include="Framework\Variables.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
+    <ClInclude Include="SceneGame\Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Framework\AnimationClip.h">
@@ -114,22 +114,22 @@
     <ClInclude Include="SaveDataMgr.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Targets\Bottle.h">
+    <ClInclude Include="SceneGame\Targets\Bottle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Targets\Drum.h">
+    <ClInclude Include="SceneGame\Targets\Drum.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="SceneGame\Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Targets\RoundBoard.h">
+    <ClInclude Include="SceneGame\Targets\RoundBoard.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UiHud.h">
+    <ClInclude Include="SceneGame\UiHud.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Targets\GlassShard.h">
+    <ClInclude Include="SceneGame\Targets\GlassShard.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="StageTable.h">
@@ -138,13 +138,34 @@
     <ClInclude Include="JsonDefines.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SceneHome.h">
+    <ClInclude Include="SceneHome\SceneHome.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Gun.h">
+    <ClInclude Include="SceneGame\Gun.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="BulletShell.h">
+    <ClInclude Include="SceneGame\BulletShell.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletTable.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneHome\UiBullet.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneHome\UiStage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneHome\UiSkill.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame\UiResult.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDefine.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonRound.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -161,7 +182,7 @@
     <ClCompile Include="Framework\Main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CircleView.cpp">
+    <ClCompile Include="SceneGame\CircleView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Scene.cpp">
@@ -191,7 +212,7 @@
     <ClCompile Include="Framework\Utils.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SceneGame.cpp">
+    <ClCompile Include="SceneGame\SceneGame.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\DebugBox.cpp">
@@ -209,7 +230,7 @@
     <ClCompile Include="Framework\Variables.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
+    <ClCompile Include="SceneGame\Bullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Framework\AnimationClip.cpp">
@@ -233,34 +254,52 @@
     <ClCompile Include="SaveDataMgr.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Targets\Bottle.cpp">
+    <ClCompile Include="SceneGame\Targets\Bottle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Targets\Drum.cpp">
+    <ClCompile Include="SceneGame\Targets\Drum.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="SceneGame\Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Targets\RoundBoard.cpp">
+    <ClCompile Include="SceneGame\Targets\RoundBoard.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UiHud.cpp">
+    <ClCompile Include="SceneGame\UiHud.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Targets\GlassShard.cpp">
+    <ClCompile Include="SceneGame\Targets\GlassShard.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="StageTable.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SceneHome.cpp">
+    <ClCompile Include="SceneHome\SceneHome.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Gun.cpp">
+    <ClCompile Include="SceneGame\Gun.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BulletShell.cpp">
+    <ClCompile Include="SceneGame\BulletShell.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletTable.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneHome\UiBullet.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneHome\UiStage.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneHome\UiSkill.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame\UiResult.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonRound.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

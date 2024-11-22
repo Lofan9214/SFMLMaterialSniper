@@ -3,4 +3,4 @@
 
 bool Variables::isDrawHitBox = false;
 Languages Variables::currentLang = Languages::Korean;
-const int Variables::currentVersion = 1;
+const int Variables::currentVersion = 2;

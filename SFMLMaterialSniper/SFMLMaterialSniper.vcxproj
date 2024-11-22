@@ -19,19 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BulletShell.h" />
-    <ClInclude Include="Gun.h" />
+    <ClInclude Include="BulletTable.h" />
+    <ClInclude Include="ButtonRound.h" />
+    <ClInclude Include="GameDefine.h" />
+    <ClInclude Include="SceneGame\BulletShell.h" />
+    <ClInclude Include="SceneGame\Gun.h" />
     <ClInclude Include="JsonDefines.h" />
-    <ClInclude Include="SceneHome.h" />
+    <ClInclude Include="SceneHome\SceneHome.h" />
     <ClInclude Include="StageTable.h" />
-    <ClInclude Include="Targets\GlassShard.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Targets\RoundBoard.h" />
-    <ClInclude Include="Targets\Drum.h" />
-    <ClInclude Include="Targets\Bottle.h" />
+    <ClInclude Include="SceneGame\Targets\GlassShard.h" />
+    <ClInclude Include="SceneGame\Player.h" />
+    <ClInclude Include="SceneGame\Targets\RoundBoard.h" />
+    <ClInclude Include="SceneGame\Targets\Drum.h" />
+    <ClInclude Include="SceneGame\Targets\Bottle.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
     <ClInclude Include="Framework\Animator.h" />
-    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="SceneGame\Bullet.h" />
     <ClInclude Include="Framework\DataTableMgr.h" />
     <ClInclude Include="Framework\DataTable.h" />
     <ClInclude Include="Framework\Icon.h" />
@@ -43,7 +46,7 @@
     <ClInclude Include="Framework\InputMgr.h" />
     <ClInclude Include="Framework\ObjectPool.h" />
     <ClInclude Include="Framework\ResourceMgr.h" />
-    <ClInclude Include="CircleView.h" />
+    <ClInclude Include="SceneGame\CircleView.h" />
     <ClInclude Include="Framework\Scene.h" />
     <ClInclude Include="Framework\SceneDev1.h" />
     <ClInclude Include="Framework\SceneDev2.h" />
@@ -60,23 +63,29 @@
     <ClInclude Include="Includes\rapidcsv.h" />
     <ClInclude Include="SaveData.h" />
     <ClInclude Include="SaveDataMgr.h" />
-    <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="SceneGame\SceneGame.h" />
     <ClInclude Include="StringTable.h" />
-    <ClInclude Include="UiHud.h" />
+    <ClInclude Include="SceneGame\UiHud.h" />
+    <ClInclude Include="SceneHome\UiBullet.h" />
+    <ClInclude Include="SceneHome\UiSkill.h" />
+    <ClInclude Include="SceneHome\UiStage.h" />
+    <ClInclude Include="SceneGame\UiResult.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BulletShell.cpp" />
-    <ClCompile Include="Gun.cpp" />
-    <ClCompile Include="SceneHome.cpp" />
+    <ClCompile Include="BulletTable.cpp" />
+    <ClCompile Include="ButtonRound.cpp" />
+    <ClCompile Include="SceneGame\BulletShell.cpp" />
+    <ClCompile Include="SceneGame\Gun.cpp" />
+    <ClCompile Include="SceneHome\SceneHome.cpp" />
     <ClCompile Include="StageTable.cpp" />
-    <ClCompile Include="Targets\GlassShard.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Targets\RoundBoard.cpp" />
-    <ClCompile Include="Targets\Drum.cpp" />
-    <ClCompile Include="Targets\Bottle.cpp" />
+    <ClCompile Include="SceneGame\Targets\GlassShard.cpp" />
+    <ClCompile Include="SceneGame\Player.cpp" />
+    <ClCompile Include="SceneGame\Targets\RoundBoard.cpp" />
+    <ClCompile Include="SceneGame\Targets\Drum.cpp" />
+    <ClCompile Include="SceneGame\Targets\Bottle.cpp" />
     <ClCompile Include="Framework\AnimationClip.cpp" />
     <ClCompile Include="Framework\Animator.cpp" />
-    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="SceneGame\Bullet.cpp" />
     <ClCompile Include="Framework\DataTableMgr.cpp" />
     <ClCompile Include="Framework\DataTable.cpp" />
     <ClCompile Include="Framework\Icon.cpp" />
@@ -86,7 +95,7 @@
     <ClCompile Include="Framework\HitBox.cpp" />
     <ClCompile Include="Framework\InputMgr.cpp" />
     <ClCompile Include="Framework\Main.cpp" />
-    <ClCompile Include="CircleView.cpp" />
+    <ClCompile Include="SceneGame\CircleView.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="Framework\SceneDev1.cpp" />
     <ClCompile Include="Framework\SceneDev2.cpp" />
@@ -103,9 +112,13 @@
     <ClCompile Include="Framework\Variables.cpp" />
     <ClCompile Include="SaveData.cpp" />
     <ClCompile Include="SaveDataMgr.cpp" />
-    <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="SceneGame\SceneGame.cpp" />
     <ClCompile Include="StringTable.cpp" />
-    <ClCompile Include="UiHud.cpp" />
+    <ClCompile Include="SceneGame\UiHud.cpp" />
+    <ClCompile Include="SceneHome\UiBullet.cpp" />
+    <ClCompile Include="SceneHome\UiSkill.cpp" />
+    <ClCompile Include="SceneHome\UiStage.cpp" />
+    <ClCompile Include="SceneGame\UiResult.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -201,7 +214,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;.\Framework;.\Targets;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;.\Framework;.\SceneGame;.\SceneGame\Targets;.\SceneHome;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -221,7 +234,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;.\Framework;.\Targets;.</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML-2.6.1\include;.\Framework;.\SceneGame;.\SceneGame\Targets;.\SceneHome;$(ProjectDir)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>

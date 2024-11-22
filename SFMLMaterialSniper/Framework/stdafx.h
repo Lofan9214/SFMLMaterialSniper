@@ -18,6 +18,7 @@
 #include "Includes/json.hpp"
 using json = nlohmann::json;
 
+#include "GameDefine.h"
 #include "Defines.h"
 #include "JsonDefines.h"
 #include "Variables.h"
@@ -29,6 +30,7 @@ using json = nlohmann::json;
 #include "DataTable.h"
 #include "StringTable.h"
 #include "StageTable.h"
+#include "BulletTable.h"
 #include "DataTableMgr.h"
 #include "Framework.h"
 #include "InputMgr.h"
@@ -40,4 +42,3 @@ using json = nlohmann::json;
 #include "Scene.h"
 #include "ObjectPool.h"
 #include "SoundMgr.h"
-

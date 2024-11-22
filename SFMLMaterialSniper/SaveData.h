@@ -1,7 +1,8 @@
 #pragma once
 
 struct SaveDataV1;
-typedef SaveDataV1 SaveDataVC;
+struct SaveDataV2;
+typedef SaveDataV2 SaveDataVC;
 
 struct SkillData
 {
@@ -32,3 +33,14 @@ struct SaveDataV1 : public SaveData
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SaveDataV1,version, skillData)
 };
 
+struct SaveDataV2 : public SaveData
+{
+	SaveDataV2() { version = 2; }
+
+	SkillData skillData;
+	std::string selectedBullet;
+
+	SaveData* VersionUp() override;
+
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SaveDataV2, version, skillData, selectedBullet)
+};

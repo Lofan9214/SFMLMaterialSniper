@@ -1,9 +1,11 @@
 ID,FPS,"LootType (0: Single, 1: Loop)"
-playerfire,24,0
+playerfire,48,0
 
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,COLORRED,COLORGREEN,COLORBLUE,COLORALPHA,DISPLACEMENTX,DISPLACEMENTY,ROTATION
 graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00001.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00001.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00002.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00002.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00003.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00004.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
@@ -18,6 +20,23 @@ graphics/player/sprite/00012.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00013.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00014.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00015.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
 graphics/player/sprite/00000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
