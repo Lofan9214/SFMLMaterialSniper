@@ -159,12 +159,13 @@ void Player::UpdateReady(float dt)
 		}
 		else
 		{
-			//Todo 재장전 알림 만들어야 함
+			uiHud->SetReloadButton(true);
 		}
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z)
 		|| InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
+		uiHud->SetReloadButton(false);
 		SetStatus(PlayerStatus::Reloading);
 	}
 }

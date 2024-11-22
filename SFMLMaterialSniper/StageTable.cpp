@@ -26,6 +26,7 @@ bool StageTable::Load()
 			DataWave dataWave;
 			dataWave.type = row[2];
 			dataWave.position = { std::stof(row[3]),std::stof(row[4]),std::stof(row[5]) };
+			dataWave.velocity = { std::stof(row[6]),std::stof(row[7])};
 			if (find != table.end())
 			{
 				auto find2 = find->second.waves.find(std::stoi(row[1]));

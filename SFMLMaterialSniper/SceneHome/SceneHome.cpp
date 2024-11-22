@@ -2,12 +2,17 @@
 #include "SceneHome.h"
 
 
-SceneHome::SceneHome() : Scene(SceneIds::None)
+SceneHome::SceneHome() : Scene(SceneIds::Home)
 {
 }
 
 void SceneHome::Init()
 {
+	SpriteGo* bg = AddGo(new SpriteGo("graphics/home/dorm.png", "background"));
+
+	bg->SetSortingLayer(SortingLayers::Background);
+	bg->SetOrigin(Origins::MC);
+
 	Scene::Init();
 }
 
@@ -18,6 +23,13 @@ void SceneHome::Release()
 
 void SceneHome::Enter()
 {
+	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
+
+	worldView.setCenter(0.f, 0.f);
+	worldView.setSize(screensize);
+
+	uiView.setCenter(screensize * 0.5f);
+	uiView.setSize(screensize);
 	Scene::Enter();
 }
 
@@ -34,4 +46,9 @@ void SceneHome::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
+}
+
+void SceneHome::Draw(sf::RenderWindow& window)
+{
+	Scene::Draw(window);
 }

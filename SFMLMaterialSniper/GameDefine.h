@@ -33,4 +33,15 @@ namespace GameDefine
 		UiHud = 300,
 		UiResult = 500,
 	};
+
+	enum class TargetType
+	{
+		Drum,
+		Bottle,
+		RoundBoard,
+		GlassNormal,
+		GlassRapid,
+		GlassSuper,
+		GlassTempered,
+	};
 }

@@ -2,6 +2,7 @@
 
 #include "TextGo.h"
 class WindCone;
+class Reload;
 
 class UiHud : public GameObject
 {
@@ -45,6 +46,8 @@ protected:
 	const sf::Vector2f breathStartPos = { 460.f,102.f };
 	
 	WindCone* windCone;
+	Reload* reload;
+
 	sf::Sprite uiWindBack;
 	std::string uiWindBackTexId = "graphics/ui/uiwindback.png";
 	TextGo textWind;
@@ -75,4 +78,5 @@ public:
 	void SetReloadStatus(ReloadStatus status);
 
 	void OnLocalize(Languages lang) override;
+	void SetReloadButton(bool active);
 };

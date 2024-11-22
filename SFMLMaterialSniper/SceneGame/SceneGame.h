@@ -57,7 +57,6 @@ protected:
 	ButtonRound* btnStart;
 	WindController* windController;
 
-
 	DataStage dataStage;
 
 	float wind = 0.f;

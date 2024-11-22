@@ -4,6 +4,8 @@ class SceneHome : public Scene
 {
 protected:
 
+	SpriteGo background;
+
 public:
 	SceneHome();
 	virtual ~SceneHome() = default;
@@ -14,5 +16,7 @@ public:
 	void Exit() override;
 
 	void Update(float dt) override;
+	void Draw(sf::RenderWindow& window) override;
+
 };
 

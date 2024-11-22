@@ -6,6 +6,7 @@ struct DataWave
 {
 	std::string type;
 	sf::Vector3f position;
+	sf::Vector2f velocity;
 };
 
 struct DataStage

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UiHud.h"
 #include "UiWindCone.h"
+#include "UiReload.h"
 
 UiHud::UiHud(const std::string& name)
 	: GameObject(name)
@@ -54,9 +55,12 @@ void UiHud::Init()
 	boltDuration = 0.5f;
 	boltTimer = boltDuration * 8.f;
 	ammodisplacement = 15.f;
-	
+
 	windCone = new WindCone("windcone");
 	windCone->Init();
+
+	reload = new Reload("reload");
+	reload->Init();
 }
 
 void UiHud::Release()
@@ -64,6 +68,8 @@ void UiHud::Release()
 	uiBullets.clear();
 	windCone->Release();
 	delete windCone;
+	reload->Release();
+	delete reload;
 }
 
 void UiHud::Reset()
@@ -88,7 +94,7 @@ void UiHud::Reset()
 	textWind.SetPosition({ 1395.f,size.y - 75.f });
 
 	SetOrigin(Origins::BL);
-	SetPosition({ 0.f,size.y+12.f });
+	SetPosition({ 0.f,size.y + 12.f });
 
 	for (int i = 0; i < uiBullets.size();++i)
 	{
@@ -113,6 +119,11 @@ void UiHud::Reset()
 	windCone->Reset();
 	windCone->SetScale({ 2.f, 2.f });
 	windCone->SetPosition({ 1165.f, size.y - 55.f });
+
+	reload->Reset();
+	reload->SetPosition(size * 0.5f);
+	reload->SetActive(false);
+
 	uiWindBack.setScale(2.8f, 2.8f);
 	uiWindBack.setPosition(1395.f, size.y - 65.f);
 	Utils::SetOrigin(uiWindBack, Origins::MC);
@@ -125,6 +136,7 @@ void UiHud::LateUpdate(float dt)
 void UiHud::Update(float dt)
 {
 	windCone->Update(dt);
+	//reload->Update(dt);
 	switch (boltStatus)
 	{
 	case UiHud::BoltStatus::BoltPulling:
@@ -183,6 +195,8 @@ void UiHud::Draw(sf::RenderTarget& window)
 	textWind.Draw(window);
 	window.draw(uiBar);
 	windCone->Draw(window);
+	//if (reload->IsActive())
+	//	reload->Draw(window);
 }
 
 void UiHud::SetWind(int wind)
@@ -271,4 +285,9 @@ void UiHud::SetReloadStatus(ReloadStatus status)
 void UiHud::OnLocalize(Languages lang)
 {
 	textWind.OnLocalize(lang);
+}
+
+void UiHud::SetReloadButton(bool active)
+{
+	reload->SetActive(active);
 }
