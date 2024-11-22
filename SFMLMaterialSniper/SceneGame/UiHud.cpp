@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "UiHud.h"
-#include "WindCone.h"
+#include "UiWindCone.h"
 
 UiHud::UiHud(const std::string& name)
 	: GameObject(name)

@@ -21,7 +21,8 @@ bool StageTable::Load()
 		for (int i = 0;i < doc.GetRowCount();++i)
 		{
 			auto row = doc.GetRow<std::string>(i);
-			auto find = table.find(row[0]);
+			int stagei = std::stoi(row[0]);
+			auto find = table.find(stagei);
 			DataWave dataWave;
 			dataWave.type = row[2];
 			dataWave.position = { std::stof(row[3]),std::stof(row[4]),std::stof(row[5]) };
@@ -40,9 +41,9 @@ bool StageTable::Load()
 			else
 			{
 				DataStage dataStage;
-				dataStage.stage = row[0];
+				dataStage.stage = stagei;
 				dataStage.waves.insert({ std::stoi(row[1]),{dataWave} });
-				table.insert({ row[0],dataStage });
+				table.insert({ stagei,dataStage });
 			}
 		}
 	}
@@ -62,7 +63,7 @@ void StageTable::Release()
 	table.clear();
 }
 
-const DataStage& StageTable::Get(const std::string& id)
+const DataStage& StageTable::Get(int id)
 {
 	auto find = table.find(id);
 	if (find == table.end())

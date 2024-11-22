@@ -12,6 +12,7 @@
 #include "UiHud.h"
 #include "UiResult.h"
 #include "ButtonRound.h"
+#include "WindController.h"
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -34,6 +35,8 @@ void SceneGame::Init()
 	player = AddGo(new Player("player"));
 
 	btnStart = AddGo(new ButtonRound("btnStart"));
+
+	windController = AddGo(new WindController("windController"));
 
 	Scene::Init();
 }
@@ -65,18 +68,14 @@ void SceneGame::Enter()
 	uiHud->SetAmmo(player->GetAmmo());
 	uiHud->SetBreath(player->GetBreath());
 
-	stage = 1;
-	difficulty = 1;
-	wave = 0;
-	remains = 0;
-	day = true;
-
 	screenRecoilTimer = 1000.f;
 	stageEnterTime = FRAMEWORK.GetRealTime();
 	btnStart->SetPosition({ screensize.x * 0.5f,screensize.y * 0.25f });
 	btnStart->SetString(L"클릭하여 시작");
 	btnStart->SetScale({ 2.f,2.f });
 	btnStart->SetClicked([this]() {this->SetStatus(Status::InGame); });
+
+	SetStatus(Status::Awake);
 }
 
 void SceneGame::Exit()
@@ -89,7 +88,6 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-	uiHud->SetWind(wind);
 	uiHud->SetBreath(player->GetBreath());
 
 	UpdateScreenRecoil(dt);
@@ -105,6 +103,15 @@ void SceneGame::Update(float dt)
 	case SceneGame::Status::Interlude:
 		UpdateInterlude(dt);
 		break;
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
+	{
+		SetWind(--wind);
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
+	{
+		SetWind(++wind);
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
@@ -133,6 +140,8 @@ void SceneGame::SetStatus(Status status)
 	Status prev = currentStatus;
 	currentStatus = status;
 
+
+
 	switch (currentStatus)
 	{
 	case SceneGame::Status::Awake:
@@ -140,7 +149,10 @@ void SceneGame::SetStatus(Status status)
 		difficulty = 1;
 		wave = 0;
 		remains = 0;
+		day = true;
 		btnStart->SetActive(true);
+
+		dataStage = STAGE_TABLE->Get(stage);
 		break;
 	case SceneGame::Status::InGame:
 		if (prev == Status::Awake)
@@ -148,6 +160,7 @@ void SceneGame::SetStatus(Status status)
 			FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 			player->SetStatus(Player::PlayerStatus::Ready);
 			btnStart->SetActive(false);
+			windController->SetDifficulty(difficulty);
 		}
 		SpawnWave();
 		break;
@@ -171,15 +184,6 @@ void SceneGame::UpdateAwake(float dt)
 
 void SceneGame::UpdateInGame(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
-	{
-		wind -= 1.f;
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
-	{
-		wind += 1.f;
-	}
-
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		ClearTookObject();
@@ -187,9 +191,6 @@ void SceneGame::UpdateInGame(float dt)
 	}
 	if (remains == 0)
 	{
-		std::string stagestr = std::to_string(stage) + std::to_string(difficulty) + (day ? "D" : "N");
-		const auto& dataStage = STAGE_TABLE->Get(stagestr);
-
 		if (++wave == dataStage.waves.size())
 		{
 			SetStatus(Status::Result);
@@ -318,9 +319,6 @@ void SceneGame::ClearTookObject()
 
 void SceneGame::SpawnWave()
 {
-	std::string stagestr = std::to_string(stage) + std::to_string(difficulty) + (day ? "D" : "N");
-	const auto& dataStage = STAGE_TABLE->Get(stagestr);
-
 	auto find = dataStage.waves.find(wave);
 	if (find == dataStage.waves.end())
 	{
@@ -388,4 +386,17 @@ void SceneGame::ReturnRoundBoard(RoundBoard* roundboard)
 	RemoveGo(roundboard);
 	roundboards.remove(roundboard);
 	roundboardPool.Return(roundboard);
+}
+
+void SceneGame::SetStage(int stage, int diff, bool day)
+{
+	this->stage = stage;
+	this->difficulty = diff;
+	this->day = day;
+}
+
+void SceneGame::SetWind(int speed)
+{
+	wind = speed;
+	uiHud->SetWind(wind);
 }

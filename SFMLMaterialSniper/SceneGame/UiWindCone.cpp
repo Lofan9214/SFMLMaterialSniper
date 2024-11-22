@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "WindCone.h"
+#include "UiWindCone.h"
 
 WindCone::WindCone(const std::string& name)
 	: GameObject(name)

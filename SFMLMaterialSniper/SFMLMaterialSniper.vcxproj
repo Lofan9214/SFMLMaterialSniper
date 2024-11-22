@@ -70,7 +70,8 @@
     <ClInclude Include="SceneHome\UiSkill.h" />
     <ClInclude Include="SceneHome\UiStage.h" />
     <ClInclude Include="SceneGame\UiResult.h" />
-    <ClInclude Include="SceneGame\WindCone.h" />
+    <ClInclude Include="SceneGame\UiWindCone.h" />
+    <ClInclude Include="WindController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BulletTable.cpp" />
@@ -120,7 +121,8 @@
     <ClCompile Include="SceneHome\UiSkill.cpp" />
     <ClCompile Include="SceneHome\UiStage.cpp" />
     <ClCompile Include="SceneGame\UiResult.cpp" />
-    <ClCompile Include="SceneGame\WindCone.cpp" />
+    <ClCompile Include="SceneGame\UiWindCone.cpp" />
+    <ClCompile Include="WindController.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

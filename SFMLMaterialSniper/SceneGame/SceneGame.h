@@ -9,11 +9,11 @@ class Bottle;
 class UiHud;
 class Player;
 class GlassShard;
-class DataStage;
 class Gun;
 class BulletShell;
 class UiResult;
 class ButtonRound;
+class WindController;
 
 class SceneGame :
 	public Scene
@@ -55,6 +55,10 @@ protected:
 	UiHud* uiHud;
 	UiResult* uiResult;
 	ButtonRound* btnStart;
+	WindController* windController;
+
+
+	DataStage dataStage;
 
 	float wind = 0.f;
 
@@ -110,5 +114,8 @@ public:
 	void ReturnDrum(Drum* drum);
 	void ReturnBottle(Bottle* bottle);
 	void ReturnRoundBoard(RoundBoard* roundboard);
+
+	void SetStage(int stage, int diff, bool day);
+	void SetWind(int speed);
 };
 
