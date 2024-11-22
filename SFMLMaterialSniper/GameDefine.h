@@ -14,7 +14,7 @@ namespace GameDefine
 		MagazineEjecting,
 		MagazineInserted,
 	};
-	enum class BoltStatus
+	enum class RecoilStatus
 	{
 		Ready,
 		Fire,

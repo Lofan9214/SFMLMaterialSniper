@@ -88,7 +88,7 @@ void RoundBoard::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 5;
 
-	internalHitBox.setRadius(240);
+	internalHitBox.setRadius(960);
 	internalHitBox.setFillColor(sf::Color::Transparent);
 	internalHitBox.setOutlineColor(sf::Color::Red);
 	internalHitBox.setOutlineThickness(3);
@@ -99,7 +99,11 @@ void RoundBoard::Init()
 
 	animator.SetSprite(&body);
 	animator.BindFunction(this);
-	animator.AddEvent("roundboardspawn", 18, []() {SOUND_MGR.PlaySfx("sounds/targets/roundboardspawn.mp3"); });
+	animator.AddEvent("roundboardspawn", 18, [this]() 
+		{
+			animator.PlayQueue("animations/targets/roundboardidle.csv");
+			SOUND_MGR.PlaySfx("sounds/targets/roundboardspawn.mp3"); 
+		});
 	animator.AddEvent("roundboardhit", 45,
 		[this]()
 		{
@@ -133,8 +137,6 @@ void RoundBoard::Reset()
 	ANIMATIONCLIP_MGR.Load("animations/targets/roundboardidle.csv");
 	ANIMATIONCLIP_MGR.Load("animations/targets/roundboardhit.csv");
 	ANIMATIONCLIP_MGR.Load("animations/targets/roundboardcrit.csv");
-	animator.PlayQueue("animations/targets/roundboardidle.csv");
-
 	SetOrigin(Origins::BC);
 }
 
@@ -175,7 +177,7 @@ void RoundBoard::FixedUpdate(float dt)
 			if (bodyRect.contains(bulletlerppos)
 				&& collisionImage.getPixel(point.x, point.y).a != 0)
 			{
-				sf::Vector2f hitboxCenter(240.f, 240.f);
+				sf::Vector2f hitboxCenter(960.f, 960.f);
 				hitboxCenter += offsetHitBox;
 				float distance = Utils::Distance(point, hitboxCenter);
 				if (distance < 15)

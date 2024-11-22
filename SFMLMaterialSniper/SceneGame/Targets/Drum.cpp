@@ -104,6 +104,7 @@ void Drum::Reset()
 	body.setColor(sf::Color::Transparent);
 
 	ANIMATIONCLIP_MGR.Load("animations/targets/drumidle.csv");
+	ANIMATIONCLIP_MGR.Load("animations/targets/drumhit.csv");
 	animator.Play("animations/targets/drumspawn.csv");
 	animator.PlayQueue("animations/targets/drumidle.csv");
 

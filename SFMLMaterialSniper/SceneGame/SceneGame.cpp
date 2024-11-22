@@ -366,6 +366,7 @@ void SceneGame::SpawnRoundBoard(const sf::Vector3f& pos)
 	roundboards.push_back(roundboard);
 	AddGo(roundboard);
 	roundboard->SetPosition(pos);
+	roundboard->SetAnimationScale({ 0.f,0.f });
 }
 
 void SceneGame::ReturnDrum(Drum* drum)

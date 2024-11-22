@@ -147,7 +147,7 @@ void Gun::Reset()
 
 	drawbody = false;
 	drawmuzzlefire = false;
-	boltStatus = GameDefine::BoltStatus::Ready;
+	boltStatus = GameDefine::RecoilStatus::Ready;
 	breathStatus = GameDefine::BreathStatus::Normal;
 }
 
@@ -176,31 +176,33 @@ void Gun::UpdateScopeRecoil(float dt)
 {
 	switch (boltStatus)
 	{
-	case GameDefine::BoltStatus::Ready:
+	case GameDefine::RecoilStatus::Ready:
 		break;
-	case GameDefine::BoltStatus::Fire:
+	case GameDefine::RecoilStatus::Fire:
 	{
 		recoilTimer += dt;
 		scopeRecoil = scopeRecoilDir1 * (1.f - cosf(Utils::Clamp(recoilTimer * Utils::PI / firetobolt, 0.f, Utils::PI))) * firstRecoil;
 		//scopeRecoilVel += scopeRecoilDir*sinf(recoilTimer*Utils::PI*2.f/firetobolt)*recoilSpeed*dt;
 		break;
 	}
-	case GameDefine::BoltStatus::BoltPulling:
+	case GameDefine::RecoilStatus::BoltPulling:
 		recoilTimer += dt;
-		scopeRecoilDir1 = Utils::GetNormal(scopeRecoilDir1 + scopeRecoilDir2 * dt * 4.0f);
+		scopeRecoilDir1 = Utils::GetNormal(scopeRecoilDir1 + scopeRecoilDir2 * dt * 6.0f);
 		if (recoilTimer < firetobolt * 0.75f)
 		{
 			scopeRecoil = scopeRecoilDir1 * (2.f + recoilTimer * 3.5f) * firstRecoil;
 		}
 		else
 		{
-			SetRecoilStatus(GameDefine::BoltStatus::Recovery);
+			SetRecoilStatus(GameDefine::RecoilStatus::Recovery);
 		}
 		break;
-	case GameDefine::BoltStatus::Recovery:
+	case GameDefine::RecoilStatus::Recovery:
 		recoilTimer += dt;
 		scopeRecoilDir1 = Utils::GetNormal(scopeRecoilDir1 + scopeRecoilDir2 * dt * 2.5f);
-		scopeRecoil = scopeRecoilDir1*secondRecoil*(cosf(recoilTimer * 1.5f * Utils::PI) + 1.f) * 0.5f;
+		scopeRecoil = scopeRecoilDir1 * secondRecoil * (cosf(recoilTimer * 1.5f * Utils::PI) + 1.f) * 0.5f;
+		if (recoilTimer * 1.5f > 1.f)
+			SetRecoilStatus(GameDefine::RecoilStatus::Ready);
 		break;
 	}
 	//scopeRecoil += scopeRecoilVel * dt;
@@ -249,20 +251,20 @@ void Gun::SetRecoilScale(int control)
 	firstRecoil = (1.f - control * 0.1f) * 70.f;
 }
 
-void Gun::SetRecoilStatus(GameDefine::BoltStatus state)
+void Gun::SetRecoilStatus(GameDefine::RecoilStatus state)
 {
-	GameDefine::BoltStatus prev = boltStatus;
+	GameDefine::RecoilStatus prev = boltStatus;
 	boltStatus = state;
 	switch (boltStatus)
 	{
-	case GameDefine::BoltStatus::Ready:
+	case GameDefine::RecoilStatus::Ready:
 		//std::cout << recoilTimer << std::endl;
 		//std::cout << scopeRecoil.x << std::endl;
 		//std::cout << scopeRecoil.y << std::endl;
 		scopeRecoil.x = 0.f;
 		scopeRecoil.y = 0.f;
 		break;
-	case GameDefine::BoltStatus::Fire:
+	case GameDefine::RecoilStatus::Fire:
 	{
 		recoilTimer = 0.f;
 		float rand = Utils::RandomRange(Utils::PI * 1.30f, Utils::PI * 1.34f);
@@ -270,7 +272,7 @@ void Gun::SetRecoilStatus(GameDefine::BoltStatus state)
 		scopeRecoilDir1.y = sinf(rand);
 		break;
 	}
-	case GameDefine::BoltStatus::BoltPulling:
+	case GameDefine::RecoilStatus::BoltPulling:
 	{
 		//std::cout << recoilTimer << std::endl;
 
@@ -280,7 +282,7 @@ void Gun::SetRecoilStatus(GameDefine::BoltStatus state)
 		scopeRecoilDir2.y = sinf(rand);
 		break;
 	}
-	case GameDefine::BoltStatus::Recovery:
+	case GameDefine::RecoilStatus::Recovery:
 		recoilTimer = 0.f;
 		secondRecoil = Utils::Magnitude(scopeRecoil);
 		break;
@@ -317,7 +319,7 @@ void Gun::Fire()
 	bullet->Fire(firePos);
 
 	drawbody = true;
-	SetRecoilStatus(GameDefine::BoltStatus::Fire);
+	SetRecoilStatus(GameDefine::RecoilStatus::Fire);
 
 	body.setPosition(0.f, 0.f);
 	SetOrigin(Origins::MC);

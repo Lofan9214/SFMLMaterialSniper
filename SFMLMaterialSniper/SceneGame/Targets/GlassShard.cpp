@@ -27,7 +27,7 @@ void GlassShard::SetScale(const sf::Vector2f& s)
 void GlassShard::SetType(int idx)
 {
 	index = idx;
-	body.setTextureRect({ index * 63, 0, 63, 88 });
+	body.setTextureRect({ index * 252, 0, 252, 352 });
 	SetOrigin(Origins::MC);
 }
 
@@ -50,7 +50,7 @@ void GlassShard::SetOrigin(const sf::Vector2f& newOrigin)
 void GlassShard::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 5;
+	sortingOrder = -1;
 }
 
 void GlassShard::Release()
@@ -65,7 +65,7 @@ void GlassShard::Reset()
 	speed.x = 0.f;
 	speed.y = 0.f;
 	active = false;
-
+	SetScale({ 0.25f,0.25f });
 	returnThis = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
@@ -102,8 +102,8 @@ void GlassShard::Start(const sf::Vector3f& startpos)
 	index = Utils::RandomRange(0, 8);
 	SetType(index);
 
-	scale.x = Utils::RandomRange(0.2f, 0.4f);
-	scale.y = Utils::RandomRange(0.2f, 0.4f);
+	scale.x = Utils::RandomRange(0.05f, 0.1f);
+	scale.y = Utils::RandomRange(0.05f, 0.1f);
 	SetScale(scale);
 
 	rotation = Utils::RandomRange(0.f, 360.f);

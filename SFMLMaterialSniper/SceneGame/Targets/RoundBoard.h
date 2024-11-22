@@ -13,10 +13,10 @@ protected:
 	bool hit;
 
 	sf::CircleShape internalHitBox;
-	sf::Vector2f offsetHitBox = {40.f,32.f};
+	sf::Vector2f offsetHitBox = {170.f,200.f};
 
 	sf::Vector3f position3;
-	float defaultdistance = 75.f;
+	float defaultdistance = 18.75f;
 	std::function<void()> TargetHit;
 	std::function<const std::list<Bullet*>()> GetBulletList;
 

@@ -12,7 +12,7 @@ protected:
 	sf::RectangleShape stand;
 
 	sf::Vector3f position3;
-	float defaultdistance = 100.f;
+	float defaultdistance = 25.f;
 
 	std::function<GlassShard* ()> TakeGlassShard;
 	std::function<void()> TargetHit;

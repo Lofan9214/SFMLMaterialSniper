@@ -58,7 +58,7 @@ void Player::Init()
 		{
 			if (gun != nullptr)
 			{
-				gun->SetRecoilStatus(GameDefine::BoltStatus::BoltPulling);
+				gun->SetRecoilStatus(GameDefine::RecoilStatus::BoltPulling);
 			}
 		});
 
@@ -71,11 +71,10 @@ void Player::Init()
 				bulletShell->Eject(body.getTransform().transformPoint(ejectionPos));
 			}
 		});
-	animator.AddEvent("playerfire", 39, [this]()
+	animator.AddEvent("playerfire", 34, [this]()
 		{
-			std::cout << "fireready" << std::endl;
+			//std::cout << "fireready" << std::endl;
 			SetStatus(PlayerStatus::Ready);
-			gun->SetRecoilStatus(GameDefine::BoltStatus::Ready);
 		});
 	animator.AddEvent("playerreloadend", 2, [this]()
 		{

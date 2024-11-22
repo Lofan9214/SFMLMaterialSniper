@@ -95,7 +95,6 @@ void CircleView::LateUpdate(float dt)
 		obj->Draw(renderTexture);
 	}
 	renderTexture.display();
-	renderTexture.setSmooth(true);
 	rendermask.setTexture(&renderTexture.getTexture());
 }
 

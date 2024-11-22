@@ -84,8 +84,8 @@ void Bottle::Init()
 	animator.AddEvent("bottlespawn", 12, []() {SOUND_MGR.PlaySfx("sounds/targets/bottlespawn.mp3"); });
 
 	stand.setFillColor(sf::Color::Black);
-	stand.setSize({ 70.f,100.f });
-	stand.setOrigin({ 35.f,20.f });
+	stand.setSize({ 280.f,400.f });
+	stand.setOrigin({ 140.f,80.f });
 }
 
 void Bottle::Release()
@@ -160,7 +160,7 @@ void Bottle::FixedUpdate(float dt)
 				{
 					SOUND_MGR.PlaySfx("sounds/targets/bottlehit.mp3");
 					GlassShard* shard = TakeGlassShard();
-					shard->Start({ position3.x + displacement.x,position3.y - body.getGlobalBounds().height * 0.5f + displacement.y ,position3.z });
+					shard->Start({ position3.x + displacement.x,position3.y - body.getGlobalBounds().height * 0.5f + displacement.y ,position3.z *-1.f });
 				}
 			}
 			else if (stand.getGlobalBounds().contains(bulletlerppos))

@@ -35,7 +35,7 @@ protected:
 	const float firetobolt = 0.13f;
 
 	GameDefine::BreathStatus breathStatus;
-	GameDefine::BoltStatus boltStatus;
+	GameDefine::RecoilStatus boltStatus;
 
 	std::function<void()> ScreenRecoil;
 	std::function<Bullet* ()> TakeBullet;
@@ -66,7 +66,7 @@ public:
 	void SetScope(int scopeSize);
 	void SetRecoilScale(int control);
 
-	void SetRecoilStatus(GameDefine::BoltStatus state);
+	void SetRecoilStatus(GameDefine::RecoilStatus state);
 	void SetBreathStatus(GameDefine::BreathStatus state);
 	void Fire();
 };

@@ -10,7 +10,7 @@ protected:
 	Animator animator;
 
 	sf::Vector3f position3;
-	float defaultdistance = 800.f;
+	float defaultdistance = 200.f;
 	std::function<void()> TargetHit;
 	std::function<const std::list<Bullet*>()> GetBulletList;
 
