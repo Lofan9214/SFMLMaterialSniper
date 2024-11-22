@@ -136,7 +136,7 @@ void UiHud::LateUpdate(float dt)
 void UiHud::Update(float dt)
 {
 	windCone->Update(dt);
-	//reload->Update(dt);
+	reload->Update(dt);
 	switch (boltStatus)
 	{
 	case UiHud::BoltStatus::BoltPulling:
@@ -195,8 +195,8 @@ void UiHud::Draw(sf::RenderTarget& window)
 	textWind.Draw(window);
 	window.draw(uiBar);
 	windCone->Draw(window);
-	//if (reload->IsActive())
-	//	reload->Draw(window);
+	if (reload->IsActive())
+		reload->Draw(window);
 }
 
 void UiHud::SetWind(int wind)

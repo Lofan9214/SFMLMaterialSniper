@@ -1,10 +1,8 @@
 ID,FPS,"LootType (0: Single, 1: Loop)"
-reload,6,1
+reload,2,1
 
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,COLORRED,COLORGREEN,COLORBLUE,COLORALPHA,DISPLACEMENTX,DISPLACEMENTY,ROTATION
-graphics/ui/uireload.png,0,0,256,256,0,1,1,255,255,255,255,0,0,0
 graphics/ui/uireload.png,256,0,256,256,0,1,1,255,255,255,255,0,0,0
 graphics/ui/uireload.png,512,0,256,256,0,1,1,255,255,255,255,0,0,0
-graphics/ui/uireload.png,0,0,256,256,0,1,1,255,255,255,255,0,0,0
 graphics/ui/uireload.png,256,0,256,256,0,1,1,255,255,255,255,0,0,0
 graphics/ui/uireload.png,512,0,256,256,0,1,1,255,255,255,255,0,0,0
