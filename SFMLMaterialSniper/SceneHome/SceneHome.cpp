@@ -2,6 +2,7 @@
 #include "SceneHome.h"
 #include "UiBullet.h"
 #include "UiSkill.h"
+#include "ButtonRound.h"
 
 SceneHome::SceneHome() : Scene(SceneIds::Home)
 {
@@ -15,8 +16,9 @@ void SceneHome::Init()
 	bg->SetOrigin(Origins::MC);
 
 	uiBullet = AddGo(new UiBullet("uibullet"));
-
 	uiSkill = AddGo(new UiSkill("uiskill"));
+
+	btnGameStart = AddGo(new ButtonRound("gamestart"));
 
 	Scene::Init();
 }
@@ -24,7 +26,6 @@ void SceneHome::Init()
 void SceneHome::Release()
 {
 	Scene::Release();
-	SAVEDATA_MGR.Save();
 }
 
 void SceneHome::Enter()
@@ -37,15 +38,24 @@ void SceneHome::Enter()
 	uiView.setCenter(screensize * 0.5f);
 	uiView.setSize(screensize);
 
-	uiBullet->SetPosition({ screensize.x * 0.1f ,screensize.y * 0.4f });
-	uiSkill->SetPosition({ screensize.x * 0.5f ,screensize.y * 0.4f });
+	uiBullet->SetPosition({ screensize.x * 0.05f ,screensize.y * 0.3f });
+	uiSkill->SetPosition({ screensize.x * 0.34375f ,screensize.y * 0.3f });
+
+	btnGameStart->SetPosition({ screensize.x * 0.5f ,screensize.y * 0.9f });
+	btnGameStart->SetScale({ 2.f, 2.f });
+	btnGameStart->SetCharSize(55.f);
+	btnGameStart->SetString("Start", true);
+	btnGameStart->SetClicked([]() {SCENE_MGR.ChangeScene(SceneIds::Game); });
 
 	Scene::Enter();
+	SOUND_MGR.PlayBgm("sounds/bgm/home.mp3");
+
 }
 
 void SceneHome::Exit()
 {
 	Scene::Exit();
+	SAVEDATA_MGR.Save();
 }
 
 void SceneHome::Update(float dt)

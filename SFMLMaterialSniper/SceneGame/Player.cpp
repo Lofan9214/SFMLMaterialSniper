@@ -80,13 +80,11 @@ void Player::Init()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
 		});
+	skillData = SAVEDATA_MGR.Get().skillData;
 }
 
 void Player::Release()
 {
-	auto& savedata = SAVEDATA_MGR.Get();
-	savedata.skillData = skillData;
-	SAVEDATA_MGR.Save();
 	animator.Pause();
 }
 
@@ -113,7 +111,7 @@ void Player::Reset()
 		TakeBulletShell = [scene]() {return scene->TakeBulletShell(); };
 	}
 
-	skillData = SAVEDATA_MGR.Load().skillData;
+	skillData = SAVEDATA_MGR.Get().skillData;
 	maxBreath = 2.7f + skillData.control * 0.3f;
 	magazine = 5 + skillData.magazine;
 

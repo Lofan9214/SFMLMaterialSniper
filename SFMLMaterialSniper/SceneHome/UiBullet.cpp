@@ -11,6 +11,7 @@ void UiBullet::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	background.setPosition(position);
+	title->SetPosition(position + offsetTitle);
 	name->SetPosition(position + offsetName);
 	weight->SetPosition(position + offsetWeight);
 	diameter->SetPosition(position + offsetDiameter);
@@ -53,22 +54,26 @@ void UiBullet::Init()
 
 	fontId = "fonts/malgun.ttf";
 	texId = "graphics/ui/uiarrow.png";
+	title = new TextGo(fontId, "title");
 	name = new TextGo(fontId, "name");
 	weight = new TextGo(fontId, "weight");
 	diameter = new TextGo(fontId, "diameter");
 	muzzlespeed = new TextGo(fontId, "muzzlespeed");
 
 	textureRect = { 40,20 };
-	offsetUpArrow = { 30.f,15.f };
-	offsetDownArrow = { 70.f,60.f };
-	offsetName = { 30.f,70.f };
-	offsetWeight = { 30.f,110.f };
-	offsetDiameter = { 30.f,150.f };
-	offsetMuzzlespeed = { 30.f,190.f };
+	offsetTitle = { 200.f,15.f };
+	offsetUpArrow = { 20.f,110.f };
+	offsetDownArrow = { 380.f,70.f };
+	offsetName = { 200.f,70.f };
+	offsetWeight = { 30.f,120.f };
+	offsetDiameter = { 30.f,160.f };
+	offsetMuzzlespeed = { 30.f,200.f };
 }
 
 void UiBullet::Release()
 {
+	title->Release();
+	delete title;
 	name->Release();
 	delete name;
 	weight->Release();
@@ -81,6 +86,7 @@ void UiBullet::Release()
 
 void UiBullet::Reset()
 {
+	title->Reset();
 	name->Reset();
 	weight->Reset();
 	diameter->Reset();
@@ -88,15 +94,20 @@ void UiBullet::Reset()
 
 	upArrow.setTexture(TEXTURE_MGR.Get(texId));
 	upArrow.setTextureRect({ {0,0} ,textureRect });
+	upArrow.setRotation(270.f);
 
 	downArrow.setTexture(TEXTURE_MGR.Get(texId));
 	downArrow.setTextureRect({ {0,0} ,textureRect });
-	downArrow.setRotation(180.f);
+	downArrow.setRotation(90.f);
 
 	ReadDataBullet();
 
 	background.setSize({ 400,250 });
 	background.setFillColor({ 0,0,0,170 });
+	name->SetOrigin(Origins::TC);
+	title->SetOrigin(Origins::TC);
+	title->SetString("BulletTitle",true);
+	title->SetCharSize(40.f);
 }
 
 void UiBullet::Update(float dt)
@@ -181,6 +192,7 @@ void UiBullet::Draw(sf::RenderTarget& window)
 	window.draw(background);
 	window.draw(upArrow);
 	window.draw(downArrow);
+	title->Draw(window);
 	name->Draw(window);
 	weight->Draw(window);
 	diameter->Draw(window);
@@ -191,7 +203,7 @@ void UiBullet::ReadDataBullet()
 {
 	const DataBullet& bulletData = BULLET_TABLE->Get(SAVEDATA_MGR.Get().selectedBullet);
 
-	name->SetString("BulletName", " : " + bulletData.name);
+	name->SetString(bulletData.name);
 	weight->SetString("BulletWeight", " : " + std::to_string(bulletData.weight) + "g");
 	diameter->SetString("BulletDiameter", " : " + std::to_string(bulletData.diameter) + "mm");
 	muzzlespeed->SetString("BulletMuzzleSpeed", " : " + std::to_string(bulletData.muzzleSpeed) + "m/s");

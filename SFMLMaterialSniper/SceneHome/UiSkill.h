@@ -7,25 +7,33 @@ class UiSkill : public GameObject
 protected:
 	sf::RectangleShape background;
 
-	TextGo* name;
-	TextGo* weight;
-	TextGo* diameter;
-	TextGo* muzzlespeed;
+	TextGo* title;
+	std::vector<TextGo*> names;
+	std::vector<std::string> skillNames;
+	TextGo* manual;
+	TextGo* skillpoint;
+	TextGo* skillpoint2;
 
+	sf::Vector2f offsetTitle;
 	sf::Vector2f offsetName;
-	sf::Vector2f offsetWeight;
-	sf::Vector2f offsetDiameter;
-	sf::Vector2f offsetMuzzlespeed;
+	sf::Vector2f offsetManual;
+	sf::Vector2f offsetSkillPoint;
+	sf::Vector2f offsetSkillPoint2;
+	sf::Vector2f offsetStar;
+	sf::Vector2f offsetStarbyStar;
+	sf::Vector2f offsetSkillGroup;
 	std::string fontId;
 
 	std::vector<sf::Sprite> upArrows;
 	std::vector<sf::Sprite> downArrows;
-	std::vector<std::vector<sf::Sprite>> stars;
+	std::string texIdArrow;
 	sf::Vector2f offsetUpArrow;
 	sf::Vector2f offsetDownArrow;
-	sf::Vector2f offsetArrowGroup;
-	std::string texId;
-	sf::Vector2i textureRect;
+	sf::Vector2i textureRectArrow;
+
+	std::vector<std::vector<sf::Sprite>> stars;
+	std::string texIdStar;
+	sf::Vector2i textureRectStar;
 
 public:
 	UiSkill(const std::string& name = "");
@@ -45,5 +53,7 @@ public:
 	void Draw(sf::RenderTarget& window) override;
 
 	void ButtonsUpdate();
+	void ReadSkillData();
+	void ChangeSkillManual(int index);
 	void SkillUpDown(int index, bool up);
 };

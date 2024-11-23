@@ -2,6 +2,7 @@
 
 class UiBullet;
 class UiSkill;
+class ButtonRound;
 
 class SceneHome : public Scene
 {
@@ -10,6 +11,7 @@ protected:
 	SpriteGo background;
 	UiBullet* uiBullet;
 	UiSkill* uiSkill;
+	ButtonRound* btnGameStart;
 
 public:
 	SceneHome();

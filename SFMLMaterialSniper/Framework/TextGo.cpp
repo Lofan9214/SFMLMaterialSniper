@@ -9,7 +9,10 @@ TextGo::TextGo(const std::string& fontId, const std::string& name)
 void TextGo::SetOrigin(Origins preset)
 {
 	originPreset = preset;
-	origin = Utils::SetOrigin(text, preset);
+	if (originPreset < Origins::Custom)
+	{
+		origin = Utils::SetOrigin(text, preset);
+	}
 }
 
 void TextGo::SetOrigin(const sf::Vector2f& neworigin)
@@ -91,7 +94,7 @@ void TextGo::SetCharSize(unsigned int iSize)
 	}
 }
 
-void TextGo::SetOutline(sf::Color color,float thickness)
+void TextGo::SetOutline(sf::Color color, float thickness)
 {
 	text.setOutlineColor(color);
 	text.setOutlineThickness(thickness);

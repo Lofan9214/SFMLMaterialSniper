@@ -8,10 +8,12 @@ protected:
 
 	sf::RectangleShape background;
 
+	TextGo* title;
 	TextGo* name;
 	TextGo* weight;
 	TextGo* diameter;
 	TextGo* muzzlespeed;
+	sf::Vector2f offsetTitle;
 	sf::Vector2f offsetName;
 	sf::Vector2f offsetWeight;
 	sf::Vector2f offsetDiameter;

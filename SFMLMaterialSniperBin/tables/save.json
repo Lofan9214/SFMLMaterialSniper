@@ -1,12 +1,12 @@
 {
     "selectedBullet": ".338 Lapua Magnum",
     "skillData": {
-        "control": 0,
-        "magazine": 0,
-        "reload": 0,
-        "scopeSize": 0,
-        "skillPoint": 20,
-        "stablility": 0
+        "control": 3,
+        "magazine": 2,
+        "reload": 1,
+        "scopeSize": 3,
+        "skillPoint": 0,
+        "stablility": 2
     },
     "version": 2
 }

@@ -81,6 +81,7 @@ void SceneGame::Enter()
 void SceneGame::Exit()
 {
 	ClearTookObject();
+	SAVEDATA_MGR.Save();
 
 	Scene::Exit();
 }
