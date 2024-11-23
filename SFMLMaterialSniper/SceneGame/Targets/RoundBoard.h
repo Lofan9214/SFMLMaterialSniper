@@ -1,24 +1,28 @@
 #pragma once
 
 class Bullet;
+class ShootMark;
 
 class RoundBoard : public GameObject
 {
 protected:
 	sf::Sprite body;
 	Animator animator;
-	
+
 	sf::Sprite bulletMark;
 	sf::Vector2f positionHit;
 	bool hit;
 
 	sf::CircleShape internalHitBox;
-	sf::Vector2f offsetHitBox = {170.f,200.f};
+	sf::Vector2f offsetHitBox = { 170.f,200.f };
+
+	ShootMark* shootMark;
 
 	sf::Vector3f position3;
 	float defaultdistance = 18.75f;
 	std::function<void()> TargetHit;
 	std::function<const std::list<Bullet*>()> GetBulletList;
+	std::function<void(RoundBoard*)> ReturnThis;
 
 public:
 	RoundBoard(const std::string& name = "");
@@ -44,4 +48,7 @@ public:
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void SetShootMark(ShootMark* shootMark) { this->shootMark = shootMark; }
+	void SetActiveShootMark(bool active);
 };

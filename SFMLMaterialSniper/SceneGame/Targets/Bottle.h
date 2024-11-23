@@ -2,6 +2,7 @@
 
 class Bullet;
 class GlassShard;
+class ShootMark;
 
 class Bottle : public GameObject
 {
@@ -14,9 +15,12 @@ protected:
 	sf::Vector3f position3;
 	float defaultdistance = 25.f;
 
+	ShootMark* shootMark;
+
 	std::function<GlassShard* ()> TakeGlassShard;
 	std::function<void()> TargetHit;
 	std::function<const std::list<Bullet*>()> GetBulletList;
+	std::function<void(Bottle*)> ReturnThis;
 
 public:
 	Bottle(const std::string& name = "");
@@ -42,5 +46,8 @@ public:
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void SetShootMark(ShootMark* shootMark) { this->shootMark = shootMark; }
+	void SetActiveShootMark(bool active);
 };
 

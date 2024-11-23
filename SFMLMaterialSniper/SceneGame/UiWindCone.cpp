@@ -70,6 +70,7 @@ void WindCone::Init()
 
 void WindCone::Release()
 {
+	animator.Stop();
 }
 
 void WindCone::Reset()

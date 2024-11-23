@@ -88,6 +88,7 @@ void Bullet::Init()
 
 void Bullet::Release()
 {
+	animator.Stop();
 }
 
 void Bullet::Reset()

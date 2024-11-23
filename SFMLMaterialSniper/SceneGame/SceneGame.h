@@ -14,6 +14,7 @@ class BulletShell;
 class UiResult;
 class ButtonRound;
 class WindController;
+class ShootMark;
 
 class SceneGame :
 	public Scene
@@ -56,6 +57,7 @@ protected:
 	UiResult* uiResult;
 	ButtonRound* btnStart;
 	WindController* windController;
+	std::list<ShootMark*> shootmarks;
 
 	DataStage dataStage;
 

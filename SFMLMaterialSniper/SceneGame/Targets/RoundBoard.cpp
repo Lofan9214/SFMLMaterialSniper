@@ -2,6 +2,7 @@
 #include "RoundBoard.h"
 #include "SceneGame.h"
 #include "Bullet.h"
+#include "ShootMark.h"
 
 RoundBoard::RoundBoard(const std::string& name)
 	: GameObject(name)
@@ -107,12 +108,17 @@ void RoundBoard::Init()
 	animator.AddEvent("roundboardhit", 45,
 		[this]()
 		{
+			if (ReturnThis)
+			{
+				ReturnThis(this);
+			}
 			active = false;
 		});
 }
 
 void RoundBoard::Release()
 {
+	animator.Stop();
 }
 
 void RoundBoard::Reset()
@@ -123,15 +129,18 @@ void RoundBoard::Reset()
 
 	GetBulletList = nullptr;
 	TargetHit = nullptr;
+	ReturnThis = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
 		GetBulletList = [scene]() {return scene->GetBulletList();};
 		TargetHit = [scene]() {scene->TargetHit();};
+		ReturnThis = [scene](RoundBoard* board) {scene->ReturnRoundBoard(board); };
 	}
 
 	bulletMark.setTexture(TEXTURE_MGR.Get("graphics/targets/bulletmark.png"));
 
+	shootMark = nullptr;
 
 	animator.Play("animations/targets/roundboardspawn.csv");
 	ANIMATIONCLIP_MGR.Load("animations/targets/roundboardidle.csv");
@@ -219,5 +228,13 @@ void RoundBoard::Draw(sf::RenderTarget& window)
 	if (Variables::isDrawHitBox)
 	{
 		window.draw(internalHitBox);
+	}
+}
+
+void RoundBoard::SetActiveShootMark(bool active)
+{
+	if (shootMark != nullptr)
+	{
+		shootMark->SetActive(active);
 	}
 }

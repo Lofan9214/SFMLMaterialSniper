@@ -177,6 +177,9 @@
     <ClInclude Include="SceneGame\UiReload.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SceneGame\ShootMark.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Framework.cpp">
@@ -318,6 +321,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SceneGame\UiReload.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame\ShootMark.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

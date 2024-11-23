@@ -26,6 +26,7 @@
     <ClInclude Include="SceneGame\Gun.h" />
     <ClInclude Include="JsonDefines.h" />
     <ClInclude Include="SceneHome\SceneHome.h" />
+    <ClInclude Include="SceneGame\ShootMark.h" />
     <ClInclude Include="StageTable.h" />
     <ClInclude Include="SceneGame\Targets\GlassShard.h" />
     <ClInclude Include="SceneGame\Player.h" />
@@ -80,6 +81,7 @@
     <ClCompile Include="SceneGame\BulletShell.cpp" />
     <ClCompile Include="SceneGame\Gun.cpp" />
     <ClCompile Include="SceneHome\SceneHome.cpp" />
+    <ClCompile Include="SceneGame\ShootMark.cpp" />
     <ClCompile Include="StageTable.cpp" />
     <ClCompile Include="SceneGame\Targets\GlassShard.cpp" />
     <ClCompile Include="SceneGame\Player.cpp" />

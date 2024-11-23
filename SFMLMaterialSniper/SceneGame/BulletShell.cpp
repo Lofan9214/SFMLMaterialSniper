@@ -55,6 +55,7 @@ void BulletShell::Init()
 
 void BulletShell::Release()
 {
+	animator.Stop();
 }
 
 void BulletShell::Reset()

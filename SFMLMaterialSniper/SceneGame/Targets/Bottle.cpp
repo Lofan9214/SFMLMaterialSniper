@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "GlassShard.h"
+#include "ShootMark.h"
 
 Bottle::Bottle(const std::string& name)
 	: GameObject(name)
@@ -103,6 +104,7 @@ void Bottle::Reset()
 	GetBulletList = nullptr;
 	TakeGlassShard = nullptr;
 	TargetHit = nullptr;
+	ReturnThis = nullptr;
 
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 
@@ -111,7 +113,10 @@ void Bottle::Reset()
 		GetBulletList = [scene]() {return scene->GetBulletList();};
 		TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
 		TargetHit = [scene]() {scene->TargetHit();};
+		ReturnThis = [scene](Bottle* bottle) {scene->ReturnBottle(bottle); };
 	}
+
+	shootMark = nullptr;
 
 	SetOrigin(Origins::BC);
 }
@@ -154,6 +159,10 @@ void Bottle::FixedUpdate(float dt)
 			{
 				std::cout << "hitbottle" << std::endl;
 				bullet->Hit();
+				if (ReturnThis)
+				{
+					ReturnThis(this);
+				}
 				active = false;
 				TargetHit();
 				for (int i = 0; i < 20; ++i)
@@ -176,4 +185,12 @@ void Bottle::Draw(sf::RenderTarget& renderTarget)
 {
 	renderTarget.draw(stand);
 	renderTarget.draw(body);
+}
+
+void Bottle::SetActiveShootMark(bool active)
+{
+	if (shootMark != nullptr)
+	{
+		shootMark->SetActive(active);
+	}
 }

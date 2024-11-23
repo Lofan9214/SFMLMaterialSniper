@@ -64,6 +64,7 @@ void Reload::Release()
 
 void Reload::Reset()
 {
+	animator.Play("animations/ui/reload.csv");
 	SetOrigin(Origins::MC);
 }
 

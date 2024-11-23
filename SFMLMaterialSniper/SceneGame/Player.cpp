@@ -87,6 +87,7 @@ void Player::Release()
 	auto& savedata = SAVEDATA_MGR.Get();
 	savedata.skillData = skillData;
 	SAVEDATA_MGR.Save();
+	animator.Stop();
 }
 
 void Player::Reset()

@@ -13,6 +13,7 @@
 #include "UiResult.h"
 #include "ButtonRound.h"
 #include "WindController.h"
+#include "ShootMark.h"
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -37,6 +38,11 @@ void SceneGame::Init()
 	btnStart = AddGo(new ButtonRound("btnStart"));
 
 	windController = AddGo(new WindController("windController"));
+
+	for (int i = 0; i < 10; ++i)
+	{
+		shootmarks.push_back(AddGo(new ShootMark("shootMark")));
+	}
 
 	Scene::Init();
 }
@@ -315,6 +321,8 @@ void SceneGame::ClearTookObject()
 		bulletPool.Return(bullet);
 	}
 	bullets.clear();
+
+	shootmarks.clear();
 }
 
 void SceneGame::SpawnWave()
@@ -348,6 +356,17 @@ void SceneGame::SpawnDrum(const sf::Vector3f& pos)
 	drums.push_back(drum);
 	AddGo(drum);
 	drum->SetPosition(pos);
+	for (auto shootMark : shootmarks)
+	{
+		if (!shootMark->IsActive())
+		{
+			shootMark->SetPosition({ pos.x,100.f-FRAMEWORK.GetDefaultSize().y*0.5f});
+			
+			shootMark->SetActive(true);
+			drum->SetShootMark(shootMark);
+			break;
+		}
+	}
 }
 
 void SceneGame::SpawnBottle(const sf::Vector3f& pos)
@@ -356,6 +375,16 @@ void SceneGame::SpawnBottle(const sf::Vector3f& pos)
 	bottles.push_back(bottle);
 	AddGo(bottle);
 	bottle->SetPosition(pos);
+	for (auto shootMark : shootmarks)
+	{
+		if (!shootMark->IsActive())
+		{
+			shootMark->SetPosition({ pos.x,100.f });
+			shootMark->SetActive(true);
+			bottle->SetShootMark(shootMark);
+			break;
+		}
+	}
 }
 
 void SceneGame::SpawnRoundBoard(const sf::Vector3f& pos)
@@ -365,10 +394,21 @@ void SceneGame::SpawnRoundBoard(const sf::Vector3f& pos)
 	AddGo(roundboard);
 	roundboard->SetPosition(pos);
 	roundboard->SetAnimationScale({ 0.f,0.f });
+	for (auto shootMark : shootmarks)
+	{
+		if (!shootMark->IsActive())
+		{
+			shootMark->SetPosition({ pos.x,100.f });
+			shootMark->SetActive(true);
+			roundboard->SetShootMark(shootMark);
+			break;
+		}
+	}
 }
 
 void SceneGame::ReturnDrum(Drum* drum)
 {
+	drum->SetActiveShootMark(false);
 	RemoveGo(drum);
 	drums.remove(drum);
 	drumPool.Return(drum);
@@ -376,6 +416,7 @@ void SceneGame::ReturnDrum(Drum* drum)
 
 void SceneGame::ReturnBottle(Bottle* bottle)
 {
+	bottle->SetActiveShootMark(false);
 	RemoveGo(bottle);
 	bottles.remove(bottle);
 	bottlePool.Return(bottle);
@@ -383,6 +424,7 @@ void SceneGame::ReturnBottle(Bottle* bottle)
 
 void SceneGame::ReturnRoundBoard(RoundBoard* roundboard)
 {
+	roundboard->SetActiveShootMark(false);
 	RemoveGo(roundboard);
 	roundboards.remove(roundboard);
 	roundboardPool.Return(roundboard);
