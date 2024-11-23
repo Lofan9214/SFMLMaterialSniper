@@ -54,6 +54,7 @@ protected:
 	sf::Sprite uiWindBack;
 	std::string uiWindBackTexId = "graphics/ui/uiwindback.png";
 	TextGo textWind;
+	TextGo textWindName;
 
 public:
 	UiHud(const std::string& name = "");

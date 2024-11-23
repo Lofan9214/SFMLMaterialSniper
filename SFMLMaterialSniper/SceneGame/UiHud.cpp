@@ -93,18 +93,24 @@ void UiHud::Reset()
 	uiBarback.setTexture(TEXTURE_MGR.Get(uiBarbackTexId));
 	uiWindBack.setTexture(TEXTURE_MGR.Get(uiWindBackTexId));
 	textWind.SetFont(FONT_MGR.Get("fonts/malgun.ttf"));
+	textWindName.SetFont(FONT_MGR.Get("fonts/malgun.ttf"));
 
 	boltStatus = BoltStatus::Ready;
 	reloadStatus = ReloadStatus::Ready;
 
 	float textSize = 50.f;
+	sf::Vector2f size = FRAMEWORK.GetDefaultSize();
 
 	textWind.SetCharSize(textSize);
 	textWind.SetColor({ 50,50,50 });
 	textWind.SetOutline(sf::Color::White, 2.f);
 	textWind.SetOrigin(Origins::MC);
 
-	sf::Vector2f size = FRAMEWORK.GetDefaultSize();
+	textWindName.SetCharSize(30.f);
+	textWindName.SetString("Wind", true);
+	textWindName.SetColor(sf::Color::White);
+	textWindName.SetOrigin(Origins::TC);
+	textWindName.SetPosition({ 1165.f, size.y - 55.f });
 
 	textWind.SetPosition({ 1395.f,size.y - 75.f });
 
@@ -135,6 +141,7 @@ void UiHud::Reset()
 	windCone->SetType(WindIcon::Type::Cone);
 	windCone->SetScale({ 2.f, 2.f });
 	windCone->SetPosition({ 1165.f, size.y - 55.f });
+	windCone->SetOrigin(Origins::MC);
 
 	windArrow->Reset();
 	windArrow->SetType(WindIcon::Type::Arrow);
@@ -230,6 +237,7 @@ void UiHud::Draw(sf::RenderTarget& window)
 	textWind.Draw(window);
 	window.draw(uiBar);
 	windCone->Draw(window);
+	textWindName.Draw(window);
 	if (reload->IsActive())
 	{
 		reload->Draw(window);

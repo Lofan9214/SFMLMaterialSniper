@@ -32,6 +32,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
 
-	void SetString(const std::string& text,bool useTable=false);
+	void SetString(const std::string& text, bool useTable = false);
+	void SetCharSize(float size);
 	void SetClicked(const std::function<void()>& event);
 };

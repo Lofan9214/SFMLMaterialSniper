@@ -1,6 +1,7 @@
 #pragma once
 
 class TextGo;
+class ButtonRound;
 
 class UiResult : public GameObject
 {
@@ -12,10 +13,8 @@ protected:
 	TextGo* txtTitle;
 	TextGo* txtResult;
 
-	sf::Sprite toHome;
-	TextGo* txtToHome;
-	sf::Sprite retry;
-	TextGo* txtRetry;
+	ButtonRound* btnRetry;
+	ButtonRound* btnGohome;
 
 	std::string fontId = "fonts/malgun.ttf";
 	std::string buttonTexId = "graphics/ui/uiroundbutton.png";

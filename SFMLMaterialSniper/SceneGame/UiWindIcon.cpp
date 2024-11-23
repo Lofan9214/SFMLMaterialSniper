@@ -75,7 +75,6 @@ void WindIcon::Release()
 
 void WindIcon::Reset()
 {
-	SetOrigin(Origins::MC);
 	SetWindSpeed(0);
 }
 

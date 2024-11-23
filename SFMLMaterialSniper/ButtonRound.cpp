@@ -25,7 +25,7 @@ void ButtonRound::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	buttonBackground.setScale(scale);
-	buttonText->SetScale(scale);
+	//buttonText->SetScale(scale);
 }
 
 void ButtonRound::SetOrigin(Origins preset)
@@ -119,6 +119,11 @@ void ButtonRound::Draw(sf::RenderTarget& window)
 void ButtonRound::SetString(const std::string& text, bool usetable)
 {
 	buttonText->SetString(text, usetable);
+}
+
+void ButtonRound::SetCharSize(float size)
+{
+	buttonText->SetCharSize(size);	
 }
 
 void ButtonRound::SetClicked(const std::function<void()>& event)

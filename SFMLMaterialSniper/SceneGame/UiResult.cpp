@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "UiResult.h"
 #include "TextGo.h"
+#include "SceneGame.h"
+#include "ButtonRound.h"
 
 UiResult::UiResult(const std::string& name)
 	: GameObject(name)
@@ -44,57 +46,83 @@ void UiResult::Init()
 	sortingOrder = (int)GameDefine::UiSortingOrders::UiResult;
 
 	txtResult = new TextGo(fontId, "result");
-	txtRetry = new TextGo(fontId, "retry");
+	btnRetry = new ButtonRound("retry");
 	txtTitle = new TextGo(fontId, "title");
-	txtToHome = new TextGo(fontId, "tohome");
+	btnGohome = new ButtonRound("tohome");
 	txtResult->Init();
-	txtRetry->Init();
+	btnRetry->Init();
 	txtTitle->Init();
-	txtToHome->Init();
+	btnGohome->Init();
 }
 
 void UiResult::Release()
 {
 	txtResult->Release();
-	txtRetry->Release();
+	btnRetry->Release();
 	txtTitle->Release();
-	txtToHome->Release();
+	btnGohome->Release();
 	delete txtResult;
-	delete txtRetry;
+	delete btnRetry;
 	delete txtTitle;
-	delete txtToHome;
+	delete btnGohome;
 }
 
 void UiResult::Reset()
 {
 	active = false;
 
-	retry.setTexture(TEXTURE_MGR.Get(buttonTexId));
-	toHome.setTexture(TEXTURE_MGR.Get(buttonTexId));
-	auto rect = retry.getLocalBounds();
-	//retry.setTextureRect(rect);
-
 	txtResult->Reset();
-	txtRetry->Reset();
+	btnRetry->Reset();
 	txtTitle->Reset();
-	txtToHome->Reset();
+	btnGohome->Reset();
 	resetTime = FRAMEWORK.GetRealTime();
+
+	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
+
+	titleBackground.setSize({ 1280.f, 120.f });
+	Utils::SetOrigin(titleBackground, Origins::MC);
+	titleBackground.setPosition({ screensize.x * 0.5f,180.f });
+	titleBackground.setFillColor({ 0,0,0,100 });
+
+	txtTitle->SetString("Result", true);
+	txtTitle->SetPosition({ screensize.x * 0.5f,180.f });
+	txtTitle->SetOrigin(Origins::MC);
+	txtTitle->SetColor(sf::Color::White); 
+	txtTitle->SetCharSize(70.f);
+
+	btnRetry->SetPosition({ screensize.x * 0.3f,screensize.y * 0.85f });
+	btnRetry->SetString("Retry", true);
+	btnRetry->SetScale({ 2.f,2.f });
+	btnRetry->SetCharSize(40.f);
+
+	btnGohome->SetPosition({ screensize.x * 0.7f,screensize.y * 0.85f });
+	btnGohome->SetString("Gohome", true);
+	btnGohome->SetScale({ 2.f,2.f });
+	btnGohome->SetCharSize(40.f);
+
+	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (scene != nullptr)
+	{
+		btnRetry->SetClicked([scene]() {scene->SetStatus(GameDefine::SceneStatus::Awake); });
+		btnGohome->SetClicked([]() {SCENE_MGR.ChangeScene(SceneIds::Home); });
+	}
 }
 
 void UiResult::Update(float dt)
 {
-
+	txtResult->Update(dt);
+	btnRetry->Update(dt);
+	txtTitle->Update(dt);
+	btnGohome->Update(dt);
 }
 
 void UiResult::Draw(sf::RenderTarget& window)
 {
 	window.draw(titleBackground);
 	window.draw(resultBackground);
-	window.draw(toHome);
-	window.draw(retry);
 
 	txtResult->Draw(window);
-	txtRetry->Draw(window);
+	btnRetry->Draw(window);
 	txtTitle->Draw(window);
-	txtToHome->Draw(window);
+	btnGohome->Draw(window);
 }

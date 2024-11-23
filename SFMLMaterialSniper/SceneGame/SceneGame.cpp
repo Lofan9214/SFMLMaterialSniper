@@ -35,8 +35,6 @@ void SceneGame::Init()
 	gun = AddGo(new Gun("gun"));
 	player = AddGo(new Player("player"));
 
-	btnStart = AddGo(new ButtonRound("btnStart"));
-
 	windController = AddGo(new WindController("windController"));
 
 	for (int i = 0; i < 10; ++i)
@@ -44,14 +42,15 @@ void SceneGame::Init()
 		shootmarks.push_back(AddGo(new ShootMark("shootMark")));
 	}
 
+	stage = -1;
+	difficulty = -1;
+
 	Scene::Init();
 }
 
 void SceneGame::Enter()
 {
 	Scene::Enter();
-
-	SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
 
 	bulletPool.Return(bulletPool.Take());
 	glassShardPool.Return(glassShardPool.Take());
@@ -75,10 +74,6 @@ void SceneGame::Enter()
 	uiHud->SetBreath(player->GetBreath());
 
 	screenRecoilTimer = 1000.f;
-	btnStart->SetPosition({ screensize.x * 0.5f,screensize.y * 0.25f });
-	btnStart->SetString("Start",true);
-	btnStart->SetScale({ 2.f,2.f });
-	btnStart->SetClicked([this]() {this->SetStatus(GameDefine::SceneStatus::InGame); });
 
 	SetStatus(GameDefine::SceneStatus::Awake);
 }
@@ -108,6 +103,9 @@ void SceneGame::Update(float dt)
 	case GameDefine::SceneStatus::Interlude:
 		UpdateInterlude(dt);
 		break;
+	case GameDefine::SceneStatus::Result:
+		UpdateResult(dt);
+		break;
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
@@ -126,7 +124,14 @@ void SceneGame::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::F2))
 	{
-		uiResult->SetActive(!uiResult->IsActive());
+		if (currentStatus != GameDefine::SceneStatus::Result)
+		{
+			SetStatus(GameDefine::SceneStatus::Result);
+		}
+		else
+		{
+			SetStatus(GameDefine::SceneStatus::Awake);
+		}
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::F9))
@@ -150,21 +155,33 @@ void SceneGame::SetStatus(GameDefine::SceneStatus status)
 	switch (currentStatus)
 	{
 	case GameDefine::SceneStatus::Awake:
-		stage = 1;
-		difficulty = 1;
+		if (prev == GameDefine::SceneStatus::Result)
+		{
+			uiResult->SetActive(false);
+		}
+		SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
+
+		if (stage == -1)
+		{
+			stage = 1;
+		}
+		if (difficulty == -1)
+		{
+			difficulty = 1;
+		}
 		wave = 0;
 		remains = 0;
 		day = true;
-		btnStart->SetActive(true);
 
 		dataStage = STAGE_TABLE->Get(stage);
+		windController->SetActive(true);
+
 		break;
 	case GameDefine::SceneStatus::InGame:
 		if (prev == GameDefine::SceneStatus::Awake)
 		{
 			FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 			player->SetStatus(Player::PlayerStatus::Ready);
-			btnStart->SetActive(false);
 			windController->SetDifficulty(difficulty);
 		}
 		if (stage == 1)
@@ -186,12 +203,26 @@ void SceneGame::SetStatus(GameDefine::SceneStatus status)
 	case GameDefine::SceneStatus::Result:
 		FRAMEWORK.GetWindow().setMouseCursorVisible(true);
 		SOUND_MGR.PlayBgm("sounds/bgm/stageclear.mp3");
+		player->SetStatus(Player::PlayerStatus::Wait);
+		uiResult->SetActive(true);
+		windController->SetActive(false);
 		break;
 	}
 }
 
 void SceneGame::UpdateAwake(float dt)
 {
+	interludeTimer += dt;
+	//if (interludeTimer > 3.f)
+	//{
+	//
+	//
+	//	SetStatus(GameDefine::SceneStatus::InGame);
+	//}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	{
+		SetStatus(GameDefine::SceneStatus::InGame);
+	}
 }
 
 void SceneGame::UpdateInGame(float dt)
@@ -221,6 +252,10 @@ void SceneGame::UpdateInterlude(float dt)
 	{
 		SetStatus(GameDefine::SceneStatus::InGame);
 	}
+}
+
+void SceneGame::UpdateResult(float dt)
+{
 }
 
 void SceneGame::UpdateScreenRecoil(float dt)
@@ -385,7 +420,7 @@ void SceneGame::SpawnBottle(const sf::Vector3f& pos)
 	{
 		if (!shootMark->IsActive())
 		{
-			shootMark->SetPosition({ pos.x,100.f });
+			shootMark->SetPosition({ pos.x,100.f - FRAMEWORK.GetDefaultSize().y * 0.5f });
 			shootMark->SetActive(true);
 			bottle->SetShootMark(shootMark);
 			break;
@@ -404,7 +439,7 @@ void SceneGame::SpawnRoundBoard(const sf::Vector3f& pos)
 	{
 		if (!shootMark->IsActive())
 		{
-			shootMark->SetPosition({ pos.x,100.f });
+			shootMark->SetPosition({ pos.x,100.f - FRAMEWORK.GetDefaultSize().y * 0.5f });
 			shootMark->SetActive(true);
 			roundboard->SetShootMark(shootMark);
 			break;

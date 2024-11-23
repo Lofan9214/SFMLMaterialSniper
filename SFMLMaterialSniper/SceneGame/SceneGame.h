@@ -45,7 +45,6 @@ protected:
 
 	UiHud* uiHud;
 	UiResult* uiResult;
-	ButtonRound* btnStart;
 	WindController* windController;
 	std::list<ShootMark*> shootmarks;
 
@@ -79,6 +78,7 @@ public:
 	void UpdateAwake(float dt);
 	void UpdateInGame(float dt);
 	void UpdateInterlude(float dt);
+	void UpdateResult(float dt);
 	void UpdateScreenRecoil(float dt);
 
 	GlassShard* TakeGlassShard();

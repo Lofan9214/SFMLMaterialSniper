@@ -1,7 +1,6 @@
 #pragma once
 #include "DataTable.h"
 
-
 struct DataWave
 {
 	std::string type;

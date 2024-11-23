@@ -1,5 +1,7 @@
 ID,Korean
-Windless,바람 없음
-Start,클릭하여 시작
-Retry,스테이지 다시하기
-Gohome,홈 화면으로 돌아가기
+Windless,"바람 없음"
+Wind,"바람"
+Start,"클릭하여 시작"
+Retry,"스테이지 다시하기"
+Gohome,"홈 화면으로 돌아가기"
+Result,"결과"

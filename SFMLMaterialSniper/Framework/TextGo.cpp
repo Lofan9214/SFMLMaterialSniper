@@ -76,6 +76,10 @@ void TextGo::SetString(const std::string& id, const std::string& str)
 void TextGo::SetCharSize(unsigned int iSize)
 {
 	text.setCharacterSize(iSize);
+	if (originPreset != Origins::Custom)
+	{
+		SetOrigin(originPreset);
+	}
 }
 
 void TextGo::SetOutline(sf::Color color,float thickness)
@@ -94,6 +98,10 @@ void TextGo::SetScale(const sf::Vector2f& scale)
 {
 	this->scale = scale;
 	text.setScale(this->scale);
+	if (originPreset != Origins::Custom)
+	{
+		SetOrigin(originPreset);
+	}
 }
 
 sf::FloatRect TextGo::GetLocalBounds() const
