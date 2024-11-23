@@ -1,10 +1,15 @@
 #pragma once
 
+class UiBullet;
+class UiSkill;
+
 class SceneHome : public Scene
 {
 protected:
 
 	SpriteGo background;
+	UiBullet* uiBullet;
+	UiSkill* uiSkill;
 
 public:
 	SceneHome();

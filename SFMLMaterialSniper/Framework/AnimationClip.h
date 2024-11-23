@@ -13,7 +13,7 @@ struct AnimationFrame
 	bool flipX;
 	sf::Vector2f scale;
 	sf::Color color;
-	sf::Vector2f displacement;
+	sf::Vector2f offset;
 	float rotation;
 
 	AnimationFrame() = default;

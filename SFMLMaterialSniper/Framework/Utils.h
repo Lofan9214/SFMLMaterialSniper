@@ -48,6 +48,8 @@ public:
 	static float Dot(const sf::Vector2f& a, const sf::Vector2f& b);
 	static sf::Vector2f ElementProduct(const sf::Vector2f& a, const sf::Vector2f& b);
 
+	static bool ExpandAndContains(const sf::FloatRect& rect, const sf::Vector2f& point, float expansion);
+
 	static bool CheckCollision(const HitBox& boxA, const HitBox& boxB);
 	static bool CheckCollision(const sf::RectangleShape& shapeA, const sf::RectangleShape& shapeB);
 	static bool CheckCollision(const sf::Sprite& shapeA, const sf::Sprite& shapeB);

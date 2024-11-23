@@ -182,6 +182,17 @@ sf::Vector2f Utils::ElementProduct(const sf::Vector2f& a, const sf::Vector2f& b)
 	return { a.x * b.x,a.y * b.y };
 }
 
+bool Utils::ExpandAndContains(const sf::FloatRect& rect, const sf::Vector2f& point,float expansion)
+{
+	sf::FloatRect value = rect;
+	value.top -= expansion;
+	value.left -= expansion;
+	value.width += expansion * 2.f;
+	value.height += expansion * 2.f;
+	
+	return value.contains(point);
+}
+
 sf::Vector2f Utils::SetOrigin(sf::Transformable& obj, Origins preset, const sf::FloatRect& rect)
 {
 	sf::Vector2f newOrigin(rect.width, rect.height);

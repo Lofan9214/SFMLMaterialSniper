@@ -37,4 +37,6 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void ShowResult();
 };

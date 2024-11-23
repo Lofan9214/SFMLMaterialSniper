@@ -34,10 +34,10 @@ void Gun::SetAnimationScale(const sf::Vector2f& scale)
 	body.setScale(Utils::ElementProduct(this->scale, scale));
 }
 
-void Gun::SetDisplacement(const sf::Vector2f& disp)
+void Gun::SetOffset(const sf::Vector2f& disp)
 {
-	displacement = disp;
-	body.setOrigin(origin - displacement);
+	offset = disp;
+	body.setOrigin(origin - offset);
 }
 
 void Gun::SetColor(const sf::Color& color)

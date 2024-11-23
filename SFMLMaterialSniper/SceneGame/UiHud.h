@@ -32,7 +32,7 @@ protected:
 	ReloadStatus reloadStatus;
 	float boltTimer;
 	float boltDuration;
-	float ammodisplacement;
+	float ammoOffset;
 	std::vector<sf::Sprite> uiBullets;
 	std::vector<sf::Vector2f> uiBulletDefaultPos;
 	sf::Vector2f uiBulletVelocity;

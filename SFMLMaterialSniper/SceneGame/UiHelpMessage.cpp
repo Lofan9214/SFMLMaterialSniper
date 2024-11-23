@@ -28,7 +28,7 @@ void HelpMessage::SetAnimationScale(const sf::Vector2f& scale)
 {
 }
 
-void HelpMessage::SetDisplacement(const sf::Vector2f& disp)
+void HelpMessage::SetOffset(const sf::Vector2f& disp)
 {
 }
 

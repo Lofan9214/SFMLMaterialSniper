@@ -34,7 +34,7 @@ void ShootMark::SetAnimationScale(const sf::Vector2f& scale)
 {
 }
 
-void ShootMark::SetDisplacement(const sf::Vector2f& disp)
+void ShootMark::SetOffset(const sf::Vector2f& disp)
 {
 }
 

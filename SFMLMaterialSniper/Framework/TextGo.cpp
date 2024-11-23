@@ -73,6 +73,15 @@ void TextGo::SetString(const std::string& id, const std::string& str)
 	}
 }
 
+void TextGo::SetString(const std::wstring& str)
+{
+	text.setString(str);
+	if (originPreset < Origins::Custom)
+	{
+		SetOrigin(originPreset);
+	}
+}
+
 void TextGo::SetCharSize(unsigned int iSize)
 {
 	text.setCharacterSize(iSize);

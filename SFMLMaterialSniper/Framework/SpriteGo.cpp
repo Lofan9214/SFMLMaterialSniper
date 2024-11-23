@@ -28,10 +28,10 @@ void SpriteGo::SetRotation(float angle)
 	body.setRotation(rotation);
 }
 
-void SpriteGo::SetDisplacement(const sf::Vector2f& disp)
+void SpriteGo::SetOffset(const sf::Vector2f& disp)
 {
-	displacement = disp;
-	body.setPosition(position - displacement);
+	offset = disp;
+	body.setPosition(position - offset);
 }
 
 void SpriteGo::SetColor(const sf::Color& color)
@@ -72,7 +72,7 @@ void SpriteGo::Update(float dt)
 
 void SpriteGo::Draw(sf::RenderTarget& renderTarget)
 {
-	body.setPosition(position + displacement);
+	body.setPosition(position + offset);
 	renderTarget.draw(body);
 }
 

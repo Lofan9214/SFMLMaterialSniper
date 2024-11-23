@@ -6,7 +6,7 @@ void Animator::BindFunction(GameObject* obj)
 	FlipX = [obj](bool flipX) {obj->SetFlipX(flipX); };
 	SetOrigin = [obj]() {obj->SetOrigin(); };
 	SetColor = [obj](const sf::Color& color) {obj->SetColor(color); };
-	SetDisplacement = [obj](const sf::Vector2f& disp) {obj->SetDisplacement(disp); };
+	SetOffset = [obj](const sf::Vector2f& disp) {obj->SetOffset(disp); };
 	SetScale = [obj](const sf::Vector2f& scale) { obj->SetAnimationScale(scale); };
 	SetRotation = [obj](float rotation) {obj->SetRotation(rotation); };
 }
@@ -148,9 +148,9 @@ void Animator::SetFrame(const AnimationFrame& frame)
 	{
 		SetColor(frame.color);
 	}
-	if (SetDisplacement)
+	if (SetOffset)
 	{
-		SetDisplacement(frame.displacement);
+		SetOffset(frame.offset);
 	}
 	if (frame.rotation != -1 && SetRotation)
 	{

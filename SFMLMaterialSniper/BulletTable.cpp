@@ -17,7 +17,7 @@ bool BulletTable::Load()
 
 	try
 	{
-		for (int i = 0;i < doc.GetRowCount();++i)
+		for (int i = 0; i < doc.GetRowCount(); ++i)
 		{
 			auto row = doc.GetRow<std::string>(i);
 			auto find = table.find(row[0]);
@@ -56,5 +56,33 @@ const DataBullet& BulletTable::Get(const std::string& id)
 	{
 		return Undefined;
 	}
+	return find->second;
+}
+
+const DataBullet& BulletTable::Change(bool up)
+{
+	std::string id = SAVEDATA_MGR.Get().selectedBullet;
+	auto find = table.find(id);
+	if (find == table.end() || id == "default")
+	{
+		SAVEDATA_MGR.Get().selectedBullet = Undefined.name;
+		return Undefined;
+	}
+	if (up)
+	{
+		if (++find == table.end())
+		{
+			find = table.begin();
+		}
+	}
+	else
+	{
+		if (find == table.begin())
+		{
+			find = table.end();
+		}
+		--find;
+	}
+	SAVEDATA_MGR.Get().selectedBullet = find->first;
 	return find->second;
 }

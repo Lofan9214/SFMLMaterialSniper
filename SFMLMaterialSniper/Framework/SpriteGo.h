@@ -17,7 +17,7 @@ public:
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetScale(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
-	void SetDisplacement(const sf::Vector2f& disp) override;
+	void SetOffset(const sf::Vector2f& disp) override;
 	void SetColor(const sf::Color& color) override;
 
 	void Init() override;

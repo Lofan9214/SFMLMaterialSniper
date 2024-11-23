@@ -54,7 +54,7 @@ void UiHud::Init()
 
 	boltDuration = 0.5f;
 	boltTimer = boltDuration * 8.f;
-	ammodisplacement = 15.f;
+	ammoOffset = 15.f;
 
 	windCone = new WindIcon("windcone");
 	windCone->Init();
@@ -185,7 +185,7 @@ void UiHud::Update(float dt)
 		for (int i = 0; i < ammo; ++i)
 		{
 			boltTimer -= dt;
-			uiBullets[i].move(dt * ammodisplacement / (boltDuration - 0.1f), 0.f);
+			uiBullets[i].move(dt * ammoOffset / (boltDuration - 0.1f), 0.f);
 			if (boltTimer < 0.1f)
 			{
 				uiBullets[i].setRotation(2.f);
@@ -307,14 +307,14 @@ void UiHud::SetBoltStatus(BoltStatus status)
 		for (int i = 0; i < ammo; ++i)
 		{
 			uiBullets[i].setRotation(-20.f);
-			uiBullets[i].move(-ammodisplacement * 0.5f, 0.f);
+			uiBullets[i].move(-ammoOffset * 0.5f, 0.f);
 		}
 		break;
 	case UiHud::BoltStatus::BoltPulling:
 		boltTimer = boltDuration;
 		for (int i = 0; i < ammo; ++i)
 		{
-			uiBullets[i].move(-ammodisplacement * 0.5f, 0.f);
+			uiBullets[i].move(-ammoOffset * 0.5f, 0.f);
 			uiBullets[i].setRotation(0.f);
 		}
 		--ammo;

@@ -80,34 +80,39 @@ void ButtonRound::Update(float dt)
 	sf::Vector2f mousepos = SCENE_MGR.GetCurrentScene()->ScreenToUi(InputMgr::GetMousePosition());
 	sf::Image collisionImage = buttonBackground.getTexture()->copyToImage();
 	sf::Vector2f point = buttonBackground.getInverseTransform().transformPoint(mousepos);
-	if (buttonBackground.getGlobalBounds().contains(mousepos) && collisionImage.getPixel(point.x, point.y).a != 0)
+	sf::Cursor cursor;
+	if (Utils::ExpandAndContains(buttonBackground.getGlobalBounds(), mousepos, 5))
 	{
-		sf::Cursor cursor;
-		if (cursor.loadFromSystem(sf::Cursor::Hand))
+		if (point.x<0 || (int)point.x>= textureRect.x
+			|| point.y < 0 || (int)point.y>= textureRect.y
+			|| collisionImage.getPixel(point.x, point.y).a == 0)
 		{
-			FRAMEWORK.GetWindow().setMouseCursor(cursor);
+			if (buttonBackground.getTextureRect().left != 0)
+			{
+				buttonBackground.setTextureRect({ {0,0} ,textureRect });
+			}
+			if (cursor.loadFromSystem(sf::Cursor::Arrow))
+			{
+				FRAMEWORK.GetWindow().setMouseCursor(cursor);
+			}
 		}
-		if (buttonBackground.getTextureRect().left == 0)
+		else
 		{
-			buttonBackground.setTextureRect({ {textureRect.x,0} ,textureRect });
-		}
-		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && Clicked)
-		{
-			Clicked();
+			if (cursor.loadFromSystem(sf::Cursor::Hand))
+			{
+				FRAMEWORK.GetWindow().setMouseCursor(cursor);
+			}
+			if (buttonBackground.getTextureRect().left == 0)
+			{
+				buttonBackground.setTextureRect({ {textureRect.x,0} ,textureRect });
+			}
+			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && Clicked)
+			{
+				Clicked();
+			}
 		}
 	}
-	else
-	{
-		sf::Cursor cursor;
-		if (buttonBackground.getTextureRect().left != 0)
-		{
-			buttonBackground.setTextureRect({ {0,0} ,textureRect });
-		}
-		if (cursor.loadFromSystem(sf::Cursor::Arrow))
-		{
-			FRAMEWORK.GetWindow().setMouseCursor(cursor);
-		}
-	}
+
 }
 
 void ButtonRound::Draw(sf::RenderTarget& window)
@@ -123,7 +128,7 @@ void ButtonRound::SetString(const std::string& text, bool usetable)
 
 void ButtonRound::SetCharSize(float size)
 {
-	buttonText->SetCharSize(size);	
+	buttonText->SetCharSize(size);
 }
 
 void ButtonRound::SetClicked(const std::function<void()>& event)

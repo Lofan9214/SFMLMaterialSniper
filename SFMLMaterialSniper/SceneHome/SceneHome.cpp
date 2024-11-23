@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneHome.h"
-
+#include "UiBullet.h"
+#include "UiSkill.h"
 
 SceneHome::SceneHome() : Scene(SceneIds::Home)
 {
@@ -13,12 +14,17 @@ void SceneHome::Init()
 	bg->SetSortingLayer(SortingLayers::Background);
 	bg->SetOrigin(Origins::MC);
 
+	uiBullet = AddGo(new UiBullet("uibullet"));
+
+	uiSkill = AddGo(new UiSkill("uiskill"));
+
 	Scene::Init();
 }
 
 void SceneHome::Release()
 {
 	Scene::Release();
+	SAVEDATA_MGR.Save();
 }
 
 void SceneHome::Enter()
@@ -30,6 +36,10 @@ void SceneHome::Enter()
 
 	uiView.setCenter(screensize * 0.5f);
 	uiView.setSize(screensize);
+
+	uiBullet->SetPosition({ screensize.x * 0.1f ,screensize.y * 0.4f });
+	uiSkill->SetPosition({ screensize.x * 0.5f ,screensize.y * 0.4f });
+
 	Scene::Enter();
 }
 

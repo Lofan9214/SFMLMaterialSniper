@@ -45,7 +45,7 @@ protected:
 	std::function<void()> SetOrigin;
 	std::function<void(const sf::Color&)> SetColor;
 	std::function<void(const sf::Vector2f&)> SetScale;
-	std::function<void(const sf::Vector2f&)> SetDisplacement;
+	std::function<void(const sf::Vector2f&)> SetOffset;
 	std::function<void(float)> SetRotation;
 
 public:

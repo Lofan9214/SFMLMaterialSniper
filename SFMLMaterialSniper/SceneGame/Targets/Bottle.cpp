@@ -46,10 +46,10 @@ void Bottle::SetAnimationScale(const sf::Vector2f& scale)
 	stand.setScale(Utils::ElementProduct(this->scale, scale));
 }
 
-void Bottle::SetDisplacement(const sf::Vector2f& disp)
+void Bottle::SetOffset(const sf::Vector2f& disp)
 {
-	displacement = disp;
-	body.setOrigin(origin - displacement);
+	offset = disp;
+	body.setOrigin(origin - offset);
 }
 
 void Bottle::SetColor(const sf::Color& color)
@@ -170,7 +170,7 @@ void Bottle::FixedUpdate(float dt)
 				{
 					SOUND_MGR.PlaySfx("sounds/targets/bottlehit.mp3");
 					GlassShard* shard = TakeGlassShard();
-					shard->Start({ position3.x + displacement.x,position3.y - body.getGlobalBounds().height * 0.5f + displacement.y ,position3.z *-1.f });
+					shard->Start({ position3.x + offset.x,position3.y - body.getGlobalBounds().height * 0.5f + offset.y ,position3.z *-1.f });
 				}
 			}
 			else if (stand.getGlobalBounds().contains(bulletlerppos))

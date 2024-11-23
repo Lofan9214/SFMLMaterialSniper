@@ -204,6 +204,7 @@ void SceneGame::SetStatus(GameDefine::SceneStatus status)
 		FRAMEWORK.GetWindow().setMouseCursorVisible(true);
 		SOUND_MGR.PlayBgm("sounds/bgm/stageclear.mp3");
 		player->SetStatus(Player::PlayerStatus::Wait);
+		uiResult->ShowResult();
 		uiResult->SetActive(true);
 		windController->SetActive(false);
 		break;
@@ -213,13 +214,7 @@ void SceneGame::SetStatus(GameDefine::SceneStatus status)
 void SceneGame::UpdateAwake(float dt)
 {
 	interludeTimer += dt;
-	//if (interludeTimer > 3.f)
-	//{
-	//
-	//
-	//	SetStatus(GameDefine::SceneStatus::InGame);
-	//}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	if (interludeTimer > 5.f)
 	{
 		SetStatus(GameDefine::SceneStatus::InGame);
 	}
@@ -237,6 +232,7 @@ void SceneGame::UpdateInGame(float dt)
 		if (++wave == dataStage.waves.size())
 		{
 			SetStatus(GameDefine::SceneStatus::Result);
+			SAVEDATA_MGR.Get().skillData.skillPoint += 10;
 		}
 		else
 		{

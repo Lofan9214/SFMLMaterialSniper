@@ -28,7 +28,7 @@ void WindIcon::SetAnimationScale(const sf::Vector2f& scale)
 {
 }
 
-void WindIcon::SetDisplacement(const sf::Vector2f& disp)
+void WindIcon::SetOffset(const sf::Vector2f& disp)
 {
 }
 

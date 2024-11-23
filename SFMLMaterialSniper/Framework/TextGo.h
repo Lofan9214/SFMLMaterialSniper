@@ -35,6 +35,7 @@ public:
 
 	void SetString(const std::string& str,bool loadFromTable = false);
 	void SetString(const std::string& id, const std::string& str);
+	void SetString(const std::wstring& str);
 	void SetCharSize(unsigned int iSize);
 	void SetOutline(sf::Color color,float thickness);
 };

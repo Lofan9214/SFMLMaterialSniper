@@ -42,10 +42,10 @@ void Drum::SetAnimationScale(const sf::Vector2f& scale)
 	body.setScale(Utils::ElementProduct(this->scale, scale));
 }
 
-void Drum::SetDisplacement(const sf::Vector2f& disp)
+void Drum::SetOffset(const sf::Vector2f& disp)
 {
-	displacement = disp;
-	body.setOrigin(origin - displacement);
+	offset = disp;
+	body.setOrigin(origin - offset);
 
 }
 

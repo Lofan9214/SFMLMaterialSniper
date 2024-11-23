@@ -87,7 +87,7 @@ void UiResult::Reset()
 	txtTitle->SetString("Result", true);
 	txtTitle->SetPosition({ screensize.x * 0.5f,180.f });
 	txtTitle->SetOrigin(Origins::MC);
-	txtTitle->SetColor(sf::Color::White); 
+	txtTitle->SetColor(sf::Color::White);
 	txtTitle->SetCharSize(70.f);
 
 	btnRetry->SetPosition({ screensize.x * 0.3f,screensize.y * 0.85f });
@@ -99,6 +99,11 @@ void UiResult::Reset()
 	btnGohome->SetString("Gohome", true);
 	btnGohome->SetScale({ 2.f,2.f });
 	btnGohome->SetCharSize(40.f);
+
+	txtResult->SetPosition(screensize * 0.5f);
+	txtResult->SetOrigin(Origins::MC);
+	txtResult->SetColor(sf::Color::White);
+	txtResult->SetCharSize(50.f);
 
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
@@ -125,4 +130,9 @@ void UiResult::Draw(sf::RenderTarget& window)
 	btnRetry->Draw(window);
 	txtTitle->Draw(window);
 	btnGohome->Draw(window);
+}
+
+void UiResult::ShowResult()
+{
+	txtResult->SetString(L"스킬 포인트 10 획득\n현재 스킬포인트 : "+std::to_wstring(SAVEDATA_MGR.Get().skillData.skillPoint));
 }
