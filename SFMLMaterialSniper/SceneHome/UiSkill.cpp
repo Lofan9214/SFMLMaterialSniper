@@ -72,11 +72,16 @@ void UiSkill::Init()
 	for (int i = 0; i < names.size(); ++i)
 	{
 		names[i] = new TextGo(fontId, "name");
+		names[i]->Init();
 	}
 	title = new TextGo(fontId, "title");
+	title->Init();
 	manual = new TextGo(fontId, "manual");
+	manual->Init();
 	skillpoint = new TextGo(fontId, "skillpoint");
+	skillpoint->Init();
 	skillpoint2 = new TextGo(fontId, "skillpoint2");
+	skillpoint2->Init();
 
 	textureRectArrow = { 40,20 };
 	textureRectStar = { 84,83 };
@@ -236,7 +241,7 @@ void UiSkill::ButtonsUpdate()
 				|| point.y < 0 || (int)point.y >= textureRectArrow.y
 				|| collisionImage.getPixel(point.x, point.y).a == 0)
 			{
-				ChangeSkillManual(-1);
+				ChangeSkillManual(-1,false);
 				if (upArrows[i].getTextureRect().left != 0)
 				{
 					upArrows[i].setTextureRect({ {0,0} ,textureRectArrow });
@@ -248,7 +253,7 @@ void UiSkill::ButtonsUpdate()
 			}
 			else
 			{
-				ChangeSkillManual(i);
+				ChangeSkillManual(i,true);
 				if (cursor.loadFromSystem(sf::Cursor::Hand))
 				{
 					FRAMEWORK.GetWindow().setMouseCursor(cursor);
@@ -263,6 +268,10 @@ void UiSkill::ButtonsUpdate()
 				}
 			}
 		}
+		else if (upArrows[i].getTextureRect().left != 0)
+		{
+			upArrows[i].setTextureRect({ {0,0} ,textureRectArrow });
+		}
 	}
 	for (int i = 0; i < downArrows.size(); ++i)
 	{
@@ -275,7 +284,7 @@ void UiSkill::ButtonsUpdate()
 				|| point.y < 0 || (int)point.y >= textureRectArrow.y
 				|| collisionImage.getPixel(point.x, point.y).a == 0)
 			{
-				ChangeSkillManual(-1);
+				ChangeSkillManual(-1,false);
 				if (downArrows[i].getTextureRect().left != 0)
 				{
 					downArrows[i].setTextureRect({ {0,0} ,textureRectArrow });
@@ -287,7 +296,7 @@ void UiSkill::ButtonsUpdate()
 			}
 			else
 			{
-				ChangeSkillManual(-1);
+				ChangeSkillManual(i,false);
 				if (cursor.loadFromSystem(sf::Cursor::Hand))
 				{
 					FRAMEWORK.GetWindow().setMouseCursor(cursor);
@@ -301,6 +310,10 @@ void UiSkill::ButtonsUpdate()
 					SkillUpDown(i, false);
 				}
 			}
+		}
+		else if (downArrows[i].getTextureRect().left != 0)
+		{
+			downArrows[i].setTextureRect({ {0,0} ,textureRectArrow });
 		}
 	}
 }
@@ -368,7 +381,7 @@ void UiSkill::ReadSkillData()
 
 }
 
-void UiSkill::ChangeSkillManual(int index)
+void UiSkill::ChangeSkillManual(int index, bool up)
 {
 	if (index < 0)
 	{
@@ -380,7 +393,7 @@ void UiSkill::ChangeSkillManual(int index)
 	auto& skilldata = SAVEDATA_MGR.Get().skillData;
 	manual->SetString(skillNames[index] + "Manual", true);
 
-	int needpoint = 0;
+	int needpoint = 1;
 	switch (index)
 	{
 	case 0:
@@ -399,9 +412,13 @@ void UiSkill::ChangeSkillManual(int index)
 		needpoint = 2 << skilldata.magazine;
 		break;
 	}
-	if (needpoint == 64 || needpoint == 0)
+	if (needpoint == 64 || needpoint == 1)
 	{
 		return;
+	}
+	if (!up)
+	{
+		needpoint = needpoint >> 1;
 	}
 	skillpoint->SetString("SkillUp", " : " + std::to_string(needpoint));
 }
@@ -409,7 +426,7 @@ void UiSkill::ChangeSkillManual(int index)
 void UiSkill::SkillUpDown(int index, bool up)
 {
 	auto& skilldata = SAVEDATA_MGR.Get().skillData;
-	int needpoint = 0;
+	int needpoint = 1;
 	switch (index)
 	{
 	case 0:
@@ -428,11 +445,11 @@ void UiSkill::SkillUpDown(int index, bool up)
 		needpoint = 2 << skilldata.magazine;
 		break;
 	}
-	if (needpoint == 64 || needpoint == 0 || needpoint > skilldata.skillPoint)
+	if (needpoint == 64 || needpoint == 1 || (up && needpoint > skilldata.skillPoint) || (!up && needpoint == 2))
 	{
 		return;
 	}
-	skilldata.skillPoint += up ? -needpoint : needpoint;
+	skilldata.skillPoint += up ? -needpoint : needpoint >> 1;
 	switch (index)
 	{
 	case 0:

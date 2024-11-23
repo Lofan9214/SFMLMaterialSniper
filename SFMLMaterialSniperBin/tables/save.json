@@ -1,11 +1,11 @@
 {
-    "selectedBullet": ".338 Lapua Magnum",
+    "selectedBullet": ".300 Winchester",
     "skillData": {
         "control": 3,
         "magazine": 2,
-        "reload": 1,
-        "scopeSize": 3,
-        "skillPoint": 0,
+        "reload": 4,
+        "scopeSize": 1,
+        "skillPoint": 20,
         "stablility": 2
     },
     "version": 2

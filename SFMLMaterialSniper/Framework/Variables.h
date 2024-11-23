@@ -6,4 +6,5 @@ public:
 	static bool isDrawHitBox;
 	static Languages currentLang;
 	static const int currentVersion;
+	static int difficulty;
 };

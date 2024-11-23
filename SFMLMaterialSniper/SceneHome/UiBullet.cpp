@@ -60,6 +60,12 @@ void UiBullet::Init()
 	diameter = new TextGo(fontId, "diameter");
 	muzzlespeed = new TextGo(fontId, "muzzlespeed");
 
+	title->Init();
+	name->Init();
+	weight->Init();
+	diameter->Init();
+	muzzlespeed->Init();
+
 	textureRect = { 40,20 };
 	offsetTitle = { 200.f,15.f };
 	offsetUpArrow = { 20.f,110.f };
@@ -106,7 +112,7 @@ void UiBullet::Reset()
 	background.setFillColor({ 0,0,0,170 });
 	name->SetOrigin(Origins::TC);
 	title->SetOrigin(Origins::TC);
-	title->SetString("BulletTitle",true);
+	title->SetString("BulletTitle", true);
 	title->SetCharSize(40.f);
 }
 
@@ -149,6 +155,10 @@ void UiBullet::Update(float dt)
 			}
 		}
 	}
+	else if (upArrow.getTextureRect().left != 0)
+	{
+		upArrow.setTextureRect({ {0,0} ,textureRect });
+	}
 	collisionImage = downArrow.getTexture()->copyToImage();
 	point = downArrow.getInverseTransform().transformPoint(mousepos);
 
@@ -184,6 +194,10 @@ void UiBullet::Update(float dt)
 				ReadDataBullet();
 			}
 		}
+	}
+	else if (downArrow.getTextureRect().left != 0)
+	{
+		downArrow.setTextureRect({ {0,0} ,textureRect });
 	}
 }
 

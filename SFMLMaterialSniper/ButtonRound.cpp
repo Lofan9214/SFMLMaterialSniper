@@ -64,6 +64,7 @@ void ButtonRound::Release()
 
 void ButtonRound::Reset()
 {
+	buttonText->Reset();
 	auto& texture = TEXTURE_MGR.Get(buttonTexId);
 	sf::Vector2u texsize = texture.getSize();
 	textureRect.x = texsize.x / 2;
@@ -72,7 +73,6 @@ void ButtonRound::Reset()
 	buttonBackground.setTextureRect({ {0,0} ,textureRect });
 	SetOrigin(Origins::MC);
 
-	buttonText->Reset();
 }
 
 void ButtonRound::Update(float dt)
@@ -112,7 +112,10 @@ void ButtonRound::Update(float dt)
 			}
 		}
 	}
-
+	else if (buttonBackground.getTextureRect().left != 0)
+	{
+		buttonBackground.setTextureRect({ {0,0} ,textureRect });
+	}
 }
 
 void ButtonRound::Draw(sf::RenderTarget& window)

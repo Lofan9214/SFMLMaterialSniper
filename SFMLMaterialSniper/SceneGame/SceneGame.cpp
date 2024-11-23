@@ -168,7 +168,7 @@ void SceneGame::SetStatus(GameDefine::SceneStatus status)
 		}
 		if (difficulty == -1)
 		{
-			difficulty = 1;
+			difficulty = Variables::difficulty;
 		}
 		wave = 0;
 		remains = 0;
@@ -232,8 +232,8 @@ void SceneGame::UpdateInGame(float dt)
 	{
 		if (++wave == dataStage.waves.size())
 		{
-			SetStatus(GameDefine::SceneStatus::Result);
 			SAVEDATA_MGR.Get().skillData.skillPoint += 10;
+			SetStatus(GameDefine::SceneStatus::Result);
 		}
 		else
 		{

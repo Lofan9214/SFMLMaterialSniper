@@ -54,6 +54,6 @@ public:
 
 	void ButtonsUpdate();
 	void ReadSkillData();
-	void ChangeSkillManual(int index);
+	void ChangeSkillManual(int index, bool up);
 	void SkillUpDown(int index, bool up);
 };
