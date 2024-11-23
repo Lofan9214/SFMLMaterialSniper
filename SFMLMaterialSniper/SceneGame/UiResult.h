@@ -20,6 +20,8 @@ protected:
 	std::string fontId = "fonts/malgun.ttf";
 	std::string buttonTexId = "graphics/ui/uiroundbutton.png";
 
+	float resetTime;
+
 public:
 	UiResult(const std::string& name = "");
 	~UiResult() = default;

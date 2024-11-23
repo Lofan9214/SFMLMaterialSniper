@@ -15,6 +15,8 @@ protected:
 
 	Status status;
 
+	GameDefine::SceneStatus sceneStatus;
+
 	sf::Sprite body;
 	std::string texId = "graphics/ui/uiwindchange.png";
 
@@ -23,6 +25,8 @@ protected:
 	int difficulty;
 
 	std::function<void(int)> windChanged;
+
+	void SetStatus(Status status);
 
 public:
 	WindController(const std::string& name = "");
@@ -41,6 +45,6 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
 
-	void SetStatus(Status status);
+	void SetSceneStatus(GameDefine::SceneStatus status) { sceneStatus = status; }
 	void SetDifficulty(int diff);
 };

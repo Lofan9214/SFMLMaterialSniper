@@ -1,14 +1,25 @@
 #pragma once
 
-class WindCone : public GameObject
+class WindIcon : public GameObject
 {
+public:
+	enum class Type
+	{
+		Cone,
+		Arrow,
+	};
 protected:
+
+	Type type;
 
 	sf::Sprite body;
 	Animator animator;
+
+	int speed;
+
 public:
-	WindCone(const std::string& name = "");
-	~WindCone() = default;
+	WindIcon(const std::string& name = "");
+	~WindIcon() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
@@ -25,6 +36,8 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void SetType(Type type);
 
 	void SetWindSpeed(int speed);
 };

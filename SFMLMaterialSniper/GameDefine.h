@@ -34,6 +34,14 @@ namespace GameDefine
 		UiResult = 500,
 	};
 
+	enum class SceneStatus
+	{
+		Awake,
+		InGame,
+		Interlude,
+		Result,
+	};
+
 	enum class TargetType
 	{
 		Drum,

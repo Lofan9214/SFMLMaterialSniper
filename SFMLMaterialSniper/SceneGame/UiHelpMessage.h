@@ -1,15 +1,18 @@
 #pragma once
 
-class Reload : public GameObject
+class HelpMessage : public GameObject
 {
 protected:
 
 	sf::Sprite body;
 	Animator animator;
 
+	float timer;
+	float duration;
+
 public:
-	Reload(const std::string& name = "");
-	~Reload() = default;
+	HelpMessage(const std::string& name = "");
+	~HelpMessage() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
@@ -25,4 +28,6 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void StartTimer(float duration);
 };

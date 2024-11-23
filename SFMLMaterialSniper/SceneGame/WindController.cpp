@@ -68,6 +68,12 @@ void WindController::Reset()
 
 void WindController::Update(float dt)
 {
+	if (sceneStatus == GameDefine::SceneStatus::Result
+		|| sceneStatus == GameDefine::SceneStatus::Awake)
+	{
+		return;
+	}
+
 	timer += dt;
 	switch (status)
 	{

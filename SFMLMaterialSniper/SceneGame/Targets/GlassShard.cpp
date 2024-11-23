@@ -55,7 +55,6 @@ void GlassShard::Init()
 
 void GlassShard::Release()
 {
-	animator.Stop();
 }
 
 void GlassShard::Reset()

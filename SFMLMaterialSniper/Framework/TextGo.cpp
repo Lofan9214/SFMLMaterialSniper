@@ -78,11 +78,6 @@ void TextGo::SetCharSize(unsigned int iSize)
 	text.setCharacterSize(iSize);
 }
 
-void TextGo::SetFillColor(sf::Color color)
-{
-	text.setFillColor(color);
-}
-
 void TextGo::SetOutline(sf::Color color,float thickness)
 {
 	text.setOutlineColor(color);
@@ -109,6 +104,11 @@ sf::FloatRect TextGo::GetLocalBounds() const
 sf::FloatRect TextGo::GetGlobalBounds() const
 {
 	return text.getGlobalBounds();
+}
+
+void TextGo::SetColor(const sf::Color& color)
+{
+	text.setFillColor(color);
 }
 
 void TextGo::Reset()

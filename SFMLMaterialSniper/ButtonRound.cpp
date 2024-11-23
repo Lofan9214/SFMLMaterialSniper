@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ButtonRound.h"
+#include "TextGo.h"
 
 ButtonRound::ButtonRound(const std::string& name)
 	: GameObject(name)
@@ -10,21 +11,21 @@ void ButtonRound::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	buttonBackground.setPosition(position);
-	buttonText.setPosition(position);
+	buttonText->SetPosition(position);
 }
 
 void ButtonRound::SetRotation(float angle)
 {
 	rotation = angle;
 	buttonBackground.setRotation(rotation);
-	buttonText.setRotation(rotation);
+	buttonText->SetRotation(rotation);
 }
 
 void ButtonRound::SetScale(const sf::Vector2f& s)
 {
 	scale = s;
 	buttonBackground.setScale(scale);
-	buttonText.setScale(scale);
+	buttonText->SetScale(scale);
 }
 
 void ButtonRound::SetOrigin(Origins preset)
@@ -33,7 +34,7 @@ void ButtonRound::SetOrigin(Origins preset)
 	if (originPreset != Origins::Custom)
 	{
 		origin = Utils::SetOrigin(buttonBackground, originPreset);
-		Utils::SetOrigin(buttonText, originPreset);
+		buttonText->SetOrigin(originPreset);
 	}
 }
 
@@ -42,7 +43,7 @@ void ButtonRound::SetOrigin(const sf::Vector2f& newOrigin)
 	originPreset = Origins::Custom;
 	origin = newOrigin;
 	buttonBackground.setOrigin(origin);
-	buttonText.setOrigin(origin);
+	buttonText->SetOrigin(origin);
 }
 
 void ButtonRound::Init()
@@ -50,11 +51,15 @@ void ButtonRound::Init()
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 450;
 
+	buttonText = new TextGo(buttonFontId, "text");
+	buttonText->Init();
 	SetOrigin(Origins::MC);
 }
 
 void ButtonRound::Release()
 {
+	buttonText->Release();
+	delete buttonText;
 }
 
 void ButtonRound::Reset()
@@ -65,8 +70,9 @@ void ButtonRound::Reset()
 	textureRect.y = texsize.y;
 	buttonBackground.setTexture(texture);
 	buttonBackground.setTextureRect({ {0,0} ,textureRect });
+	SetOrigin(Origins::MC);
 
-	buttonText.setFont(FONT_MGR.Get(buttonFontId));
+	buttonText->Reset();
 }
 
 void ButtonRound::Update(float dt)
@@ -107,18 +113,12 @@ void ButtonRound::Update(float dt)
 void ButtonRound::Draw(sf::RenderTarget& window)
 {
 	window.draw(buttonBackground);
-	window.draw(buttonText);
+	buttonText->Draw(window);
 }
 
-void ButtonRound::SetString(const std::string& text)
+void ButtonRound::SetString(const std::string& text, bool usetable)
 {
-	buttonText.setString(text);
-	SetOrigin(originPreset);
-}
-void ButtonRound::SetString(const std::wstring& text)
-{
-	buttonText.setString(text);
-	SetOrigin(originPreset);
+	buttonText->SetString(text, usetable);
 }
 
 void ButtonRound::SetClicked(const std::function<void()>& event)

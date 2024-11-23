@@ -87,7 +87,7 @@ void Player::Release()
 	auto& savedata = SAVEDATA_MGR.Get();
 	savedata.skillData = skillData;
 	SAVEDATA_MGR.Save();
-	animator.Stop();
+	animator.Pause();
 }
 
 void Player::Reset()
@@ -160,13 +160,13 @@ void Player::UpdateReady(float dt)
 		}
 		else
 		{
-			uiHud->SetReloadButton(true);
+			uiHud->SetReloadActive(true);
 		}
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z)
 		|| InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
-		uiHud->SetReloadButton(false);
+		uiHud->SetReloadActive(false);
 		SetStatus(PlayerStatus::Reloading);
 	}
 }

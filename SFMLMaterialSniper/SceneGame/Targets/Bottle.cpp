@@ -91,6 +91,7 @@ void Bottle::Init()
 
 void Bottle::Release()
 {
+	animator.Pause();
 }
 
 void Bottle::Reset()

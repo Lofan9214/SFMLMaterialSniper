@@ -168,13 +168,13 @@
     <ClInclude Include="ButtonRound.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SceneGame\UiWindCone.h">
+    <ClInclude Include="SceneGame\UiWindIcon.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="SceneGame\WindController.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SceneGame\UiReload.h">
+    <ClInclude Include="SceneGame\UiHelpMessage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="SceneGame\ShootMark.h">
@@ -314,13 +314,13 @@
     <ClCompile Include="ButtonRound.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SceneGame\UiWindCone.cpp">
+    <ClCompile Include="SceneGame\UiWindIcon.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SceneGame\WindController.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SceneGame\UiReload.cpp">
+    <ClCompile Include="SceneGame\UiHelpMessage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="SceneGame\ShootMark.cpp">

@@ -119,7 +119,7 @@ void Gun::Init()
 
 void Gun::Release()
 {
-	animator.Stop();
+	animator.Pause();
 }
 
 void Gun::Reset()

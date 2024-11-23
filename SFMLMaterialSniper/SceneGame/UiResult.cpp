@@ -78,6 +78,7 @@ void UiResult::Reset()
 	txtRetry->Reset();
 	txtTitle->Reset();
 	txtToHome->Reset();
+	resetTime = FRAMEWORK.GetRealTime();
 }
 
 void UiResult::Update(float dt)

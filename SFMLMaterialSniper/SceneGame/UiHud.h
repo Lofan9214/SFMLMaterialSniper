@@ -1,8 +1,8 @@
 #pragma once
 
 #include "TextGo.h"
-class WindCone;
-class Reload;
+class WindIcon;
+class HelpMessage;
 
 class UiHud : public GameObject
 {
@@ -44,9 +44,12 @@ protected:
 	sf::VertexArray uiBreath;
 	const sf::Vector2f breathMaxSize = { 390.f,50.f };
 	const sf::Vector2f breathStartPos = { 460.f,102.f };
-	
-	WindCone* windCone;
-	Reload* reload;
+
+	WindIcon* windCone;
+	WindIcon* windArrow;
+	HelpMessage* reload;
+	HelpMessage* space;
+	HelpMessage* fire;
 
 	sf::Sprite uiWindBack;
 	std::string uiWindBackTexId = "graphics/ui/uiwindback.png";
@@ -78,5 +81,7 @@ public:
 	void SetReloadStatus(ReloadStatus status);
 
 	void OnLocalize(Languages lang) override;
-	void SetReloadButton(bool active);
+	void SetReloadActive(bool active);
+	void SetSpaceActive(bool active, float duration);
+	void SetFireActive(bool active, float duration);
 };

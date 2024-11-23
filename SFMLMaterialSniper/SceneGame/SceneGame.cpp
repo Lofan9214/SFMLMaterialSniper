@@ -60,7 +60,7 @@ void SceneGame::Enter()
 	drumPool.Return(drumPool.Take());
 	roundboardPool.Return(roundboardPool.Take());
 
-	currentStatus = Status::Awake;
+	currentStatus = GameDefine::SceneStatus::Awake;
 
 	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
 
@@ -75,13 +75,12 @@ void SceneGame::Enter()
 	uiHud->SetBreath(player->GetBreath());
 
 	screenRecoilTimer = 1000.f;
-	stageEnterTime = FRAMEWORK.GetRealTime();
 	btnStart->SetPosition({ screensize.x * 0.5f,screensize.y * 0.25f });
-	btnStart->SetString(L"클릭하여 시작");
+	btnStart->SetString("Start",true);
 	btnStart->SetScale({ 2.f,2.f });
-	btnStart->SetClicked([this]() {this->SetStatus(Status::InGame); });
+	btnStart->SetClicked([this]() {this->SetStatus(GameDefine::SceneStatus::InGame); });
 
-	SetStatus(Status::Awake);
+	SetStatus(GameDefine::SceneStatus::Awake);
 }
 
 void SceneGame::Exit()
@@ -100,13 +99,13 @@ void SceneGame::Update(float dt)
 
 	switch (currentStatus)
 	{
-	case SceneGame::Status::Awake:
+	case GameDefine::SceneStatus::Awake:
 		UpdateAwake(dt);
 		break;
-	case SceneGame::Status::InGame:
+	case GameDefine::SceneStatus::InGame:
 		UpdateInGame(dt);
 		break;
-	case SceneGame::Status::Interlude:
+	case GameDefine::SceneStatus::Interlude:
 		UpdateInterlude(dt);
 		break;
 	}
@@ -141,16 +140,16 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 }
 
-void SceneGame::SetStatus(Status status)
+void SceneGame::SetStatus(GameDefine::SceneStatus status)
 {
-	Status prev = currentStatus;
+	GameDefine::SceneStatus prev = currentStatus;
 	currentStatus = status;
 
-
+	windController->SetSceneStatus(currentStatus);
 
 	switch (currentStatus)
 	{
-	case SceneGame::Status::Awake:
+	case GameDefine::SceneStatus::Awake:
 		stage = 1;
 		difficulty = 1;
 		wave = 0;
@@ -160,20 +159,31 @@ void SceneGame::SetStatus(Status status)
 
 		dataStage = STAGE_TABLE->Get(stage);
 		break;
-	case SceneGame::Status::InGame:
-		if (prev == Status::Awake)
+	case GameDefine::SceneStatus::InGame:
+		if (prev == GameDefine::SceneStatus::Awake)
 		{
 			FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 			player->SetStatus(Player::PlayerStatus::Ready);
 			btnStart->SetActive(false);
 			windController->SetDifficulty(difficulty);
 		}
+		if (stage == 1)
+		{
+			if (wave == 0)
+			{
+				uiHud->SetFireActive(true, 3.f);
+			}
+			else if (wave == 1)
+			{
+				uiHud->SetSpaceActive(true, 3.f);
+			}
+		}
 		SpawnWave();
 		break;
-	case SceneGame::Status::Interlude:
+	case GameDefine::SceneStatus::Interlude:
 		interludeTimer = 0.f;
 		break;
-	case SceneGame::Status::Result:
+	case GameDefine::SceneStatus::Result:
 		FRAMEWORK.GetWindow().setMouseCursorVisible(true);
 		SOUND_MGR.PlayBgm("sounds/bgm/stageclear.mp3");
 		break;
@@ -182,10 +192,6 @@ void SceneGame::SetStatus(Status status)
 
 void SceneGame::UpdateAwake(float dt)
 {
-	//if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
-	//{
-	//	SetStatus(Status::InGame);
-	//}
 }
 
 void SceneGame::UpdateInGame(float dt)
@@ -193,17 +199,17 @@ void SceneGame::UpdateInGame(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		ClearTookObject();
-		SetStatus(Status::Awake);
+		SetStatus(GameDefine::SceneStatus::Awake);
 	}
 	if (remains == 0)
 	{
 		if (++wave == dataStage.waves.size())
 		{
-			SetStatus(Status::Result);
+			SetStatus(GameDefine::SceneStatus::Result);
 		}
 		else
 		{
-			SetStatus(Status::Interlude);
+			SetStatus(GameDefine::SceneStatus::Interlude);
 		}
 	}
 }
@@ -213,7 +219,7 @@ void SceneGame::UpdateInterlude(float dt)
 	interludeTimer += dt;
 	if (interludeTimer > 3.f)
 	{
-		SetStatus(Status::InGame);
+		SetStatus(GameDefine::SceneStatus::InGame);
 	}
 }
 
@@ -360,8 +366,8 @@ void SceneGame::SpawnDrum(const sf::Vector3f& pos)
 	{
 		if (!shootMark->IsActive())
 		{
-			shootMark->SetPosition({ pos.x,100.f-FRAMEWORK.GetDefaultSize().y*0.5f});
-			
+			shootMark->SetPosition({ pos.x,100.f - FRAMEWORK.GetDefaultSize().y * 0.5f });
+
 			shootMark->SetActive(true);
 			drum->SetShootMark(shootMark);
 			break;

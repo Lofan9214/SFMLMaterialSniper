@@ -88,7 +88,7 @@ void Drum::Init()
 
 void Drum::Release()
 {
-	animator.Stop();
+	animator.Pause();
 }
 
 void Drum::Reset()

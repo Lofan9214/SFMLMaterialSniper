@@ -1,5 +1,4 @@
 #pragma once
-#include "Scene.h"
 
 class Bullet;
 class CircleView;
@@ -19,17 +18,8 @@ class ShootMark;
 class SceneGame :
 	public Scene
 {
-public:
-	enum class Status
-	{
-		Awake,
-		InGame,
-		Interlude,
-		Result,
-	};
-
 protected:
-	Status currentStatus = Status::Awake;
+	GameDefine::SceneStatus currentStatus = GameDefine::SceneStatus::Awake;
 
 	CircleView* scopeview;
 	Player* player;
@@ -74,8 +64,6 @@ protected:
 	float screenRecoil;
 	float screenRecoilTimer;
 
-	float stageEnterTime;
-
 public:
 	SceneGame();
 	virtual ~SceneGame() = default;
@@ -87,7 +75,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void SetStatus(Status status);
+	void SetStatus(GameDefine::SceneStatus status);
 	void UpdateAwake(float dt);
 	void UpdateInGame(float dt);
 	void UpdateInterlude(float dt);

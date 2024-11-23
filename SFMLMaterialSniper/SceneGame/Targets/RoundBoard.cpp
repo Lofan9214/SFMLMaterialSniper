@@ -118,7 +118,7 @@ void RoundBoard::Init()
 
 void RoundBoard::Release()
 {
-	animator.Stop();
+	animator.Pause();
 }
 
 void RoundBoard::Reset()
