@@ -31,11 +31,12 @@ public:
 	void SetScale(const sf::Vector2f& scale) override;
 	sf::FloatRect GetLocalBounds() const override;
 	sf::FloatRect GetGlobalBounds() const override;
+	void SetColor(const sf::Color& color) override;
 
 	void SetString(const std::string& str,bool loadFromTable = false);
 	void SetString(const std::string& id, const std::string& str);
+	void SetString(const std::wstring& str);
 	void SetCharSize(unsigned int iSize);
-	void SetFillColor(sf::Color color);
 	void SetOutline(sf::Color color,float thickness);
 };
 

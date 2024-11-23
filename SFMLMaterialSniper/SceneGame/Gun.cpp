@@ -34,10 +34,10 @@ void Gun::SetAnimationScale(const sf::Vector2f& scale)
 	body.setScale(Utils::ElementProduct(this->scale, scale));
 }
 
-void Gun::SetDisplacement(const sf::Vector2f& disp)
+void Gun::SetOffset(const sf::Vector2f& disp)
 {
-	displacement = disp;
-	body.setOrigin(origin - displacement);
+	offset = disp;
+	body.setOrigin(origin - offset);
 }
 
 void Gun::SetColor(const sf::Color& color)
@@ -82,10 +82,10 @@ void Gun::Init()
 				SetOrigin(Origins::ML);
 
 				drawmuzzlefire = true;
-				muzzlepos.x -= 100.f;
+				muzzlepos.x -= 50.f;
 				muzzlefire.setColor({ 255,255,255,255 });
 				muzzlefire.setPosition(muzzlepos);
-				muzzlefire.setScale(2.5f, 3.5f);
+				muzzlefire.setScale(0.625f, 0.875f);
 				Utils::SetOrigin(muzzlefire, Origins::ML);
 			}
 		});
@@ -96,7 +96,7 @@ void Gun::Init()
 				sf::Vector2f muzzlepos = player->GetMuzzlePos();
 				muzzlepos.x += 110.f;
 				muzzlefire.setPosition(muzzlepos);
-				muzzlefire.setScale(3.5f, 0.4f);
+				muzzlefire.setScale(0.875f, 0.1f);
 				Utils::SetOrigin(muzzlefire, Origins::ML);
 			}
 			if (uiHud != nullptr)
@@ -109,7 +109,7 @@ void Gun::Init()
 			sf::Vector2f muzzlepos = player->GetMuzzlePos();
 			muzzlepos.x -= 90.f;
 			muzzlefire.setPosition(muzzlepos);
-			muzzlefire.setScale(3.7f, 0.4f);
+			muzzlefire.setScale(0.925f, 0.1f);
 			muzzlefire.setColor({ 255,255,255,54 });
 			Utils::SetOrigin(muzzlefire, Origins::ML);
 			drawmuzzlefire = false;
@@ -119,6 +119,7 @@ void Gun::Init()
 
 void Gun::Release()
 {
+	animator.Pause();
 }
 
 void Gun::Reset()

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "TextGo.h"
+class WindIcon;
+class HelpMessage;
 
 class UiHud : public GameObject
 {
@@ -30,7 +32,7 @@ protected:
 	ReloadStatus reloadStatus;
 	float boltTimer;
 	float boltDuration;
-	float ammodisplacement;
+	float ammoOffset;
 	std::vector<sf::Sprite> uiBullets;
 	std::vector<sf::Vector2f> uiBulletDefaultPos;
 	sf::Vector2f uiBulletVelocity;
@@ -42,12 +44,17 @@ protected:
 	sf::VertexArray uiBreath;
 	const sf::Vector2f breathMaxSize = { 390.f,50.f };
 	const sf::Vector2f breathStartPos = { 460.f,102.f };
-	
-	sf::Sprite uiWindCone;
-	std::string uiWindConeTexId = "graphics/ui/uiwindcone.png";
+
+	WindIcon* windCone;
+	WindIcon* windArrow;
+	HelpMessage* reload;
+	HelpMessage* space;
+	HelpMessage* fire;
+
 	sf::Sprite uiWindBack;
 	std::string uiWindBackTexId = "graphics/ui/uiwindback.png";
 	TextGo textWind;
+	TextGo textWindName;
 
 public:
 	UiHud(const std::string& name = "");
@@ -75,4 +82,7 @@ public:
 	void SetReloadStatus(ReloadStatus status);
 
 	void OnLocalize(Languages lang) override;
+	void SetReloadActive(bool active);
+	void SetSpaceActive(bool active, float duration);
+	void SetFireActive(bool active, float duration);
 };

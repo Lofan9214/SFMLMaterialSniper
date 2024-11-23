@@ -33,4 +33,23 @@ namespace GameDefine
 		UiHud = 300,
 		UiResult = 500,
 	};
+
+	enum class SceneStatus
+	{
+		Awake,
+		InGame,
+		Interlude,
+		Result,
+	};
+
+	enum class TargetType
+	{
+		Drum,
+		Bottle,
+		RoundBoard,
+		GlassNormal,
+		GlassRapid,
+		GlassSuper,
+		GlassTempered,
+	};
 }

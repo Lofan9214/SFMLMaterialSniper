@@ -1,16 +1,16 @@
 #pragma once
 #include "DataTable.h"
 
-
 struct DataWave
 {
 	std::string type;
 	sf::Vector3f position;
+	sf::Vector2f velocity;
 };
 
 struct DataStage
 {
-	std::string stage = "NULL";
+	int stage = 0;
 	std::unordered_map<int, std::vector<DataWave>> waves;
 };
 
@@ -20,7 +20,7 @@ public:
 	const static DataStage Undefined;
 
 protected:
-	std::unordered_map<std::string, DataStage> table;
+	std::unordered_map<int, DataStage> table;
 	std::string filePath = "tables/stage_table.csv";
 
 public:
@@ -30,5 +30,5 @@ public:
 	bool Load() override;
 	void Release() override;
 
-	const DataStage& Get(const std::string& id);
+	const DataStage& Get(int id);
 };

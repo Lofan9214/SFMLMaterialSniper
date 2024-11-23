@@ -9,7 +9,10 @@ TextGo::TextGo(const std::string& fontId, const std::string& name)
 void TextGo::SetOrigin(Origins preset)
 {
 	originPreset = preset;
-	origin = Utils::SetOrigin(text, preset);
+	if (originPreset < Origins::Custom)
+	{
+		origin = Utils::SetOrigin(text, preset);
+	}
 }
 
 void TextGo::SetOrigin(const sf::Vector2f& neworigin)
@@ -73,17 +76,25 @@ void TextGo::SetString(const std::string& id, const std::string& str)
 	}
 }
 
+void TextGo::SetString(const std::wstring& str)
+{
+	text.setString(str);
+	if (originPreset < Origins::Custom)
+	{
+		SetOrigin(originPreset);
+	}
+}
+
 void TextGo::SetCharSize(unsigned int iSize)
 {
 	text.setCharacterSize(iSize);
+	if (originPreset != Origins::Custom)
+	{
+		SetOrigin(originPreset);
+	}
 }
 
-void TextGo::SetFillColor(sf::Color color)
-{
-	text.setFillColor(color);
-}
-
-void TextGo::SetOutline(sf::Color color,float thickness)
+void TextGo::SetOutline(sf::Color color, float thickness)
 {
 	text.setOutlineColor(color);
 	text.setOutlineThickness(thickness);
@@ -99,6 +110,10 @@ void TextGo::SetScale(const sf::Vector2f& scale)
 {
 	this->scale = scale;
 	text.setScale(this->scale);
+	if (originPreset != Origins::Custom)
+	{
+		SetOrigin(originPreset);
+	}
 }
 
 sf::FloatRect TextGo::GetLocalBounds() const
@@ -109,6 +124,11 @@ sf::FloatRect TextGo::GetLocalBounds() const
 sf::FloatRect TextGo::GetGlobalBounds() const
 {
 	return text.getGlobalBounds();
+}
+
+void TextGo::SetColor(const sf::Color& color)
+{
+	text.setFillColor(color);
 }
 
 void TextGo::Reset()

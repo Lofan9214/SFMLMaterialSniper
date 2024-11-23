@@ -26,6 +26,7 @@ public:
 	bool Load() override;
 	void Release() override;
 
-	const DataBullet& Get(const std::string& id);  
+	const DataBullet& Get(const std::string& id); 
+	const DataBullet& Change(bool up);
 };
 

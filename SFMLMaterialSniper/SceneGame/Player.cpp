@@ -80,13 +80,12 @@ void Player::Init()
 		{
 			SOUND_MGR.PlaySfx("sounds/player/boltaction.mp3");
 		});
+	skillData = SAVEDATA_MGR.Get().skillData;
 }
 
 void Player::Release()
 {
-	auto& savedata = SAVEDATA_MGR.Get();
-	savedata.skillData = skillData;
-	SAVEDATA_MGR.Save();
+	animator.Pause();
 }
 
 void Player::Reset()
@@ -97,7 +96,7 @@ void Player::Reset()
 	ANIMATIONCLIP_MGR.Load("animations/player/playerreloadstart.csv");
 
 	auto screensize = FRAMEWORK.GetDefaultSize();
-	SetScale({ 1.5f,1.5f });
+	SetScale({ 0.375f,0.375f });
 	SetPosition({ -screensize.x * 0.5f - 150.f, screensize.y * 0.5f + 130.f });
 	SetOrigin(Origins::BL);
 
@@ -112,7 +111,7 @@ void Player::Reset()
 		TakeBulletShell = [scene]() {return scene->TakeBulletShell(); };
 	}
 
-	skillData = SAVEDATA_MGR.Load().skillData;
+	skillData = SAVEDATA_MGR.Get().skillData;
 	maxBreath = 2.7f + skillData.control * 0.3f;
 	magazine = 5 + skillData.magazine;
 
@@ -159,12 +158,13 @@ void Player::UpdateReady(float dt)
 		}
 		else
 		{
-			//Todo 재장전 알림 만들어야 함
+			uiHud->SetReloadActive(true);
 		}
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Z)
 		|| InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
+		uiHud->SetReloadActive(false);
 		SetStatus(PlayerStatus::Reloading);
 	}
 }

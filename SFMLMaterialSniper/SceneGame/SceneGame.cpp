@@ -12,6 +12,8 @@
 #include "UiHud.h"
 #include "UiResult.h"
 #include "ButtonRound.h"
+#include "WindController.h"
+#include "ShootMark.h"
 
 SceneGame::SceneGame()
 	:Scene(SceneIds::Game)
@@ -33,7 +35,15 @@ void SceneGame::Init()
 	gun = AddGo(new Gun("gun"));
 	player = AddGo(new Player("player"));
 
-	btnStart = AddGo(new ButtonRound("btnStart"));
+	windController = AddGo(new WindController("windController"));
+
+	for (int i = 0; i < 10; ++i)
+	{
+		shootmarks.push_back(AddGo(new ShootMark("shootMark")));
+	}
+
+	stage = -1;
+	difficulty = -1;
 
 	Scene::Init();
 }
@@ -42,8 +52,6 @@ void SceneGame::Enter()
 {
 	Scene::Enter();
 
-	SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
-
 	bulletPool.Return(bulletPool.Take());
 	glassShardPool.Return(glassShardPool.Take());
 	bulletShellPool.Return(bulletShellPool.Take());
@@ -51,7 +59,7 @@ void SceneGame::Enter()
 	drumPool.Return(drumPool.Take());
 	roundboardPool.Return(roundboardPool.Take());
 
-	currentStatus = Status::Awake;
+	currentStatus = GameDefine::SceneStatus::Awake;
 
 	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
 
@@ -65,23 +73,15 @@ void SceneGame::Enter()
 	uiHud->SetAmmo(player->GetAmmo());
 	uiHud->SetBreath(player->GetBreath());
 
-	stage = 1;
-	difficulty = 1;
-	wave = 0;
-	remains = 0;
-	day = true;
-
 	screenRecoilTimer = 1000.f;
-	stageEnterTime = FRAMEWORK.GetRealTime();
-	btnStart->SetPosition({ screensize.x * 0.5f,screensize.y * 0.25f });
-	btnStart->SetString(L"클릭하여 시작");
-	btnStart->SetScale({ 2.f,2.f });
-	btnStart->SetClicked([this]() {this->SetStatus(Status::InGame); });
+
+	SetStatus(GameDefine::SceneStatus::Awake);
 }
 
 void SceneGame::Exit()
 {
 	ClearTookObject();
+	SAVEDATA_MGR.Save();
 
 	Scene::Exit();
 }
@@ -89,22 +89,33 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-	uiHud->SetWind(wind);
 	uiHud->SetBreath(player->GetBreath());
 
 	UpdateScreenRecoil(dt);
 
 	switch (currentStatus)
 	{
-	case SceneGame::Status::Awake:
+	case GameDefine::SceneStatus::Awake:
 		UpdateAwake(dt);
 		break;
-	case SceneGame::Status::InGame:
+	case GameDefine::SceneStatus::InGame:
 		UpdateInGame(dt);
 		break;
-	case SceneGame::Status::Interlude:
+	case GameDefine::SceneStatus::Interlude:
 		UpdateInterlude(dt);
 		break;
+	case GameDefine::SceneStatus::Result:
+		UpdateResult(dt);
+		break;
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
+	{
+		SetWind(--wind);
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
+	{
+		SetWind(++wind);
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
@@ -114,7 +125,14 @@ void SceneGame::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::F2))
 	{
-		uiResult->SetActive(!uiResult->IsActive());
+		if (currentStatus != GameDefine::SceneStatus::Result)
+		{
+			SetStatus(GameDefine::SceneStatus::Result);
+		}
+		else
+		{
+			SetStatus(GameDefine::SceneStatus::Awake);
+		}
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::F9))
@@ -128,75 +146,98 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 }
 
-void SceneGame::SetStatus(Status status)
+void SceneGame::SetStatus(GameDefine::SceneStatus status)
 {
-	Status prev = currentStatus;
+	GameDefine::SceneStatus prev = currentStatus;
 	currentStatus = status;
+
+	windController->SetSceneStatus(currentStatus);
 
 	switch (currentStatus)
 	{
-	case SceneGame::Status::Awake:
-		stage = 1;
-		difficulty = 1;
+	case GameDefine::SceneStatus::Awake:
+		if (prev == GameDefine::SceneStatus::Result)
+		{
+			uiResult->SetActive(false);
+		}
+		SOUND_MGR.PlayBgm("sounds/bgm/stage01.mp3");
+
+		if (stage == -1)
+		{
+			stage = 1;
+		}
+		if (difficulty == -1)
+		{
+			difficulty = Variables::difficulty;
+		}
 		wave = 0;
 		remains = 0;
-		btnStart->SetActive(true);
+		day = true;
+
+		dataStage = STAGE_TABLE->Get(stage);
+		windController->SetActive(true);
+
 		break;
-	case SceneGame::Status::InGame:
-		if (prev == Status::Awake)
+	case GameDefine::SceneStatus::InGame:
+		if (prev == GameDefine::SceneStatus::Awake)
 		{
 			FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 			player->SetStatus(Player::PlayerStatus::Ready);
-			btnStart->SetActive(false);
+			windController->SetDifficulty(difficulty);
+		}
+		if (stage == 1)
+		{
+			if (wave == 0)
+			{
+				uiHud->SetFireActive(true, 3.f);
+			}
+			else if (wave == 1)
+			{
+				uiHud->SetSpaceActive(true, 3.f);
+			}
 		}
 		SpawnWave();
 		break;
-	case SceneGame::Status::Interlude:
+	case GameDefine::SceneStatus::Interlude:
 		interludeTimer = 0.f;
 		break;
-	case SceneGame::Status::Result:
+	case GameDefine::SceneStatus::Result:
 		FRAMEWORK.GetWindow().setMouseCursorVisible(true);
 		SOUND_MGR.PlayBgm("sounds/bgm/stageclear.mp3");
+		player->SetStatus(Player::PlayerStatus::Wait);
+		uiResult->ShowResult();
+		uiResult->SetActive(true);
+		windController->SetActive(false);
 		break;
 	}
 }
 
 void SceneGame::UpdateAwake(float dt)
 {
-	//if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
-	//{
-	//	SetStatus(Status::InGame);
-	//}
+	interludeTimer += dt;
+	if (interludeTimer > 5.f)
+	{
+		SetStatus(GameDefine::SceneStatus::InGame);
+	}
 }
 
 void SceneGame::UpdateInGame(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
-	{
-		wind -= 1.f;
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
-	{
-		wind += 1.f;
-	}
-
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
 		ClearTookObject();
-		SetStatus(Status::Awake);
+		SetStatus(GameDefine::SceneStatus::Awake);
 	}
 	if (remains == 0)
 	{
-		std::string stagestr = std::to_string(stage) + std::to_string(difficulty) + (day ? "D" : "N");
-		const auto& dataStage = STAGE_TABLE->Get(stagestr);
-
 		if (++wave == dataStage.waves.size())
 		{
-			SetStatus(Status::Result);
+			SAVEDATA_MGR.Get().skillData.skillPoint += 10;
+			SetStatus(GameDefine::SceneStatus::Result);
 		}
 		else
 		{
-			SetStatus(Status::Interlude);
+			SetStatus(GameDefine::SceneStatus::Interlude);
 		}
 	}
 }
@@ -206,8 +247,12 @@ void SceneGame::UpdateInterlude(float dt)
 	interludeTimer += dt;
 	if (interludeTimer > 3.f)
 	{
-		SetStatus(Status::InGame);
+		SetStatus(GameDefine::SceneStatus::InGame);
 	}
+}
+
+void SceneGame::UpdateResult(float dt)
+{
 }
 
 void SceneGame::UpdateScreenRecoil(float dt)
@@ -314,13 +359,12 @@ void SceneGame::ClearTookObject()
 		bulletPool.Return(bullet);
 	}
 	bullets.clear();
+
+	shootmarks.clear();
 }
 
 void SceneGame::SpawnWave()
 {
-	std::string stagestr = std::to_string(stage) + std::to_string(difficulty) + (day ? "D" : "N");
-	const auto& dataStage = STAGE_TABLE->Get(stagestr);
-
 	auto find = dataStage.waves.find(wave);
 	if (find == dataStage.waves.end())
 	{
@@ -350,6 +394,17 @@ void SceneGame::SpawnDrum(const sf::Vector3f& pos)
 	drums.push_back(drum);
 	AddGo(drum);
 	drum->SetPosition(pos);
+	for (auto shootMark : shootmarks)
+	{
+		if (!shootMark->IsActive())
+		{
+			shootMark->SetPosition({ pos.x,100.f - FRAMEWORK.GetDefaultSize().y * 0.5f });
+
+			shootMark->SetActive(true);
+			drum->SetShootMark(shootMark);
+			break;
+		}
+	}
 }
 
 void SceneGame::SpawnBottle(const sf::Vector3f& pos)
@@ -358,6 +413,16 @@ void SceneGame::SpawnBottle(const sf::Vector3f& pos)
 	bottles.push_back(bottle);
 	AddGo(bottle);
 	bottle->SetPosition(pos);
+	for (auto shootMark : shootmarks)
+	{
+		if (!shootMark->IsActive())
+		{
+			shootMark->SetPosition({ pos.x,100.f - FRAMEWORK.GetDefaultSize().y * 0.5f });
+			shootMark->SetActive(true);
+			bottle->SetShootMark(shootMark);
+			break;
+		}
+	}
 }
 
 void SceneGame::SpawnRoundBoard(const sf::Vector3f& pos)
@@ -367,10 +432,21 @@ void SceneGame::SpawnRoundBoard(const sf::Vector3f& pos)
 	AddGo(roundboard);
 	roundboard->SetPosition(pos);
 	roundboard->SetAnimationScale({ 0.f,0.f });
+	for (auto shootMark : shootmarks)
+	{
+		if (!shootMark->IsActive())
+		{
+			shootMark->SetPosition({ pos.x,100.f - FRAMEWORK.GetDefaultSize().y * 0.5f });
+			shootMark->SetActive(true);
+			roundboard->SetShootMark(shootMark);
+			break;
+		}
+	}
 }
 
 void SceneGame::ReturnDrum(Drum* drum)
 {
+	drum->SetActiveShootMark(false);
 	RemoveGo(drum);
 	drums.remove(drum);
 	drumPool.Return(drum);
@@ -378,6 +454,7 @@ void SceneGame::ReturnDrum(Drum* drum)
 
 void SceneGame::ReturnBottle(Bottle* bottle)
 {
+	bottle->SetActiveShootMark(false);
 	RemoveGo(bottle);
 	bottles.remove(bottle);
 	bottlePool.Return(bottle);
@@ -385,7 +462,21 @@ void SceneGame::ReturnBottle(Bottle* bottle)
 
 void SceneGame::ReturnRoundBoard(RoundBoard* roundboard)
 {
+	roundboard->SetActiveShootMark(false);
 	RemoveGo(roundboard);
 	roundboards.remove(roundboard);
 	roundboardPool.Return(roundboard);
+}
+
+void SceneGame::SetStage(int stage, int diff, bool day)
+{
+	this->stage = stage;
+	this->difficulty = diff;
+	this->day = day;
+}
+
+void SceneGame::SetWind(int speed)
+{
+	wind = speed;
+	uiHud->SetWind(wind);
 }

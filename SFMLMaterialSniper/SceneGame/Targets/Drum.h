@@ -1,6 +1,7 @@
 #pragma once
 
 class Bullet;
+class ShootMark;
 
 class Drum : public GameObject
 {
@@ -9,10 +10,13 @@ protected:
 	sf::Sprite body;
 	Animator animator;
 
+	ShootMark* shootMark;
+
 	sf::Vector3f position3;
 	float defaultdistance = 200.f;
 	std::function<void()> TargetHit;
 	std::function<const std::list<Bullet*>()> GetBulletList;
+	std::function<void(Drum*)> ReturnThis;
 
 public:
 	Drum(const std::string& name = "");
@@ -23,7 +27,7 @@ public:
 	void SetRotation(float angle) override;
 	void SetScale(const sf::Vector2f& scale) override;
 	void SetAnimationScale(const sf::Vector2f& scale) override;
-	void SetDisplacement(const sf::Vector2f& disp) override;
+	void SetOffset(const sf::Vector2f& disp) override;
 	void SetColor(const sf::Color& color) override;
 
 	void SetOrigin(Origins preset) override;
@@ -38,4 +42,7 @@ public:
 	void Update(float dt) override;
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void SetShootMark(ShootMark* shootMark) { this->shootMark = shootMark; }
+	void SetActiveShootMark(bool active);
 };

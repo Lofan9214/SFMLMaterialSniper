@@ -1,5 +1,7 @@
 #pragma once
 
+class TextGo;
+
 class ButtonRound : public GameObject
 {
 protected:
@@ -8,7 +10,7 @@ protected:
 	std::string buttonTexId = "graphics/ui/uiroundbutton.png";
 	sf::Vector2i textureRect;
 
-	sf::Text buttonText;
+	TextGo* buttonText;
 	std::string buttonFontId = "fonts/malgun.ttf";
 
 	std::function<void()> Clicked;
@@ -30,7 +32,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
 
-	void SetString(const std::string& text);
-	void SetString(const std::wstring& text);
+	void SetString(const std::string& text, bool useTable = false);
+	void SetCharSize(float size);
 	void SetClicked(const std::function<void()>& event);
 };

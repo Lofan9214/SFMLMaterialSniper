@@ -22,7 +22,7 @@ bool AnimationClip::loadFromFile(const std::string& filePath)
 		frame.flipX = (bool)std::stoi(row[5]);
 		frame.scale = { std::stof(row[6]) ,std::stof(row[7]) };
 		frame.color = { (sf::Uint8)std::stoi(row[8]),(sf::Uint8)std::stoi(row[9]),(sf::Uint8)std::stoi(row[10]),(sf::Uint8)std::stoi(row[11]) } ;
-		frame.displacement = { std::stof(row[12]) ,std::stof(row[13]) };
+		frame.offset = { std::stof(row[12]) ,std::stof(row[13]) };
 		frame.rotation = std::stof(row[14]);
 		frames.push_back(frame);
 	}

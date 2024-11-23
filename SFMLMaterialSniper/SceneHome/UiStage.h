@@ -1,8 +1,26 @@
 #pragma once
 
+class TextGo;
+
 class UiStage : public GameObject
 {
 protected:
+	sf::RectangleShape background;
+
+	TextGo* title;
+	TextGo* manual;
+	TextGo* difficulty;
+	std::string fontId;
+	sf::Vector2f offsetTitle;
+	sf::Vector2f offsetManual;
+	sf::Vector2f offsetDifficulty;
+
+	sf::Sprite upArrow;
+	sf::Vector2f offsetUpArrow;
+	sf::Sprite downArrow;
+	sf::Vector2f offsetDownArrow;
+	std::string texId;
+	sf::Vector2i textureRect;
 
 public:
 	UiStage(const std::string& name = "");
@@ -20,4 +38,6 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void ShowDiff();
 };

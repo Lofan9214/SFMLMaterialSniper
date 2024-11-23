@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "GlassShard.h"
+#include "ShootMark.h"
 
 Bottle::Bottle(const std::string& name)
 	: GameObject(name)
@@ -45,10 +46,10 @@ void Bottle::SetAnimationScale(const sf::Vector2f& scale)
 	stand.setScale(Utils::ElementProduct(this->scale, scale));
 }
 
-void Bottle::SetDisplacement(const sf::Vector2f& disp)
+void Bottle::SetOffset(const sf::Vector2f& disp)
 {
-	displacement = disp;
-	body.setOrigin(origin - displacement);
+	offset = disp;
+	body.setOrigin(origin - offset);
 }
 
 void Bottle::SetColor(const sf::Color& color)
@@ -90,6 +91,7 @@ void Bottle::Init()
 
 void Bottle::Release()
 {
+	animator.Pause();
 }
 
 void Bottle::Reset()
@@ -103,6 +105,7 @@ void Bottle::Reset()
 	GetBulletList = nullptr;
 	TakeGlassShard = nullptr;
 	TargetHit = nullptr;
+	ReturnThis = nullptr;
 
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 
@@ -111,7 +114,10 @@ void Bottle::Reset()
 		GetBulletList = [scene]() {return scene->GetBulletList();};
 		TakeGlassShard = [scene]() {return scene->TakeGlassShard(); };
 		TargetHit = [scene]() {scene->TargetHit();};
+		ReturnThis = [scene](Bottle* bottle) {scene->ReturnBottle(bottle); };
 	}
+
+	shootMark = nullptr;
 
 	SetOrigin(Origins::BC);
 }
@@ -154,13 +160,17 @@ void Bottle::FixedUpdate(float dt)
 			{
 				std::cout << "hitbottle" << std::endl;
 				bullet->Hit();
+				if (ReturnThis)
+				{
+					ReturnThis(this);
+				}
 				active = false;
 				TargetHit();
 				for (int i = 0; i < 20; ++i)
 				{
 					SOUND_MGR.PlaySfx("sounds/targets/bottlehit.mp3");
 					GlassShard* shard = TakeGlassShard();
-					shard->Start({ position3.x + displacement.x,position3.y - body.getGlobalBounds().height * 0.5f + displacement.y ,position3.z *-1.f });
+					shard->Start({ position3.x + offset.x,position3.y - body.getGlobalBounds().height * 0.5f + offset.y ,position3.z *-1.f });
 				}
 			}
 			else if (stand.getGlobalBounds().contains(bulletlerppos))
@@ -176,4 +186,12 @@ void Bottle::Draw(sf::RenderTarget& renderTarget)
 {
 	renderTarget.draw(stand);
 	renderTarget.draw(body);
+}
+
+void Bottle::SetActiveShootMark(bool active)
+{
+	if (shootMark != nullptr)
+	{
+		shootMark->SetActive(active);
+	}
 }

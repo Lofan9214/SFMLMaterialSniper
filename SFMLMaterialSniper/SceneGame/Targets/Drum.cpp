@@ -2,6 +2,7 @@
 #include "Drum.h"
 #include "SceneGame.h"
 #include "Bullet.h"
+#include "ShootMark.h"
 
 Drum::Drum(const std::string& name)
 	: GameObject(name)
@@ -41,10 +42,10 @@ void Drum::SetAnimationScale(const sf::Vector2f& scale)
 	body.setScale(Utils::ElementProduct(this->scale, scale));
 }
 
-void Drum::SetDisplacement(const sf::Vector2f& disp)
+void Drum::SetOffset(const sf::Vector2f& disp)
 {
-	displacement = disp;
-	body.setOrigin(origin - displacement);
+	offset = disp;
+	body.setOrigin(origin - offset);
 
 }
 
@@ -87,17 +88,20 @@ void Drum::Init()
 
 void Drum::Release()
 {
+	animator.Pause();
 }
 
 void Drum::Reset()
 {
 	GetBulletList = nullptr;
 	TargetHit = nullptr;
+	ReturnThis = nullptr;
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
 		GetBulletList = [scene]() {return scene->GetBulletList();};
 		TargetHit = [scene]() {scene->TargetHit();};
+		ReturnThis = [scene](Drum* drum) {scene->ReturnDrum(drum); };
 	}
 
 	active = true;
@@ -107,6 +111,8 @@ void Drum::Reset()
 	ANIMATIONCLIP_MGR.Load("animations/targets/drumhit.csv");
 	animator.Play("animations/targets/drumspawn.csv");
 	animator.PlayQueue("animations/targets/drumidle.csv");
+
+	shootMark = nullptr;
 
 	SetOrigin(Origins::BC);
 }
@@ -159,6 +165,10 @@ void Drum::FixedUpdate(float dt)
 				{
 					TargetHit();
 				}
+				if (ReturnThis)
+				{
+					ReturnThis(this);
+				}
 			}
 		}
 	}
@@ -167,4 +177,12 @@ void Drum::FixedUpdate(float dt)
 void Drum::Draw(sf::RenderTarget& window)
 {
 	window.draw(body);
+}
+
+void Drum::SetActiveShootMark(bool active)
+{
+	if (shootMark != nullptr)
+	{
+		shootMark->SetActive(active);
+	}
 }

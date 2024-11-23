@@ -1,5 +1,4 @@
 #pragma once
-#include "Scene.h"
 
 class Bullet;
 class CircleView;
@@ -9,26 +8,18 @@ class Bottle;
 class UiHud;
 class Player;
 class GlassShard;
-class DataStage;
 class Gun;
 class BulletShell;
 class UiResult;
 class ButtonRound;
+class WindController;
+class ShootMark;
 
 class SceneGame :
 	public Scene
 {
-public:
-	enum class Status
-	{
-		Awake,
-		InGame,
-		Interlude,
-		Result,
-	};
-
 protected:
-	Status currentStatus = Status::Awake;
+	GameDefine::SceneStatus currentStatus = GameDefine::SceneStatus::Awake;
 
 	CircleView* scopeview;
 	Player* player;
@@ -54,7 +45,10 @@ protected:
 
 	UiHud* uiHud;
 	UiResult* uiResult;
-	ButtonRound* btnStart;
+	WindController* windController;
+	std::list<ShootMark*> shootmarks;
+
+	DataStage dataStage;
 
 	float wind = 0.f;
 
@@ -69,8 +63,6 @@ protected:
 	float screenRecoil;
 	float screenRecoilTimer;
 
-	float stageEnterTime;
-
 public:
 	SceneGame();
 	virtual ~SceneGame() = default;
@@ -82,10 +74,11 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void SetStatus(Status status);
+	void SetStatus(GameDefine::SceneStatus status);
 	void UpdateAwake(float dt);
 	void UpdateInGame(float dt);
 	void UpdateInterlude(float dt);
+	void UpdateResult(float dt);
 	void UpdateScreenRecoil(float dt);
 
 	GlassShard* TakeGlassShard();
@@ -110,5 +103,8 @@ public:
 	void ReturnDrum(Drum* drum);
 	void ReturnBottle(Bottle* bottle);
 	void ReturnRoundBoard(RoundBoard* roundboard);
+
+	void SetStage(int stage, int diff, bool day);
+	void SetWind(int speed);
 };
 

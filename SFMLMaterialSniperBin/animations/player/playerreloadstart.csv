@@ -2,5 +2,5 @@ ID,FPS,"LootType (0: Single, 1: Loop)"
 playerreloadstart,20,0
 
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:False,1:True)",SCALEX,SCALEY,COLORRED,COLORGREEN,COLORBLUE,COLORALPHA,DISPLACEMENTX,DISPLACEMENTY,ROTATION
-graphics/player/sprite/10000.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
-graphics/player/sprite/10001.png,0,0,1024,512,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/10000.png,0,0,4096,2048,0,1,1,255,255,255,255,0,0,0
+graphics/player/sprite/10001.png,0,0,4096,2048,0,1,1,255,255,255,255,0,0,0

@@ -7,6 +7,7 @@ void Framework::Init(int width, int height, const std::string& name)
 	defaultSize.y = height;
 	
 	Utils::Init();
+	SAVEDATA_MGR.Load();
 	DATATABLE_MGR.Init();
 	SCENE_MGR.Init();
 	SOUND_MGR.Init();

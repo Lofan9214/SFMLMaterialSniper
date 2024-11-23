@@ -1,8 +1,31 @@
 #pragma once
 
+class TextGo;
+
 class UiBullet : public GameObject
 {
 protected:
+
+	sf::RectangleShape background;
+
+	TextGo* title;
+	TextGo* name;
+	TextGo* weight;
+	TextGo* diameter;
+	TextGo* muzzlespeed;
+	sf::Vector2f offsetTitle;
+	sf::Vector2f offsetName;
+	sf::Vector2f offsetWeight;
+	sf::Vector2f offsetDiameter;
+	sf::Vector2f offsetMuzzlespeed;
+	std::string fontId;
+
+	sf::Sprite upArrow;
+	sf::Vector2f offsetUpArrow;
+	sf::Sprite downArrow;
+	sf::Vector2f offsetDownArrow;
+	std::string texId;
+	sf::Vector2i textureRect;
 
 public:
 	UiBullet(const std::string& name = "");
@@ -20,4 +43,6 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderTarget& window) override;
+
+	void ReadDataBullet();
 };

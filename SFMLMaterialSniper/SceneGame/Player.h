@@ -36,8 +36,8 @@ protected:
 	float fireTimer;
 	float reloadTimer;
 
-	const sf::Vector2f muzzlePos = sf::Vector2f(680.f, 248.5f);
-	const sf::Vector2f ejectionPos = sf::Vector2f(460.f, 264.f);
+	const sf::Vector2f muzzlePos = sf::Vector2f(2720.f, 994.f);
+	const sf::Vector2f ejectionPos = sf::Vector2f(1840.f, 1056.f);
 
 	std::function<BulletShell* ()> TakeBulletShell;
 

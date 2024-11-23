@@ -26,6 +26,7 @@
     <ClInclude Include="SceneGame\Gun.h" />
     <ClInclude Include="JsonDefines.h" />
     <ClInclude Include="SceneHome\SceneHome.h" />
+    <ClInclude Include="SceneGame\ShootMark.h" />
     <ClInclude Include="StageTable.h" />
     <ClInclude Include="SceneGame\Targets\GlassShard.h" />
     <ClInclude Include="SceneGame\Player.h" />
@@ -70,6 +71,9 @@
     <ClInclude Include="SceneHome\UiSkill.h" />
     <ClInclude Include="SceneHome\UiStage.h" />
     <ClInclude Include="SceneGame\UiResult.h" />
+    <ClInclude Include="SceneGame\UiWindIcon.h" />
+    <ClInclude Include="SceneGame\WindController.h" />
+    <ClInclude Include="SceneGame\UiHelpMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BulletTable.cpp" />
@@ -77,6 +81,7 @@
     <ClCompile Include="SceneGame\BulletShell.cpp" />
     <ClCompile Include="SceneGame\Gun.cpp" />
     <ClCompile Include="SceneHome\SceneHome.cpp" />
+    <ClCompile Include="SceneGame\ShootMark.cpp" />
     <ClCompile Include="StageTable.cpp" />
     <ClCompile Include="SceneGame\Targets\GlassShard.cpp" />
     <ClCompile Include="SceneGame\Player.cpp" />
@@ -119,6 +124,9 @@
     <ClCompile Include="SceneHome\UiSkill.cpp" />
     <ClCompile Include="SceneHome\UiStage.cpp" />
     <ClCompile Include="SceneGame\UiResult.cpp" />
+    <ClCompile Include="SceneGame\UiWindIcon.cpp" />
+    <ClCompile Include="SceneGame\WindController.cpp" />
+    <ClCompile Include="SceneGame\UiHelpMessage.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
