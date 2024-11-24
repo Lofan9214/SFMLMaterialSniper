@@ -1,12 +1,12 @@
 {
-    "selectedBullet": "FN 5.7mm",
+    "selectedBullet": ".50 BMG",
     "skillData": {
-        "control": 4,
+        "control": 3,
         "magazine": 3,
-        "reload": 4,
-        "scopeSize": 2,
-        "skillPoint": 2,
-        "stablility": 2
+        "reload": 3,
+        "scopeSize": 3,
+        "skillPoint": 949,
+        "stablility": 3
     },
     "version": 2
 }
