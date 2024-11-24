@@ -2,3 +2,6 @@ NAME,WEIGHT,DIAMETER,MUZZLESPEED
 ".300 Winchester",11.7,7.82,973
 ".30-06 Springfield",13.0,7.82,783
 ".338 Lapua Magnum",16.2,8.61,921
+".50 BMG",42,12.98,923
+"9mm Parabellum",8.04,9.01,350
+"FN 5.7mm",2.0,5.7,716

@@ -118,7 +118,7 @@ void SceneGame::Update(float dt)
 		SetWind(++wind);
 	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
+	if (InputMgr::GetKeyDown(sf::Keyboard::BackSpace))
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Home);
 	}
