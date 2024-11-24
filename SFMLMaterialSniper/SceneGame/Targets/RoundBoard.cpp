@@ -114,6 +114,15 @@ void RoundBoard::Init()
 			}
 			active = false;
 		});
+	animator.AddEvent("roundboardcrit", 45,
+		[this]()
+		{
+			if (ReturnThis)
+			{
+				ReturnThis(this);
+			}
+			active = false;
+		});
 }
 
 void RoundBoard::Release()
@@ -189,8 +198,9 @@ void RoundBoard::FixedUpdate(float dt)
 				sf::Vector2f hitboxCenter(960.f, 960.f);
 				hitboxCenter += offsetHitBox;
 				float distance = Utils::Distance(point, hitboxCenter);
-				if (distance < 15)
+				if (distance < 50)
 				{
+
 					animator.Play("animations/targets/roundboardcrit.csv");
 					SOUND_MGR.PlaySfx("sounds/targets/roundboardhit.mp3");
 					bullet->Hit();
