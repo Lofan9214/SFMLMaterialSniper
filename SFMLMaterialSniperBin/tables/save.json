@@ -1,11 +1,11 @@
 {
-    "selectedBullet": ".300 Winchester",
+    "selectedBullet": "FN 5.7mm",
     "skillData": {
-        "control": 3,
-        "magazine": 2,
+        "control": 4,
+        "magazine": 3,
         "reload": 4,
-        "scopeSize": 1,
-        "skillPoint": 20,
+        "scopeSize": 2,
+        "skillPoint": 2,
         "stablility": 2
     },
     "version": 2

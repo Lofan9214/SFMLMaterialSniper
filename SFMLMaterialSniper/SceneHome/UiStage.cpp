@@ -12,7 +12,7 @@ void UiStage::SetPosition(const sf::Vector2f& pos)
 	position = pos;
 	background.setPosition(position);
 	title->SetPosition(position + offsetTitle);
-	manual->SetPosition(position + offsetTitle);
+	manual->SetPosition(position + offsetManual);
 	difficulty->SetPosition(position + offsetDifficulty);
 
 	upArrow.setPosition(position + offsetUpArrow);
@@ -58,7 +58,7 @@ void UiStage::Init()
 	offsetDownArrow = { 70.f,120.f };
 	offsetTitle = { 200.f,15.f };
 
-	offsetManual;
+	offsetManual = {30.f,135.f};
 	offsetDifficulty = {85.f,75.f};
 }
 
@@ -92,6 +92,8 @@ void UiStage::Reset()
 	//name->SetOrigin(Origins::TC);
 
 	difficulty->SetString("StageDifficulty0", true);
+	manual->SetString("StageManual", true);
+	manual->SetCharSize(23.f);
 }
 
 void UiStage::Update(float dt)
@@ -128,8 +130,12 @@ void UiStage::Update(float dt)
 			}
 			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 			{
-				Variables::difficulty = Utils::Clamp(++Variables::difficulty, 0, 2);
-				ShowDiff();
+				if (Variables::difficulty<2)
+				{
+					++Variables::difficulty;
+					SOUND_MGR.PlaySfx("sounds/ui/difficultychange.mp3");
+					ShowDiff();
+				}
 			}
 		}
 	}
@@ -168,8 +174,12 @@ void UiStage::Update(float dt)
 			}
 			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 			{
-				Variables::difficulty = Utils::Clamp(--Variables::difficulty, 0, 2);
-				ShowDiff();
+				if (Variables::difficulty > 0)
+				{
+					--Variables::difficulty;
+					ShowDiff();
+					SOUND_MGR.PlaySfx("sounds/ui/difficultychange.mp3");
+				}
 			}
 		}
 	}

@@ -109,7 +109,9 @@ void UiBullet::Reset()
 	ReadDataBullet();
 
 	background.setSize({ 400,250 });
-	background.setFillColor({ 0,0,0,170 });
+	background.setFillColor({ 6,6,6,170 });
+	background.setTexture(&TEXTURE_MGR.Get("graphics/ui/uihoxy.jpg"));
+	background.setTextureRect({0,0,0,0});
 	name->SetOrigin(Origins::TC);
 	title->SetOrigin(Origins::TC);
 	title->SetString("BulletTitle", true);
@@ -152,6 +154,7 @@ void UiBullet::Update(float dt)
 			{
 				BULLET_TABLE->Change(true);
 				ReadDataBullet();
+				SOUND_MGR.PlaySfx("sounds/ui/bulletchange.mp3");
 			}
 		}
 	}
@@ -192,6 +195,7 @@ void UiBullet::Update(float dt)
 			{
 				BULLET_TABLE->Change(false);
 				ReadDataBullet();
+				SOUND_MGR.PlaySfx("sounds/ui/bulletchange.mp3");
 			}
 		}
 	}
@@ -216,6 +220,15 @@ void UiBullet::Draw(sf::RenderTarget& window)
 void UiBullet::ReadDataBullet()
 {
 	const DataBullet& bulletData = BULLET_TABLE->Get(SAVEDATA_MGR.Get().selectedBullet);
+
+	if (bulletData.name=="FN 5.7mm")
+	{
+		background.setTextureRect({ 0,0,500,500 });
+	}
+	else
+	{
+		background.setTextureRect({ 0,0,0,0 });
+	}
 
 	name->SetString(bulletData.name);
 	weight->SetString("BulletWeight", " : " + std::to_string(bulletData.weight) + "g");

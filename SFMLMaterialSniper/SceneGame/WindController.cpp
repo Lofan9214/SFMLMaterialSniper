@@ -60,7 +60,7 @@ void WindController::Reset()
 	SceneGame* scene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (scene != nullptr)
 	{
-		windChanged = [scene](int wind) {scene->SetWind(wind);};
+		windChanged = [scene](int wind) {scene->SetWind(wind); };
 	}
 	SetScale({ 0.5f,0.5f });
 	active = false;
@@ -123,8 +123,8 @@ void WindController::SetStatus(Status status)
 	{
 	case WindController::Status::Normal:
 		timer = 0.f;
-		if(prev == Status::End)
-		SOUND_MGR.PlaySfx("sounds/ui/windchange.mp3");
+		if (prev == Status::End)
+			SOUND_MGR.PlaySfx("sounds/ui/windchange.mp3");
 		break;
 	case WindController::Status::Beep1:
 		SetPosition({ 1395.f, size.y - 225.f });
@@ -141,7 +141,7 @@ void WindController::SetStatus(Status status)
 	case WindController::Status::End:
 		if (windChanged)
 		{
-			windChanged(Utils::RandomRange(-difficulty * 8, difficulty * 8));
+			windChanged(Utils::RandomRange(0, 1) ? Utils::RandomRange((difficulty - 1) * 8 + 1, difficulty * 8) : Utils::RandomRange(-difficulty * 8, -(difficulty - 1) * 8 - 1));
 		}
 		SOUND_MGR.PlaySfx("sounds/ui/windchange.mp3");
 		break;

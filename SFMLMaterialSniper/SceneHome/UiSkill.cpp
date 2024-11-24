@@ -241,7 +241,7 @@ void UiSkill::ButtonsUpdate()
 				|| point.y < 0 || (int)point.y >= textureRectArrow.y
 				|| collisionImage.getPixel(point.x, point.y).a == 0)
 			{
-				ChangeSkillManual(-1,false);
+				ChangeSkillManual(-1, false);
 				if (upArrows[i].getTextureRect().left != 0)
 				{
 					upArrows[i].setTextureRect({ {0,0} ,textureRectArrow });
@@ -253,7 +253,7 @@ void UiSkill::ButtonsUpdate()
 			}
 			else
 			{
-				ChangeSkillManual(i,true);
+				ChangeSkillManual(i, true);
 				if (cursor.loadFromSystem(sf::Cursor::Hand))
 				{
 					FRAMEWORK.GetWindow().setMouseCursor(cursor);
@@ -284,7 +284,7 @@ void UiSkill::ButtonsUpdate()
 				|| point.y < 0 || (int)point.y >= textureRectArrow.y
 				|| collisionImage.getPixel(point.x, point.y).a == 0)
 			{
-				ChangeSkillManual(-1,false);
+				ChangeSkillManual(-1, false);
 				if (downArrows[i].getTextureRect().left != 0)
 				{
 					downArrows[i].setTextureRect({ {0,0} ,textureRectArrow });
@@ -296,7 +296,7 @@ void UiSkill::ButtonsUpdate()
 			}
 			else
 			{
-				ChangeSkillManual(i,false);
+				ChangeSkillManual(i, false);
 				if (cursor.loadFromSystem(sf::Cursor::Hand))
 				{
 					FRAMEWORK.GetWindow().setMouseCursor(cursor);
@@ -445,11 +445,15 @@ void UiSkill::SkillUpDown(int index, bool up)
 		needpoint = 2 << skilldata.magazine;
 		break;
 	}
-	if (needpoint == 64 || needpoint == 1 || (up && needpoint > skilldata.skillPoint) || (!up && needpoint == 2))
+	if (!up)
+	{
+		needpoint = needpoint >> 1;
+	}
+	if (needpoint == 64 || needpoint == 1 || (up && needpoint > skilldata.skillPoint))
 	{
 		return;
 	}
-	skilldata.skillPoint += up ? -needpoint : needpoint >> 1;
+	skilldata.skillPoint += up ? -needpoint : needpoint;
 	switch (index)
 	{
 	case 0:
@@ -468,5 +472,6 @@ void UiSkill::SkillUpDown(int index, bool up)
 		up ? ++skilldata.magazine : --skilldata.magazine;
 		break;
 	}
+	up ? SOUND_MGR.PlaySfx("sounds/ui/skillup.mp3") : SOUND_MGR.PlaySfx("sounds/ui/skilldown.mp3");
 	ReadSkillData();
 }
