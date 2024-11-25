@@ -79,9 +79,9 @@ void UiResult::Reset()
 
 	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
 
-	titleBackground.setSize({ 1280.f, 120.f });
-	Utils::SetOrigin(titleBackground, Origins::MC);
-	titleBackground.setPosition({ screensize.x * 0.5f,180.f });
+	titleBackground.setSize({ 1280.f, 700.f });
+	Utils::SetOrigin(titleBackground, Origins::TC);
+	titleBackground.setPosition({ screensize.x * 0.5f,120.f });
 	titleBackground.setFillColor({ 0,0,0,100 });
 
 	txtTitle->SetString("Result", true);

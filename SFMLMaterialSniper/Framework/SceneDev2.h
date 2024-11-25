@@ -22,6 +22,7 @@ protected:
     
     sf::Text textMoa;
     sf::Text textWind;
+    sf::Text textBullet;
 
     float wind = 0.f;
     bool fired = false;
