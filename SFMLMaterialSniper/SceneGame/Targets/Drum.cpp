@@ -83,6 +83,10 @@ void Drum::Init()
 		[this]()
 		{
 			active = false;
+			if (ReturnThis)
+			{
+				ReturnThis(this);
+			}
 		});
 }
 
@@ -165,10 +169,7 @@ void Drum::FixedUpdate(float dt)
 				{
 					TargetHit();
 				}
-				if (ReturnThis)
-				{
-					ReturnThis(this);
-				}
+				
 			}
 		}
 	}

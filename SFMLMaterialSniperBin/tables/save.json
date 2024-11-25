@@ -5,7 +5,11 @@
         "magazine": 3,
         "reload": 3,
         "scopeSize": 3,
+<<<<<<< HEAD
         "skillPoint": 949,
+=======
+        "skillPoint": 959,
+>>>>>>> develop
         "stablility": 3
     },
     "version": 2

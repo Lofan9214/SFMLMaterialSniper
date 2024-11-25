@@ -22,9 +22,9 @@ void SceneDev2::Init()
 	roundBoard = AddGo(new RoundBoard("round"));
 	bottle = AddGo(new Bottle("bottle"));
 
-	scopeview = AddGo(new CircleView("scope"));
-	scopeview->SetZoom(5.f);
-	scopeview->SetCircleRadius(150.f);
+	//scopeview = AddGo(new CircleView("scope"));
+	//scopeview->SetZoom(5.f);
+	//scopeview->SetCircleRadius(150.f);
 
 	Scene::Init();
 }
@@ -38,6 +38,9 @@ void SceneDev2::Enter()
 	drum->SetPosition({300.f,0.f,700.f});
 	roundBoard->SetPosition({-300.f,0.f,700.f});
 	bottle->SetPosition({0.f,0.f,700.f});
+	drum->SetActive(false);
+		roundBoard->SetActive(false);
+		bottle->SetActive(false);
 
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize(screensize);
@@ -48,13 +51,19 @@ void SceneDev2::Enter()
 	textWind.setCharacterSize(20);
 	textWind.setFillColor(sf::Color::White);
 	textWind.setString("Wind : " + std::to_string(wind) + "m/s");
-	textWind.setPosition({ -900.f,-500.f });
-	textWind.setFont(FONT_MGR.Get("malgun.ttf"));
+	textWind.setPosition({ -750.f,-500.f });
+	textWind.setFont(FONT_MGR.Get("fonts/malgun.ttf"));
 
 	textMoa.setCharacterSize(20);
 	textMoa.setFillColor(sf::Color::White);
-	textMoa.setPosition({ -900.f,-450.f });
-	textMoa.setFont(FONT_MGR.Get("malgun.ttf"));
+	textMoa.setPosition({ -750.f,-450.f });
+	textMoa.setFont(FONT_MGR.Get("fonts/malgun.ttf"));
+
+	textBullet.setCharacterSize(20);
+	textBullet.setFillColor(sf::Color::White);
+	textBullet.setPosition({ -750.f,-400.f });
+	textBullet.setFont(FONT_MGR.Get("fonts/malgun.ttf"));
+	textBullet.setString(SAVEDATA_MGR.Get().selectedBullet);
 
 	va.setPrimitiveType(sf::PrimitiveType::LineStrip);
 }
@@ -93,7 +102,7 @@ void SceneDev2::Update(float dt)
 			newtext.setString(std::to_string((int)Utils::Magnitude(startpos - bulletpos))
 				+ "\n" + std::to_string((int)Utils::Magnitude(bulletvel)));
 			newtext.setPosition(newpos.position);
-			newtext.setFont(FONT_MGR.Get("malgun.ttf"));
+			newtext.setFont(FONT_MGR.Get("fonts/malgun.ttf"));
 			vecText.push_back(newtext);
 		}
 	}
@@ -150,7 +159,11 @@ void SceneDev2::Update(float dt)
 		auto mousepos = ScreenToWorld(InputMgr::GetMousePosition());
 		bullet->SetPosition({ mousepos.x,mousepos.y,0.f});
 	}
-
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad2))
+	{
+		BULLET_TABLE->Change(false);
+		textBullet.setString(SAVEDATA_MGR.Get().selectedBullet);
+	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
 	{
 		wind -= 1.f;
@@ -161,7 +174,7 @@ void SceneDev2::Update(float dt)
 		wind += 1.f;
 		bullet->SetWind({ wind,0.f,0.f });
 	}
-	scopeview->SetPosition(ScreenToWorld(InputMgr::GetMousePosition()));
+	//scopeview->SetPosition(ScreenToWorld(InputMgr::GetMousePosition()));
 }
 
 void SceneDev2::Draw(sf::RenderWindow& window)
@@ -179,4 +192,5 @@ void SceneDev2::Draw(sf::RenderWindow& window)
 	window.setView(previousView);
 	window.draw(textWind);
 	window.draw(textMoa);
+	window.draw(textBullet);
 }
