@@ -154,7 +154,10 @@ void Gun::Reset()
 
 void Gun::Update(float dt)
 {
-	animator.Update(dt);
+	if (boltStatus != GameDefine::RecoilStatus::Ready)
+	{
+		animator.Update(dt);
+	}
 	UpdateScopeVibration(dt);
 	UpdateScopeRecoil(dt);
 	UpdateScopePosition(dt);
