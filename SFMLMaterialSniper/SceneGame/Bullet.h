@@ -35,6 +35,9 @@ protected:
 	float diameter; // ÅºµÎÁö¸§ (mm)
 	float muzzleSpeed;
 
+	float radius;
+	float crossAreaConstant;
+
 	sf::Sprite body;
 	Animator animator;
 
