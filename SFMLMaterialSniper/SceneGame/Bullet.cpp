@@ -105,7 +105,7 @@ void Bullet::Reset()
 	}
 
 	const auto& data = BULLET_TABLE->Get(SAVEDATA_MGR.Get().selectedBullet);
-	weight = data.weight;
+	weight = data.weight * 0.001f;
 	diameter = data.diameter;
 	muzzleSpeed = data.muzzleSpeed;
 
@@ -151,10 +151,13 @@ void Bullet::Draw(sf::RenderTarget& renderTarget)
 
 void Bullet::UpdateAccelation()
 {
-	// F = -C*rho*A*abs(V-W)*(V-W)/2
 	//float radius = 0.5f * diameter * 0.001f;
-	sf::Vector3f force = crossAreaConstant * Utils::Magnitude(velocity3d - wind * windMultiplier) * (velocity3d - wind * windMultiplier);
-	acc3d = force / (weight * 0.001f); // a = F/m
+	// F = -C*rho*A*abs(V-W)*(V-W)/2
+	// crossAreaConstant = -C * rho * A
+	sf::Vector3f force = crossAreaConstant 
+						* Utils::Magnitude(velocity3d - wind * windMultiplier) 
+						* (velocity3d - wind * windMultiplier);
+	acc3d = force / weight; // a = F/m
 	acc3d += gravity * gravityMultiplier;
 }
 
@@ -192,9 +195,9 @@ void Bullet::Hit(Result result)
 
 void Bullet::SetBulletType(const DataBullet& data)
 {
-	weight = data.weight;
+	weight = data.weight * 0.001f;
 	diameter = data.diameter;
 	muzzleSpeed = data.muzzleSpeed;
 	radius = 0.5f * diameter * 0.001f;
-	crossAreaConstant =  -coeff * rho * Utils::PI * radius * radius* 0.5f;
+	crossAreaConstant = -coeff * rho * Utils::PI * radius * radius * 0.5f;
 }

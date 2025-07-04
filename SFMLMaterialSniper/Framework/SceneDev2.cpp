@@ -35,12 +35,12 @@ void SceneDev2::Enter()
 
 	sf::Vector2f screensize = FRAMEWORK.GetDefaultSize();
 
-	drum->SetPosition({300.f,0.f,700.f});
-	roundBoard->SetPosition({-300.f,0.f,700.f});
-	bottle->SetPosition({0.f,0.f,700.f});
+	drum->SetPosition({ 300.f,0.f,700.f });
+	roundBoard->SetPosition({ -300.f,0.f,700.f });
+	bottle->SetPosition({ 0.f,0.f,700.f });
 	drum->SetActive(false);
-		roundBoard->SetActive(false);
-		bottle->SetActive(false);
+	roundBoard->SetActive(false);
+	bottle->SetActive(false);
 
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize(screensize);
@@ -150,26 +150,40 @@ void SceneDev2::Update(float dt)
 		startpos = { mousepos.x,mousepos.y,0.f };
 		bullet->Fire(bullet->GetPosition3());
 	}
-	if (InputMgr::GetMouseButtonPressing(sf::Mouse::Right))
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
 	{
-		bullet->Reset();
-		fired = false;
-		firedfront = false;
-		textMoa.setString("");
-		auto mousepos = ScreenToWorld(InputMgr::GetMousePosition());
-		bullet->SetPosition({ mousepos.x,mousepos.y,0.f});
+		if (fired)
+		{
+			bullet->Reset();
+			fired = false;
+			firedfront = false;
+			textMoa.setString("");
+			auto mousepos = ScreenToWorld(InputMgr::GetMousePosition());
+			bullet->SetPosition({ mousepos.x,mousepos.y,0.f });
+		}
+		else
+		{
+			bullet->Reset();
+			vecText.clear();
+			va.clear();
+			auto mousepos = ScreenToWorld(InputMgr::GetMousePosition());
+			bullet->SetPosition({ mousepos.x,mousepos.y,0.f });
+		}
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad2))
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad2)
+		|| InputMgr::GetKeyDown(sf::Keyboard::Num2))
 	{
 		BULLET_TABLE->Change(false);
 		textBullet.setString(SAVEDATA_MGR.Get().selectedBullet);
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4))
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad4)
+		|| InputMgr::GetKeyDown(sf::Keyboard::Num4))
 	{
 		wind -= 1.f;
 		bullet->SetWind({ wind,0.f,0.f });
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6))
+	if (InputMgr::GetKeyDown(sf::Keyboard::Numpad6)
+		|| InputMgr::GetKeyDown(sf::Keyboard::Num6))
 	{
 		wind += 1.f;
 		bullet->SetWind({ wind,0.f,0.f });
